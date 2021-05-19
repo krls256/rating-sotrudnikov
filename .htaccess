@@ -1,0 +1,26 @@
+#AuthType Basic
+#AuthName "Authentication Required"
+#AuthUserFile C:\xampp\htdocs\laravel\rating-sotrudnikov.local\.htpasswd
+#require valid-user
+
+Options +FollowSymLinks
+AddDefaultCharset UTF-8
+
+RewriteEngine on
+
+ErrorDocument 404 /404
+
+RewriteCond %{REQUEST_FILENAME} !^favicon\.ico
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^sitemap.xml$ /sitemap.php
+RewriteRule ^robots.txt$ /robots.php
+RewriteRule ^articles/(.*) /articlesPage?id=$1 [L]
+RewriteRule ^rating-hr /hr.php
+
+#Компании HR
+RewriteRule ^otzyvy-sotrudnikov-([^/]+)/?$ /company?name=$1 [L]
+RewriteRule ^otzyvy-sotrudnikov-([^/]+)/([^/]+)/?$ /company?name=$1&page=$2 [L]
+RewriteRule ^otzyvy-sotrudnikov-([^/]+)/([^/]+)/([^/]+)/?$ /company?name=$1&page=$2&type=$3 [L]
+
+RewriteRule ^([^/.]+)$ $1.php [L]
