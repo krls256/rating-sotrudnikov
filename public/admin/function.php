@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config.php';
+require_once '../../config.php';
 
 //Проверяем авторизацию пользователя
 if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
