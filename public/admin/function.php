@@ -86,16 +86,6 @@ if(isset($_GET['func']) == 'login' and empty($_SESSION['id'])){
   }
 }
 
-function array_key_last( $array ) {
-
-  if (!is_array($array) || empty($array)) {
-      return NULL;
-  } else {
-    return array_keys($array)[count($array)-1];
-  }
-  
-}
-
 # Изменить настройки сайты
 if(($_GET['func'] ?? '') == 'edit_setting' and ($_SESSION['id'] != '')){
   $city   = setting($PDO)['id'];  // ID города
@@ -337,6 +327,7 @@ if(($_GET['func'] ?? '') == 'review_edit' and ($_SESSION['id'] != '')){
 }
 
 if(($_GET['func'] ?? '') == 'review-hr-edit' and ($_SESSION['id'] != '')){
+  // TODO: delete function after its implementation
   if( !is_numeric($_POST['id']) )
     exit('Что-то пошло не так...');
 

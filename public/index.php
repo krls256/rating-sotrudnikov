@@ -3,6 +3,7 @@
 
   $set = setting($PDO);
 
+
   if( !empty($_SESSION['id']) != '') {
     $dev = true;
     $sqlDev = '';

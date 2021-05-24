@@ -232,15 +232,16 @@ $(document).ready(function(){
 
     var $this = $(this);
 
-    $this.find('input[type="text"], textarea').map(function(e, i) { 
+    $this.find('input[type="text"][required], textarea[required]').map(function(e, i) {
       if ( $(this).val().length == 0 ) 
         return card__log('Заполните все поля.');
     });
-
-    $.post('function?func=review-hr-edit', $this.serialize())
+    // $(this).unbind('submit').submit();
+    $.post('review/update.php', $this.serialize())
       .then(function(e) {
-        if (e == 'ok') 
-          card__log('Отзыв успешно обновлена.', 'ok');
+        const response = JSON.parse(e);
+        if (response.status == 'ok')
+          card__log('Отзыв успешно обновлен.', 'ok');
         else
           card__log('Что-то пошло не так.');
       });
@@ -266,7 +267,7 @@ $(document).ready(function(){
   $('.create_review_name').on('submit', function(e){
     e.stopPropagation(); // Остановка происходящего
     e.preventDefault();  // Полная остановка происходящего
-
+    console.log('hello');
     let elem = $(this),
         status = true;
 
@@ -276,11 +277,13 @@ $(document).ready(function(){
         status = false;
       }
     });
+    $(this).unbind('submit').submit();
+    return;
 
     if(status == true){
       $.ajax({
         type: 'POST',
-        url: 'function?func=create-review',
+        url: 'review/store.php',
         data: elem.serialize(),
         cache: false,
         success: function(res){

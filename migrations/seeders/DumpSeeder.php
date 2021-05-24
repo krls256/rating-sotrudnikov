@@ -20,7 +20,7 @@ class DumpSeeder extends Seeder
 {
     private $dumpFile = ROOT_DIR . '/migrations/dump/dump.json';
 
-    public function __construct(PDO $PDO) { parent::__construct($PDO); }
+    public function __construct(PDO $PDO, $db) { parent::__construct($PDO, $db); }
 
 
     public function run()
@@ -35,16 +35,16 @@ class DumpSeeder extends Seeder
 
 
         foreach ($seeding as $table => $seed) {
-            $seedObj = new $seed($this->PDO, $readyJSON[$table], $table);
+            $seedObj = new $seed($this->PDO, $this->db, $readyJSON[$table], $table);
             $seedObj->run();
             echo $seed . '::run() - выполнена' . "\n";
         }
 
-        $reviewSeeder = new ReviewSeeder($this->PDO, $readyJSON['review'], 'review', $readyJSON['company']);
+        $reviewSeeder = new ReviewSeeder($this->PDO, $this->db, $readyJSON['review'], 'review', $readyJSON['company']);
         $reviewSeeder->run();
         echo ReviewSeeder::class . '::run() - выполнена' . "\n";
 
-        $commentSeeder = new CommentSeeder($this->PDO, $readyJSON['comment'], 'comment',$readyJSON['review']);
+        $commentSeeder = new CommentSeeder($this->PDO, $this->db, $readyJSON['comment'], 'comment',$readyJSON['review']);
         $commentSeeder->run();
         echo CommentSeeder::class . '::run() - выполнена' . "\n";
     }

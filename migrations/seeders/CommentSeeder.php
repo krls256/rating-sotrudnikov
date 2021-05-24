@@ -16,9 +16,9 @@ class CommentSeeder extends Seeder
     private $table;
     private $reviews;
 
-    public function __construct(PDO $PDO, $rows, $table,  $reviews)
+    public function __construct(PDO $PDO, $db, $rows, $table,  $reviews)
     {
-        parent::__construct($PDO);
+        parent::__construct($PDO, $db);
         $this->table = $table;
         $this->rows = $rows;
         $this->reviews = $reviews;

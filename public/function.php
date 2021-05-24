@@ -59,10 +59,9 @@ function setting(\PDO $PDO) {
     $domen = $sub;
 
   $settingQuery = $PDO->prepare("SELECT * FROM `setting` LIMIT 1");
-  $settingQuery->execute(array($domen));
+  $settingQuery->execute();
 
   $set = $settingQuery->fetch();
-
   return $set;
 } 
 

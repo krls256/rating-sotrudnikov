@@ -9,7 +9,10 @@ trait DefaultSeederTrait
     abstract protected function getRows();
     abstract protected function getTable();
     abstract protected function getPDO();
-    private $sqlLengthLimit = 2097152; // 2^21 - empirical number
+    abstract protected function getDB();
+
+    private int $sqlLengthLimit = 2097152; // 2^21 - empirical number
+
     protected function defaultRun($insertItems = 400, $eachTickFunction = null) {
         $sql = '';
         $table = $this->getTable();
@@ -17,35 +20,22 @@ trait DefaultSeederTrait
         $i = 0;
         while (($currentTickRows = array_slice($rows, $i * $insertItems, $insertItems)) !== []) {
             $i++;
-            foreach ($currentTickRows as $row)
+            foreach ($currentTickRows as $index => $row)
             {
-                $column = array_keys($row);
-                $column = array_splice($column, 1);
-                $values = array_values($row);
-                $values = array_splice($values, 1);
-                $values = array_map(function ($item)
-                {
-                    if ((string)((int)$item) === $item)
-                    {
-                        return (int)$item;
-                    }
-                    return "'" . $item . "'";
-                }, $values);
+                if(isset($row['id'])) {
+                    unset($currentTickRows[$index]['id']);
+                }
 
-                $columnStr = implode(', ', $column);
-                $valuesStr = implode(', ', $values);
-
-                $sql .= "INSERT INTO $table ($columnStr) VALUES ($valuesStr); \n";
-
-                if(strlen($sql) > $this->sqlLengthLimit) {
-                    $this->insertSQL($sql);
-                    $sql = "";
+            }
+            if($currentTickRows !== []) {
+                if(count($currentTickRows) === 1) {
+                    $this->insertSQL($currentTickRows[0]);
+                } else {
+                    $this->insertSQL($currentTickRows);
                 }
             }
-            if($sql !== '') {
-                $this->insertSQL($sql);
-                $sql = "";
-            }
+
+
             if($eachTickFunction !== null) {
                 $eachTickFunction();
             }
@@ -53,13 +43,12 @@ trait DefaultSeederTrait
 
     }
 
-    private function insertSQL($sql) {
+    private function insertSQL($data) {
         try {
-            $req = $this->getPDO()->prepare($sql);
-            $req->execute();
+            $this->getDB()->table($this->getTable())->insert($data);
 
         } catch (\Exception $exception) {
-            dd($sql, $exception->getMessage());
+            dd($exception);
         }
     }
 }

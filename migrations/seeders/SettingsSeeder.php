@@ -16,9 +16,9 @@ class SettingsSeeder extends Seeder
     private $rows;
     private $table;
 
-    public function __construct(PDO $PDO, $rows, $table)
+    public function __construct(PDO $PDO, $db, $rows, $table)
     {
-        parent::__construct($PDO);
+        parent::__construct($PDO, $db);
         $this->rows = $rows;
         $this->table = $table;
     }

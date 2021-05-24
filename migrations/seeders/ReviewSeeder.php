@@ -15,9 +15,9 @@ class ReviewSeeder extends Seeder
     private $table;
     private $companies;
 
-    public function __construct(PDO $PDO, $rows, $table,  $companies)
+    public function __construct(PDO $PDO, $db, $rows, $table,  $companies)
     {
-        parent::__construct($PDO);
+        parent::__construct($PDO, $db);
         $this->table = $table;
         $this->rows = $rows;
         $this->companies = $companies;
@@ -35,8 +35,6 @@ class ReviewSeeder extends Seeder
             } else {
                 $this->rows[$i]['is_positive'] = 0;
             }
-            $date = explode(' ', $review['review_date'])[0];
-            $this->rows[$i]['review_date'] = implode('-', array_reverse(explode('.', $date)));
             $this->rows[$i]['company_id'] = $companiesFromDB[$review['company_name']];
 
             $this->rows[$i]['review_pluses'] = str_replace("'", '`', $review['review_pluses']);

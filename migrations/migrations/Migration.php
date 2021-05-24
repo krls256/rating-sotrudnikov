@@ -5,12 +5,12 @@ namespace migrations\migrations;
 use PDO;
 
 require_once __DIR__ . '/../../config.php';
-require_once ROOT_DIR . '/class/Mysql.php';
+require_once ROOT_DIR . '/public/class/Mysql.php';
 
 abstract class Migration
 {
-    protected $table;
-    protected $PDO;
+    protected string $table;
+    protected PDO $PDO;
     // Предполагается что код будет исполнятся через cli
     public function __construct(PDO $PDO, $table) {
         $this->PDO = $PDO;

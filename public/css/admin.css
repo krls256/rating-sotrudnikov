@@ -347,7 +347,7 @@ body, html{
   display: block;
   margin-top: 15px;
 }
-.content input[type="text"], .content textarea{
+.content input[type="text"], .content textarea, .content select{
   outline: 0;
   max-width: 450px;
   width:100%;
@@ -365,11 +365,11 @@ body, html{
   resize: none;
   min-height: 178px;
 }
-.content input[type="text"]:hover, .content textarea:hover{
+.content input[type="text"]:hover, .content textarea:hover, .content select:hover{
   cursor: pointer;
   border-color: #d2d1d1;
 }
-.content input[type="text"]:focus, .content textarea:focus{
+.content input[type="text"]:focus, .content textarea:focus, .content select:hover{
   cursor: text;
   border-color: #03a9f4;
 }
@@ -736,4 +736,8 @@ body, html{
     width:250px;
     min-width: 250px;
   }
+}
+
+.d-block {
+  display: block;
 }
