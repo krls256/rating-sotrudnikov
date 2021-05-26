@@ -1,5 +1,5 @@
-<?php header('Content-type: application/xml; charset=utf-8') ?>
-<?php echo '<?xml version="1.0" encoding="UTF-8"?>';
+<?php header('Content-type: application/xml; charset=utf-8');
+echo '<?xml version="1.0" encoding="UTF-8"?>';
 
 	$protocol = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://';
 	$URL = $protocol . $_SERVER['SERVER_NAME'];

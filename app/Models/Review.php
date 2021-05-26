@@ -14,7 +14,7 @@ class Review extends CoreModel
     protected $table = 'review';
 
     protected $fillable = [
-        'reviewer_name', 'reviewer_position', 'is_positive', 'is_published', 'review_pluses', 'review_minuses', 'review_date',  'company_id'
+        'reviewer_name', 'reviewer_position', 'is_positive', 'is_published', 'review_pluses', 'review_minuses', 'review_date',  'company_id', 'is_first_screen_review'
     ];
 
     public function getUserDateAttribute() {

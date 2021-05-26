@@ -50,14 +50,6 @@ class Func{
 $func = new Func($PDO);
 
 function setting(\PDO $PDO) {
-  $exploded = explode('.', $_SERVER['HTTP_HOST']);
-  $sub = array_shift($exploded);
-
-  if ($sub =='rating-remont')
-    $domen = 'index';
-  else
-    $domen = $sub;
-
   $settingQuery = $PDO->prepare("SELECT * FROM `setting` LIMIT 1");
   $settingQuery->execute();
 

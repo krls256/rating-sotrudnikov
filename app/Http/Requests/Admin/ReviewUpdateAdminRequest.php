@@ -5,6 +5,7 @@ namespace app\Http\Requests\Admin;
 
 
 use app\Http\Requests\CoreRequest;
+use app\Rules\ExistsRule;
 
 class ReviewUpdateAdminRequest extends CoreRequest
 {
@@ -35,14 +36,15 @@ class ReviewUpdateAdminRequest extends CoreRequest
     protected function getRules(): array
     {
         return [
-            'id' => ['required'],
+            'id' => ['required', new ExistsRule('review', 'id')],
             'reviewer_name' => 'string|nullable|max:100',
             'reviewer_position' => 'string|nullable|max:100',
             'review_date' => 'date|required',
             'review_pluses' => 'string|nullable',
             'review_minuses' => 'string|nullable',
             'is_positive' => 'boolean|required',
-            'is_published' => 'boolean|required'
+            'is_published' => 'boolean|required',
+            'company_id' => ['required', new ExistsRule('company', 'id')],
         ];
     }
 

@@ -8,4 +8,4 @@ require_once 'helpers/index.php';
 
 use database\Database;
 
-$db = new Database($dbCredentials);
+$db = Database::getInstance($dbCredentials);

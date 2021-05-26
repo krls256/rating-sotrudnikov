@@ -4,11 +4,13 @@ namespace database;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\DatabaseManager;
+use patterns\Singleton;
 
-class Database
+class Database extends Singleton
 {
     private $capsule;
-    public function __construct($dbCredentials) {
+    protected function __construct($dbCredentials) {
+        parent::__construct();
         $capsule = new Capsule();
 
         $capsule->addConnection([

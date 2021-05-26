@@ -5,6 +5,7 @@ namespace app\Http\Requests\Admin;
 
 
 use app\Http\Requests\CoreRequest;
+use app\Rules\ExistsRule;
 
 class ReviewStoreAdminRequest extends CoreRequest
 {
@@ -42,7 +43,7 @@ class ReviewStoreAdminRequest extends CoreRequest
             'review_minuses' => 'string|nullable',
             'is_positive' => 'boolean|required',
             'is_published' => 'boolean|required',
-            'company_id' => 'required'
+            'company_id' => ['required', new ExistsRule('company', 'id')]
         ];
     }
 }

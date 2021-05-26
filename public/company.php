@@ -1,36 +1,26 @@
 <?php
 include "function.php";
 
-$set = setting($PDO);
+use app\Http\Controllers\User\CompanyPageController;
+use app\Repositories\Base\BaseSettingsRepository;
+use app\Repositories\SingleEntity\CompanySingleEntityRepository;
+use helperClasses\Request;
 
-//Вырезаем имя
-$name = multiexplode(array('.', '/'), ($_GET['name'] ?? ''))[0];
-if ($name == '') error404();
+
+$settingsRepo = new BaseSettingsRepository();
+$set = $settingsRepo->getSetting();
+
+$request = new Request();
+$controller = new CompanyPageController();
+$companyRepository = new CompanySingleEntityRepository();
+
+$dataToFormat = $controller->index($request, $companyRepository);
 
 //Выбрасываем недохакеров
-$page = multiexplode(array('.', '/'), ($_GET['page'] ?? ''))[0];
-if (!is_numeric($page) or $page < 1) $page = 1;
+
 
 //Фильтруем по положительным и отрицательным
 $like = $func->urlClear(($_GET['type'] ?? ''));
-
-if (isset($_GET['type']) and $like != 'positive' and $like != 'negative')
-{
-    header('Location: /otzyvy-' . $name . '/');
-} else
-{
-    switch ($like)
-    {
-        case 'positive':
-            $post = "and rev = 1";
-        break;
-        case 'negative':
-            $post = "and rev = 2";
-        break;
-        default:
-            $post = '';
-    }
-}
 
 if ($like != '')
     $postfix = "/$like";
@@ -38,41 +28,19 @@ else
     $postfix = '';
 
 //получаем данные компании
-try
-{
-    $com = $PDO->prepare("SELECT * FROM `company` WHERE `url` =  ?");
-    $com->execute(array($name));
-} catch (PDOStatement $e)
-{
-    error404();
-}
+$row = $dataToFormat['company'];
+$pagination = $dataToFormat['pagination'];
 
-if ($com->rowCount() <= 0) error404(); //если такой компании нет
-$row = $com->fetch(PDO::FETCH_ASSOC);
 
-if (($row['dev'] == 1) && empty($_SESSION['id']) && $_SESSION['id'] == '')
-{
-    errorClose();
-}
 //общее количество отзывов
 $row_id = $row['id'];
-$total =
-    $PDO->query("SELECT `id`  FROM `review` WHERE `company_id`= $row_id and `review_pluses` != '' and `review_minuses` != '' and `is_published` = 1 $post")
-        ->rowCount();
 
-//Количество страниц
-$show = 10;
-$pages = $total / $show;
-$pages = ceil($pages);
-$pages++;
+$pages = $pagination->lastPage();
 
-//Если нет такого листа на который перешел человек, то выдаём заглушку
-if ($page > $pages) error404();
-
-$list = --$page * $show;
-$сurrent = $page + 1;  //Текущая страница
-$start = $сurrent - 3; //перед текущей
-$end = $сurrent + 3;   //После текущей
+$page = $pagination->currentPage();
+$current = $pagination->currentPage();  //Текущая страница
+$start = $current - 3; //перед текущей
+$end = $current + 3;   //После текущей
 
 ?>
 <!DOCTYPE html>
@@ -94,23 +62,23 @@ $end = $сurrent + 3;   //После текущей
     //Линки next и prev
     if ($page + 1 === 1)
     {
-        echo '<link rel="next" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $name . '/2' .
+        echo '<link rel="next" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $row->url . '/2' .
             $postfix . '" />';                    //следующая
     } else if ($page + 1 === $pages - 1)
     {
-        echo '<link rel="prev" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $name . '/' .
+        echo '<link rel="prev" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $row->url . '/' .
             ($page + 1) . $postfix . '"/>';  //Назад
     } else
     {
-        echo '<link rel="next" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $name . '/' .
+        echo '<link rel="next" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $row->url . '/' .
             ($page + 2) . $postfix . '" />'; //следующая
-        echo '<link rel="prev" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $name . '/' .
+        echo '<link rel="prev" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $row->url . '/' .
             ($page) . $postfix . '"/>';      //Назад
     }
 
     //Указываем каноникал везде кроме главной
     if (!empty($_GET['page']))
-        echo '<link rel="canonical" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $name . '/"/>';
+        echo '<link rel="canonical" href="https://' . $_SERVER['HTTP_HOST'] . '/otzyvy-sotrudnikov-' . $row->url . '/"/>';
     ?>
 
 	<meta property="og:type" content="website" />
@@ -123,7 +91,8 @@ $end = $сurrent + 3;   //После текущей
     {
         echo " — страница " . $dp;
     } ?>. Почитайте отзывы, напишите свой или оставьте заявку на обратный звонок." />
-	<meta property="og:url" content="https://<?= $_SERVER['HTTP_HOST'] ?>/otzyvy-sotrudnikov-<?= $name ?>/" />
+	<meta property="og:url" content="https://<?= $_SERVER['HTTP_HOST'] ?>/otzyvy-sotrudnikov-<?php echo $row->url;
+	?>/" />
 	<meta property="og:image" content="https://<?= $_SERVER['HTTP_HOST'] ?>/images/logo.png" />
 
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -209,12 +178,11 @@ $end = $сurrent + 3;   //После текущей
 			</div>
 			<!--review-->
             <?php
-            $resultReview = get_review_hr($PDO, $post, $show, $list, $page, $row['id']);
-            $countReview = count_review_hr($PDO, $post, $row['id']);
+            $countReview = $pagination->count();
 
             if ($countReview > 0)
             {
-                foreach ($resultReview as $commentRow)
+                foreach ($pagination as $commentRow)
                 {
                     $reviewID = $commentRow['id'];
                     ?>
@@ -280,15 +248,15 @@ $end = $сurrent + 3;   //После текущей
 				<!--review-->
 
 				<!--pageSpeed-->
-                <?php if ($total > $show) { ?>
+                <?php if ($pagination->count() !== 0) { ?>
 				<div class="page_nav">
                     <?php
                     //Ссылки на 1 и на преведущую
-                    if ($page >= 1)
+                    if ($page > 1)
                     {
-                        echo '<a href="/otzyvy-sotrudnikov-' . $name . '/1' . $postfix .
+                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/1' . $postfix .
                             '#rew_block" class="oneLink"></a>';  //На первую
-                        echo '<a href="/otzyvy-sotrudnikov-' . $name . '/' . $page . $postfix .
+                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . $page . $postfix .
                             '#rew_block" class="nav-prev"></a>'; //Назад
                     }
 
@@ -298,11 +266,11 @@ $end = $сurrent + 3;   //После текущей
                         if ($j >= $start && $j <= $end)
                         {
 
-                            if ($j == ($page + 1))
-                                echo '<a href="/otzyvy-sotrudnikov-' . $name . '/' . $j . $postfix .
+                            if ($j == ($page))
+                                echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . $j . $postfix .
                                     '#rew_block" class="active">' . $j . '</a>';
                             else
-                                echo '<a href="/otzyvy-sotrudnikov-' . $name . '/' . $j . $postfix . '#rew_block">' .
+                                echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . $j . $postfix . '#rew_block">' .
                                     $j . '</a>';
                         }
                     }
@@ -310,9 +278,9 @@ $end = $сurrent + 3;   //После текущей
                     //На следующую и на последнюю
                     if ($j > $page && ($page + 2) < $j)
                     {
-                        echo '<a href="/otzyvy-sotrudnikov-' . $name . '/' . ($page + 2) . $postfix .
+                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . ($page + 2) . $postfix .
                             '#rew_block" class="nav-next"></a>';
-                        echo '<a href="/otzyvy-sotrudnikov-' . $name . '/' . ($j - 1) . $postfix .
+                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . ($j - 1) . $postfix .
                             '#rew_block" class="lastLimk"></a>';
                     }
                     ?>

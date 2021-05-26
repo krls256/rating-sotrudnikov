@@ -3,6 +3,8 @@
 
 namespace migrations\seeders;
 
+use app\Modules\ReviewRanking\RankingActions\ReviseRankingAction;
+use app\Modules\ReviewRanking\Repositories\ReviewRankingRepository;
 use PDO;
 use migrations\seeders\traits\DefaultSeederTrait;
 
@@ -46,6 +48,8 @@ class ReviewSeeder extends Seeder
             echo "$perInsert отзывов было добавлено в базу \n";
         });
 
+        $action = new ReviseRankingAction();
+        $action->do();
     }
 
     public function getAddedCompanies() {
