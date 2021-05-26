@@ -17,4 +17,5 @@ interface IRestRepository
     public function getCreate() : Model;
     public function store(array $data) : Model;
     public function update(int $id, array $data) : int;
+    public function delete(int $id) : ?bool;
 }

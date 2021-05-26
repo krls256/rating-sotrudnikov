@@ -78,5 +78,14 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
         return $res;
     }
 
+    public function delete(int $id): ?bool
+    {
+        return $this->startConditions()
+            ->select('*')
+            ->where('id', $id)
+            ->first()
+            ->delete();
+    }
+
 
 }

@@ -27,4 +27,18 @@ class RankingPagination extends Collection
     public function firstPage() {
         return $this->additionalData->get('firstPage');
     }
+
+    public function printPagination($type, $companyUrl) {
+        if ($type)
+            $postfix = "/$type";
+        else
+            $postfix = '';
+
+        $count = $this->count();
+        $currentPage = $this->currentPage();
+        $lastPage = $this->lastPage();
+        $start = $currentPage - 3;
+        $end = $currentPage + 3;
+        include (ROOT_DIR . '/resources/views/includes/reviewPagination.php');
+    }
 }

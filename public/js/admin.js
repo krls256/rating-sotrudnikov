@@ -49,6 +49,7 @@ $(document).ready(function(){
 
   // Форма логина
   $('.login__form').on('submit', function(e){
+    console.log('.login__form submitted');
     let elem = $(this);
 
     //если в поля авторизации введено менее 3 сиволов, говорим об этом
@@ -88,6 +89,7 @@ $(document).ready(function(){
   
   // Создание компании
   $('.create').on('submit', function(e){
+    console.log('.create submitted');
     e.stopPropagation(); // Остановка происходящего
     e.preventDefault();  // Полная остановка происходящего
 
@@ -156,28 +158,6 @@ $(document).ready(function(){
     return false;
   });
 
-  // Одобряем отзыв
-  $('.review-bottom .submit--green, .comment-bottom .submit--green').on('click', function(){
-    let el    = $(this),
-        block = el.closest('.block'),
-        key   = el.data('key'),
-        id    = el.data('id'),
-        type  = el.data('type'),
-        url   = type==1?'review-good':'comment-good';
-
-    $.post('function?func='+url, {id: id, key: key}, function(res){
-      if(res == 'ok'){
-        block.remove();
-      }else{
-        if(!block.find('.login__error').length){
-          block.find('.text-review').prepend('<div class="login__error">'+res+'</div>')
-          block.find('.login__error').css({'display':'block'});
-        }else{
-          block.find('.login__error').text(res);
-        }
-      }
-    });
-  });
 
   // Отключить отзыв
   $('.review-bottom .submit--red, .comment-bottom .submit--red').on('click', function(){
@@ -187,7 +167,12 @@ $(document).ready(function(){
 
     if(!$(this).closest('.block').find('*').is('.warning')){
       $(this).closest('.block')
-        .append('<div class="warning comment_wer"><span>Вы уверены? После удаления заявку нельзя восстановить.</span><div data-id="'+id+'" data-key="'+key+'" data-type="'+type+'">Да</div><div>Нет</div></div>');
+        .append(
+          '<div class="warning comment_wer">' +
+            '<span>Вы уверены? После удаления заявку нельзя восстановить.</span>' +
+            '<form action="/admin/review/delete.php" method="POST"><input type="hidden" name="id" value="'+ id + '"><button data-id="'+id+'" data-key="'+key+'" data-type="'+type+'">Да</button data-id="'+id+'" data-key="'+key+'" data-type="'+type+'"></form>' +
+            '<div>Нет</div>' +
+          '</div>');
     }
   });
 
@@ -195,39 +180,40 @@ $(document).ready(function(){
     $(this).closest('.warning').remove();
   });
 
-  // Удаляем отзыв
-  $(document).on('click', '.comment_wer > div:nth-child(2), .save-dal', function(e){
-    var el    = $(this),
-        block = el.closest('.block'),
-        key   = el.data('key'),
-        id    = el.data('id'),
-        type  = el.data('type'),
-        url   = type==1?'review-del':'comment-del';
-
-     $.post('function?func='+url, {id: id, key: key}, function(res){
-       if(res == 'ok'){
-         if(el.hasClass('save-dal') == true){
-           window.location = '/admin/moderation?type=user';
-         }else{
-           block.remove();
-         }
-       }else{
-         if(!block.find('.login__error').length){
-           block.find('.text-review').prepend('<div class="login__error">'+res+'</div>')
-           block.find('.login__error').css({'display':'block'});
-         }else{
-           block.find('.login__error').text(res);
-         }
-       }
-     });
-
-     e.preventDefault();
-  });
+  // // Удаляем отзыв
+  // $(document).on('click', '.comment_wer > div:nth-child(2), .save-dal', function(e){
+  //   var el    = $(this),
+  //       block = el.closest('.block'),
+  //       key   = el.data('key'),
+  //       id    = el.data('id'),
+  //       type  = el.data('type'),
+  //       url   = type==1?'review-del':'comment-del';
+  //
+  //    $.post('function?func='+url, {id: id, key: key}, function(res){
+  //      if(res == 'ok'){
+  //        if(el.hasClass('save-dal') == true){
+  //          window.location = '/admin/moderation?type=user';
+  //        }else{
+  //          block.remove();
+  //        }
+  //      }else{
+  //        if(!block.find('.login__error').length){
+  //          block.find('.text-review').prepend('<div class="login__error">'+res+'</div>')
+  //          block.find('.login__error').css({'display':'block'});
+  //        }else{
+  //          block.find('.login__error').text(res);
+  //        }
+  //      }
+  //    });
+  //
+  //    e.preventDefault();
+  // });
 
   /**
    * Редактирование отзывов сотрудников
    */
-  $('.review-hr-edit').on('submit', function(e) { 
+  $('.review-hr-edit').on('submit', function(e) {
+    console.log('.review-hr-edit submitted');
     e.preventDefault();
 
     var $this = $(this);
@@ -265,6 +251,7 @@ $(document).ready(function(){
   });
 
   $('.create_review_name').on('submit', function(e){
+    console.log('.create_review_name submitted');
     e.stopPropagation(); // Остановка происходящего
     e.preventDefault();  // Полная остановка происходящего
     console.log('hello');
@@ -337,6 +324,7 @@ $(document).ready(function(){
   });
 
   $('.save-review').on('click', function(e){
+    console.log('.save-review submitted');
     e.stopPropagation(); // Остановка происходящего
     e.preventDefault();  // Полная остановка происходящего
 
@@ -366,6 +354,7 @@ $(document).ready(function(){
 
   //Обработка настроек сайта
   $('.edit-index').on('submit', function(e){
+    console.log('.edit-index submitted');
     e.stopPropagation(); // Остановка происходящего
     e.preventDefault();  // Полная остановка происходящего
 

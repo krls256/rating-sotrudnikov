@@ -4,7 +4,9 @@
 namespace app\Http\Controllers;
 
 
+use app\Http\Requests\Admin\ReviewDeleteAdminRequest;
 use app\Http\Requests\Admin\ReviewEditAdminRequest;
+use app\Http\Requests\Admin\ReviewPublishRequest;
 use app\Http\Requests\Admin\ReviewStoreAdminRequest;
 use app\Http\Requests\Admin\ReviewUpdateAdminRequest;
 use app\Repositories\Interfaces\IRestRepository;
@@ -48,6 +50,21 @@ class ReviewsAdminController extends CoreController
         $this->validate(ReviewUpdateAdminRequest::class, $request);
         $id = $request['id'];
         $res = $this->repository->update($id, $request);
+        return $res;
+    }
+
+    public function publish(array $request) {
+        $this->validate(ReviewPublishRequest::class, $request);
+        $id = $request['id'];
+        $res = $this->repository->update($id, ['is_published' => 1]);
+        return $res;
+    }
+
+    public function delete(array $request) {
+        $this->validate(ReviewDeleteAdminRequest::class, $request);
+        $id = $request['id'];
+        $res = $this->repository->delete($id);
+
         return $res;
     }
 }

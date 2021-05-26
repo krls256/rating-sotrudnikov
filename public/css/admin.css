@@ -470,10 +470,10 @@ body, html{
   margin: 0 0 0 auto;
   cursor: pointer;
 }
-.submit--green, .warning > div:nth-child(2){
+.submit--green, .warning  form button {
   background: #0dd149;
 }
-.submit--green:hover, .warning > div:nth-child(2):hover{
+.submit--green:hover, .warning  form button {
   background: #05bd3d;
 }
 .submit--red, .warning > div:last-child{
@@ -505,7 +505,10 @@ body, html{
   display: block;
   margin-bottom: 10px;
 }
-.warning > div{
+.warning > form {
+  display: inline;
+}
+.warning > div, .warning > form > button{
   display: inline-block;
   padding: 5px 10px;
   border-radius: 3px;

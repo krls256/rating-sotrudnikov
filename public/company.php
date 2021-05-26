@@ -15,32 +15,16 @@ $controller = new CompanyPageController();
 $companyRepository = new CompanySingleEntityRepository();
 
 $dataToFormat = $controller->index($request, $companyRepository);
-
-//Выбрасываем недохакеров
-
-
-//Фильтруем по положительным и отрицательным
-$like = $func->urlClear(($_GET['type'] ?? ''));
-
-if ($like != '')
-    $postfix = "/$like";
+$type = $request->get('type');
+if ($type)
+    $postfix = "/$type";
 else
     $postfix = '';
-
-//получаем данные компании
 $row = $dataToFormat['company'];
 $pagination = $dataToFormat['pagination'];
-
-
-//общее количество отзывов
 $row_id = $row['id'];
-
 $pages = $pagination->lastPage();
-
 $page = $pagination->currentPage();
-$current = $pagination->currentPage();  //Текущая страница
-$start = $current - 3; //перед текущей
-$end = $current + 3;   //После текущей
 
 ?>
 <!DOCTYPE html>
@@ -248,44 +232,9 @@ $end = $current + 3;   //После текущей
 				<!--review-->
 
 				<!--pageSpeed-->
-                <?php if ($pagination->count() !== 0) { ?>
-				<div class="page_nav">
-                    <?php
-                    //Ссылки на 1 и на преведущую
-                    if ($page > 1)
-                    {
-                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/1' . $postfix .
-                            '#rew_block" class="oneLink"></a>';  //На первую
-                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . $page . $postfix .
-                            '#rew_block" class="nav-prev"></a>'; //Назад
-                    }
-
-                    //три страницы вперед и назад
-                    for ($j = 1; $j < $pages; $j++)
-                    {
-                        if ($j >= $start && $j <= $end)
-                        {
-
-                            if ($j == ($page))
-                                echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . $j . $postfix .
-                                    '#rew_block" class="active">' . $j . '</a>';
-                            else
-                                echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . $j . $postfix . '#rew_block">' .
-                                    $j . '</a>';
-                        }
-                    }
-
-                    //На следующую и на последнюю
-                    if ($j > $page && ($page + 2) < $j)
-                    {
-                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . ($page + 2) . $postfix .
-                            '#rew_block" class="nav-next"></a>';
-                        echo '<a href="/otzyvy-sotrudnikov-' . $row->url . '/' . ($j - 1) . $postfix .
-                            '#rew_block" class="lastLimk"></a>';
-                    }
-                    ?>
-				</div>
-            <?php } ?>
+	            <?php
+	                $pagination->printPagination($request->get('type'), $row->url);
+	            ?>
 				<!--pageSpeed-->
 
             <?php } else { ?>

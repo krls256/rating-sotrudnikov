@@ -30,13 +30,11 @@ class CompanyPageController extends UserController
         } else if($type === 'positive') {
             $paginationType = ReviewRankingConstants::POSITIVE_RANKING_INDEX;
         } else {
-
             $paginationType = ReviewRankingConstants::NEGATIVE_RANKING_INDEX;
         }
 
 
         $pagination = $reviewRankingModule->getRankingPagination($id, $page, $paginationType);
-
         // TODO: for admin
         if($company->dev || ($pagination->currentPage() > $pagination->lastPage() && $pagination->currentPage() !== 1))
             notFound();
