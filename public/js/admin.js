@@ -161,6 +161,8 @@ $(document).ready(function(){
 
   // Отключить отзыв
   $('.review-bottom .submit--red, .comment-bottom .submit--red').on('click', function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const companyId = urlParams.get('id');
     let id  = $(this).data('id'),
         key = $(this).data('key'),
         type = $(this).data('type');
@@ -168,11 +170,14 @@ $(document).ready(function(){
     if(!$(this).closest('.block').find('*').is('.warning')){
       $(this).closest('.block')
         .append(
-          '<div class="warning comment_wer">' +
-            '<span>Вы уверены? После удаления заявку нельзя восстановить.</span>' +
-            '<form action="/admin/review/delete.php" method="POST"><input type="hidden" name="id" value="'+ id + '"><button data-id="'+id+'" data-key="'+key+'" data-type="'+type+'">Да</button data-id="'+id+'" data-key="'+key+'" data-type="'+type+'"></form>' +
-            '<div>Нет</div>' +
-          '</div>');
+          `<div class="warning comment_wer">
+            <span>Вы уверены? После удаления заявку нельзя восстановить.</span>
+            <form action="/admin/review/delete.php" method="POST">
+            <input type="hidden" name="id" value="${id}">
+            <input type="hidden" name="company_id" value="${companyId}">
+            <button data-id="'+id+'" data-key="'+key+'" data-type="'+type+'">Да</button data-id="'+id+'" data-key="'+key+'" data-type="'+type+'"></form>
+            <div>Нет</div>
+          </div>`);
     }
   });
 
@@ -180,34 +185,7 @@ $(document).ready(function(){
     $(this).closest('.warning').remove();
   });
 
-  // // Удаляем отзыв
-  // $(document).on('click', '.comment_wer > div:nth-child(2), .save-dal', function(e){
-  //   var el    = $(this),
-  //       block = el.closest('.block'),
-  //       key   = el.data('key'),
-  //       id    = el.data('id'),
-  //       type  = el.data('type'),
-  //       url   = type==1?'review-del':'comment-del';
-  //
-  //    $.post('function?func='+url, {id: id, key: key}, function(res){
-  //      if(res == 'ok'){
-  //        if(el.hasClass('save-dal') == true){
-  //          window.location = '/admin/moderation?type=user';
-  //        }else{
-  //          block.remove();
-  //        }
-  //      }else{
-  //        if(!block.find('.login__error').length){
-  //          block.find('.text-review').prepend('<div class="login__error">'+res+'</div>')
-  //          block.find('.login__error').css({'display':'block'});
-  //        }else{
-  //          block.find('.login__error').text(res);
-  //        }
-  //      }
-  //    });
-  //
-  //    e.preventDefault();
-  // });
+
 
   /**
    * Редактирование отзывов сотрудников

@@ -88,7 +88,7 @@ class ReviewRankingRepository extends CoreRepository
          *
          */
         $additionalSkip = $perPage - $this->getFirstPageQuantity($company_id, $perPage);
-        $skip = min(($page - 2) * $perPage, 0) + $additionalSkip;
+        $skip = max(($page - 2) * $perPage, 0) + $additionalSkip;
         return $this->startConditions()
             ->select($this->paginationColumn)
             ->where('company_id', $company_id)

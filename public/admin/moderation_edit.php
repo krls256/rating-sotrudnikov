@@ -17,14 +17,11 @@ $is_published = $row['is_published']; //Опубликованый или нет
 <head>
 	<meta charset="utf-8">
 	<title>Редактирование отзыва сотрудника</title>
-	<link rel="stylesheet" href="/css/admin.css?<?= time() ?>">
-	<link rel="stylesheet" href="/css/formstyler.css">
-	<link rel="stylesheet" href="/css/formstyler.theme.css">
-	<script type="text/javascript" src="/js/jquery.js"></script>
+    <?php include_view('/admin/headImports.php'); ?>
 </head>
 <body>
 <div class="page__layout">
-    <?php include 'modules/menu.php' ?>
+    <?php include_view('/admin/adminMenu.php'); ?>
 	<div class="content">
 		<div class="block">
 			<div class="block__title">Редактирование отзыва сотрудника</div>

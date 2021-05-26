@@ -1,6 +1,11 @@
 <?php
+
+use Illuminate\Http\Request;
+
 include "function.php"; //подключаем файл обработчик
 
+
+$request = Request::capture();
 $id_filter = (int)($_GET['id'] ?? null); //Id компании для фильтрации
 $page = (int)($_GET['page'] ?? null); //Номера страниц
 $show = 20;
@@ -51,14 +56,11 @@ $rev2->execute();
 <head>
 	<meta charset="utf-8">
 	<title>Модерация отзывов пользователей</title>
-	<link rel="stylesheet" href="/css/admin.css?<?= time() ?>">
-	<link rel="stylesheet" href="/css/formstyler.css">
-	<link rel="stylesheet" href="/css/formstyler.theme.css">
-	<script type="text/javascript" src="/js/jquery.js"></script>
+    <?php include_view('/admin/headImports.php'); ?>
 </head>
 <body>
 <div class="page__layout">
-    <?php include 'modules/menu.php' ?>
+    <?php include_view('/admin/adminMenu.php'); ?>
 	<div class="content">
 
 		<!--Верхняя панель-->
@@ -124,6 +126,7 @@ $rev2->execute();
                           ?></span>
 							<a href="moderation_edit?id=<?= $row['id'] ?>" class="revive-edit"></a>
 							<form action="/admin/review/publish.php" method="post">
+								<input type="hidden" name="company_id" value="<?php echo $request->get('id') ?? ''; ?>">
 								<input type="hidden" value="<?= $row['id'] ?>" name="id">
 								<button class="submit submit--green" style="margin-left:15px;"
 								        type="submit">Опубликовать
@@ -162,6 +165,7 @@ $rev2->execute();
                             ?></span>
 							<a href="moderation_edit?id=<?= $row['id'] ?>" class="revive-edit"></a>
 							<form action="/admin/review/publish.php" method="post">
+								<input type="hidden" name="company_id" value="<?php echo $request->get('id') ?? ''; ?>">
 								<input type="hidden" value="<?= $row['id'] ?>" name="id">
 								<button class="submit submit--green" style="margin-left:15px;"
 								        type="submit">Опубликовать

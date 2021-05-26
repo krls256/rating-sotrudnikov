@@ -18,19 +18,15 @@ $companies = $data['companies'];
 <head>
 	<meta charset="utf-8">
 	<title>Добавить отзыв</title>
-	<link rel="stylesheet" href="/css/datepicker.min.css">
-	<link rel="stylesheet" href="/css/admin.css?<?= time() ?>">
-	<link rel="stylesheet" href="/css/formstyler.css">
-	<link rel="stylesheet" href="/css/formstyler.theme.css">
-	<script type="text/javascript" src="/js/jquery.js"></script>
+    <?php include_view('/admin/headImports.php'); ?>
 </head>
 <body>
 <div class="page__layout">
-    <?php include 'modules/menu.php' ?>
+    <?php include_view('/admin/adminMenu.php'); ?>
 	<div class="content">
 		<div class="block">
 			<h1 class="block__title">Добавить отзыв</h1>
-			<?php include_view("includes/adminMessageBar.php"); ?>
+            <?php include_view("includes/adminMessageBar.php"); ?>
 			<div class="login__error"></div>
 			<form method="POST" action="/admin/review/store.php" class="create_review_name">
 				<p>

@@ -13,10 +13,11 @@ $repository = new ReviewRestRepository();
 $controller = new ReviewsAdminController($repository);
 $res = $controller->publish($request->all());
 
-
+$company_id = $request->get('company_id');
+$url = $company_id ? "/admin/moderation?id=$company_id" : '/admin/moderation';
 if($res){
     session()->success('Отзыв успешно опубликован');
-    redirect('/admin/moderation');
+    redirect($url);
 } else {
     session()->error('Что-то пошло не так');
     back();
