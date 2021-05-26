@@ -4,6 +4,7 @@
 namespace app\Http\Requests\Admin;
 
 use app\Http\Requests\CoreRequest;
+use app\Rules\ExistsRule;
 use Illuminate\Validation\Validation;
 
 class ReviewEditAdminRequest extends CoreRequest
@@ -19,7 +20,7 @@ class ReviewEditAdminRequest extends CoreRequest
     protected function getRules(): array
     {
         return [
-            'id' => 'required'
+            'id' => ['required', new ExistsRule('review', 'id')]
         ];
     }
 }

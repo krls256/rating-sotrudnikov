@@ -65,6 +65,7 @@ class ReviewRankingRepository extends CoreRepository
             $additional = $this->selectPagePagination($company_id, 1, $perPage - $res->count());
             return $res->merge($additional);
         }
+        return $res;
     }
 
     protected function getFirstPageQuantity(int $company_id, int $perPage) {
