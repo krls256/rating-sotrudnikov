@@ -6,9 +6,12 @@ namespace app\Http\Controllers;
 
 use app\Http\Requests\Admin\ReviewDeleteAdminRequest;
 use app\Http\Requests\Admin\ReviewEditAdminRequest;
+use app\Http\Requests\Admin\ReviewIndexAdminRequest;
 use app\Http\Requests\Admin\ReviewPublishRequest;
 use app\Http\Requests\Admin\ReviewStoreAdminRequest;
 use app\Http\Requests\Admin\ReviewUpdateAdminRequest;
+use app\Http\ValidationHandlers\IValidationHandler;
+use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\Interfaces\IRestRepository;
 use app\Repositories\Rest\CompanyRestRepository;
 
@@ -18,8 +21,22 @@ class ReviewsAdminController extends CoreController
     protected IRestRepository $repository;
 
 
-    public function __construct(IRestRepository $rep) {
+    public function __construct(IRestRepository $rep, ?IValidationHandler $validationHandler = null) {
+        parent::__construct($validationHandler);
         $this->repository = $rep;
+    }
+
+    public function index(array $request) {
+        $this->validate(ReviewIndexAdminRequest::class, $request);
+        $count = 25;
+        $reviews = $this->repository->getPaginate($count, $request);
+
+        $companiesRepository = new BaseCompaniesRepository();
+        $companies = $companiesRepository->getCompaniesNames();
+        return [
+            'reviews' => $reviews,
+            'companies' => $companies
+        ];
     }
 
     public function create() {

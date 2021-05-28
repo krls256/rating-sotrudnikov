@@ -5,7 +5,6 @@ use app\Repositories\Rest\ReviewRestRepository;
 use Illuminate\Http\Request;
 include 'function.php';
 
-
 $repository = new ReviewRestRepository();
 $controller = new ReviewsAdminController($repository);
 $data = $controller->edit(Request::capture()->all());

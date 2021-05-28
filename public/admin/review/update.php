@@ -12,8 +12,10 @@ $repository = new ReviewRestRepository();
 $controller = new ReviewsAdminController($repository);
 $res = $controller->update($request);
 
-if($res !== false) {
-    echo json_encode(['status' => 'ok', 'updated' => $res]);
+if($res){
+    session()->success('Отзыв успешно обновлен');
+    redirect('/admin/moderation_edit?id='.$request['id']);
 } else {
-    echo json_encode(['status' => 'error']);
+    session()->error('Что-то пошло не так');
+    back();
 }

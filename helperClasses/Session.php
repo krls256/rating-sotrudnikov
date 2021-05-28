@@ -20,7 +20,6 @@ class Session extends Singleton
 
     public function error($v) {
         $_SESSION['error'][] = $v;
-
         return true;
     }
 

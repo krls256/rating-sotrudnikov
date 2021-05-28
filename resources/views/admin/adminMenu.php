@@ -25,11 +25,13 @@ $unpublishedCount = $repository->getUnpublishedCount();
         <?php } ?>
     </ul>
     <ul class="menu__link">
-        <a href="/">
-            <li>На главную</li>
-        </a>
-        <a href="/admin/exit">
-            <li>Выйти</li>
-        </a>
+
+            <li>
+	            <a href="/">На главную</a>
+            </li>
+            <li>
+	            <a href="/admin/exit">Выйти</a>
+            </li>
+
     </ul>
 </div>

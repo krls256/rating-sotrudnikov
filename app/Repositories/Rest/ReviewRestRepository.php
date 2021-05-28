@@ -29,15 +29,39 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         return $res;
     }
 
-    public function getPaginate(int $count, array $options) : Paginator
+    public function getPaginate(int $count, array $options = []) : Paginator
     {
+        $company = $options['company_id'] ?? null;
+        $is_published = $options['is_published'] ?? null;
+        $is_positive = $options['is_positive'] ?? null;
+        $review_source = $options['review_source'] ?? null;
+        $page = $options['page'] ?? null;
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
             'is_positive', 'is_published', 'review_pluses',
-            'review_minuses', 'review_date'];
-        $res = $this->startConditions()
+            'review_minuses', 'review_date', 'company_id', 'review_source'];
+        $req = $this->startConditions()
             ->select($column)
-            ->paginate($count);
+            ->with('company:id,name');
+
+        if($company !== null) {
+            $req = $req->where('company_id', $company);
+        }
+
+        if($is_published !== null) {
+            $req = $req->where('is_published', $is_published);
+        }
+
+        if($is_positive !== null) {
+            $req = $req->where('is_positive', $is_positive);
+        }
+
+        if($review_source !== null) {
+            $req = $req->where('review_source', $review_source);
+        }
+
+        $res = $req->paginate($count, $column, 'page', $page);
+
         return $res;
     }
 

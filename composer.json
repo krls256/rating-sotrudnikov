@@ -5,7 +5,8 @@
         "illuminate/database": "^8.42",
         "illuminate/validation": "^8.42",
         "illuminate/translation": "^8.42",
-        "illuminate/http": "^8.42"
+        "illuminate/http": "^8.42",
+        "illuminate/pagination": "^8.43"
     },
     "autoload": {
         "psr-4": {
