@@ -7,6 +7,7 @@ namespace app\Http\Controllers;
 use app\Http\Requests\Admin\ReviewDeleteAdminRequest;
 use app\Http\Requests\Admin\ReviewEditAdminRequest;
 use app\Http\Requests\Admin\ReviewIndexAdminRequest;
+use app\Http\Requests\Admin\ReviewModerateRequest;
 use app\Http\Requests\Admin\ReviewPublishRequest;
 use app\Http\Requests\Admin\ReviewStoreAdminRequest;
 use app\Http\Requests\Admin\ReviewUpdateAdminRequest;
@@ -82,6 +83,13 @@ class ReviewsAdminController extends CoreController
         $id = $request['id'];
         $res = $this->repository->delete($id);
 
+        return $res;
+    }
+
+    public function moderate(array $request) {
+        $this->validate(ReviewModerateRequest::class, $request);
+        $id = $request['id'];
+        $res = $this->repository->update($id, ['is_moderated' => 1]);
         return $res;
     }
 }

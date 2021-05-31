@@ -934,3 +934,35 @@ body, html {
     opacity: .5;
     cursor: pointer;
 }
+
+
+.moderated, .not-moderated {
+    
+    position: relative;
+}
+
+.moderated:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    display: block;
+    width: 75%;
+    height: 75%;
+    background: url('/images/check.svg') center center / contain no-repeat;           
+    transform: translate(-50%, -50%);
+}
+
+.not-moderated:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    display: block;
+    width: 75%;
+    height: 75%;
+    background: url('/images/cancel.svg') center center / contain no-repeat;
+    transform: translate(-50%, -50%);
+}

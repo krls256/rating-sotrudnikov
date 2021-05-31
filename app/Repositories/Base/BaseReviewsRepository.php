@@ -25,4 +25,10 @@ class BaseReviewsRepository extends CoreRepository
             ->count();
     }
 
+    public function getUnModeratedCount() : int {
+        return $this->startConditions()
+            ->where('is_moderated', 0)
+            ->count();
+    }
+
 }

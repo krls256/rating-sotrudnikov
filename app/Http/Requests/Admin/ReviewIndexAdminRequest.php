@@ -19,6 +19,7 @@ class ReviewIndexAdminRequest extends CoreRequest
             'company_id' => ['nullable', new ExistsRule('company', 'id')],
             'is_positive' => 'nullable|boolean',
             'is_published' => 'nullable|boolean',
+            'is_moderated' => 'nullable|boolean',
             'page' => 'nullable|integer|min:1',
             'review_source' => ['nullable', new InArrayRule(Review::source()->all())]
         ];

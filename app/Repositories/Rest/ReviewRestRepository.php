@@ -34,11 +34,12 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         $company = $options['company_id'] ?? null;
         $is_published = $options['is_published'] ?? null;
         $is_positive = $options['is_positive'] ?? null;
+        $is_moderated = $options['is_moderated'] ?? null;
         $review_source = $options['review_source'] ?? null;
         $page = $options['page'] ?? null;
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
-            'is_positive', 'is_published', 'review_pluses',
+            'is_positive', 'is_published', 'is_moderated', 'review_pluses',
             'review_minuses', 'review_date', 'company_id', 'review_source'];
         $req = $this->startConditions()
             ->select($column)
@@ -56,6 +57,10 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
             $req = $req->where('is_positive', $is_positive);
         }
 
+        if($is_moderated !== null) {
+            $req = $req->where('is_moderated', $is_moderated);
+        }
+
         if($review_source !== null) {
             $req = $req->where('review_source', $review_source);
         }
@@ -69,8 +74,8 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
     {
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
-            'is_positive', 'is_published', 'review_pluses',
-            'review_minuses', 'review_date', 'company_id'];
+            'is_positive', 'is_published', 'is_moderated',
+            'review_pluses', 'review_minuses', 'review_date', 'company_id'];
         $res = $this->startConditions()
             ->select($column)
             ->where('id', $id)

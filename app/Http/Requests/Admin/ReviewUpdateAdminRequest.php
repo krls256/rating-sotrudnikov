@@ -29,7 +29,9 @@ class ReviewUpdateAdminRequest extends CoreRequest
             'is_positive.boolean' => 'Поле "Положительный" - должно иметь булиновое значение',
             'is_positive.required' => 'Поле "Положительный" - обязательно',
             'is_published.boolean' => 'Поле "Опубликован" - должно иметь булиновое значение',
-            'is_published.required' => 'Поле "Опубликован" - обязательно'
+            'is_published.required' => 'Поле "Опубликован" - обязательно',
+            'is_moderated.boolean' => 'Поле "Прошел модерацию" - должно иметь булиновое значение',
+            'is_moderated.required' => 'Поле "Прошел модерацию" - обязательно'
         ];
     }
 
@@ -44,6 +46,7 @@ class ReviewUpdateAdminRequest extends CoreRequest
             'review_minuses' => 'string|nullable',
             'is_positive' => 'boolean|required',
             'is_published' => 'boolean|required',
+            'is_moderated' => 'boolean|required',
             'company_id' => ['required', new ExistsRule('company', 'id')],
         ];
     }

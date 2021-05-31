@@ -20,7 +20,7 @@ class ReviewMigration extends Migration
     {
         $table = $this->table;
         $column = ['id INT AUTO_INCREMENT PRIMARY KEY', 'reviewer_name VARCHAR(100) NULL', 'reviewer_position VARCHAR(100) NULL',
-            'is_positive int(1) NULL', 'is_published int(1) DEFAULT 0', 'is_first_screen_review int(1) DEFAULT 0','review_pluses MEDIUMTEXT',
+            'is_positive int(1) NULL', 'is_moderated int(1) DEFAULT 0','is_published int(1) DEFAULT 0', 'is_first_screen_review int(1) DEFAULT 0','review_pluses MEDIUMTEXT',
             'review_minuses MEDIUMTEXT',
             'review_date DATETIME', 'review_source VARCHAR(20)', 'review_hash VARCHAR(256)','company_id INT',
             'FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE ON UPDATE CASCADE'];

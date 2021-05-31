@@ -63,17 +63,21 @@ $is_published = $row['is_published']; //Опубликованый или нет
 				</p>
 				<p>
 					<input type="hidden" value="0" name="is_positive">
-					<input type="checkbox" value="1" name="is_positive" id="is_positive" <?php if
-					($row['is_positive']) echo 'checked'; ?>>
+					<input type="checkbox" value="1" name="is_positive" id="is_positive"
+						<?php if ($row['is_positive']) echo 'checked'; ?>>
 					<label for="is_positive">Положительный</label>
-
 				</p>
 				<p>
 					<input type="hidden" value="0" name="is_published">
-					<input type="checkbox" value="1" name="is_published" id="is_published" <?php if
-                    ($row['is_published']) echo 'checked'; ?>>
+					<input type="checkbox" value="1" name="is_published" id="is_published"
+						<?php if ($row['is_published']) echo 'checked'; ?>>
 					<label for="is_published">Опубликован</label>
-
+				</p>
+				<p>
+					<input type="hidden" value="0" name="is_moderated">
+					<input type="checkbox" value="1" name="is_moderated" id="is_moderated"
+						<?php if ($row['is_moderated']) echo 'checked'; ?>>
+					<label for="is_moderated">Прошел модерацию</label>
 				</p>
 				<div>
 					<input class="submit" style="margin:20px 0px; display:inline-block;" type="submit" value="Обновить">

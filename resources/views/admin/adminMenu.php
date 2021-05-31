@@ -3,7 +3,7 @@
 use app\Repositories\Base\BaseReviewsRepository;
 
 $repository = new BaseReviewsRepository();
-$unpublishedCount = $repository->getUnpublishedCount();
+$UnModeratedCount = $repository->getUnModeratedCount();
 
 ?>
 <div class="menu">
@@ -19,13 +19,12 @@ $unpublishedCount = $repository->getUnpublishedCount();
             <li class="harmonic active">
                 <div>Модирация отзывов</div>
                 <ul>
-                    <li><a href="/admin/moderation?type=user">Пользователи<span><?= $unpublishedCount ?></span></a></li>
+                    <li><a href="/admin/moderation?type=user">Пользователи<span><?= $UnModeratedCount ?></span></a></li>
                 </ul>
             </li>
         <?php } ?>
     </ul>
     <ul class="menu__link">
-
             <li>
 	            <a href="/">На главную</a>
             </li>
