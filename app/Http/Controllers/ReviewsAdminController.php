@@ -12,6 +12,8 @@ use app\Http\Requests\Admin\ReviewPublishRequest;
 use app\Http\Requests\Admin\ReviewStoreAdminRequest;
 use app\Http\Requests\Admin\ReviewUpdateAdminRequest;
 use app\Http\ValidationHandlers\IValidationHandler;
+use app\Modules\Publishing\PublishingConstants;
+use app\Modules\Publishing\PublishingModule;
 use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\Interfaces\IRestRepository;
 use app\Repositories\Rest\CompanyRestRepository;
@@ -90,6 +92,8 @@ class ReviewsAdminController extends CoreController
         $this->validate(ReviewModerateRequest::class, $request);
         $id = $request['id'];
         $res = $this->repository->update($id, ['is_moderated' => 1]);
+        $publishingModule = new PublishingModule();
+        $publishingModule->reviewPublish(PublishingConstants::DELTA_ORIENTED_INDEX);
         return $res;
     }
 }
