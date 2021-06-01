@@ -276,3 +276,19 @@
       vertical-align:0px;
     }
   }
+
+.review__label {
+    display: block;
+
+    font-size: 1rem;
+    color: #3c3e44;
+    font-weight: 700;
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.mb-2 {
+    margin-bottom: .5rem;
+}
