@@ -114,7 +114,7 @@ body, html {
 }
 
 .menu__link li:nth-child(6) > a::before {
-    background: url('/images/yell.svg');
+    background: url('/images/gear.svg') center center / contain;
 }
 
 .menu__link li:nth-child(7) > a::before {

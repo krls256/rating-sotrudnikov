@@ -96,4 +96,9 @@ class ReviewsAdminController extends CoreController
         $publishingModule->reviewPublish(PublishingConstants::DELTA_ORIENTED_INDEX);
         return $res;
     }
+
+    public function normalize() {
+        $publishingModule = new PublishingModule();
+        $publishingModule->normalize(PublishingConstants::DELTA_ORIENTED_INDEX);
+    }
 }

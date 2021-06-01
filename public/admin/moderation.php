@@ -184,34 +184,40 @@ $rev2->execute();
 			</div>
 			<?php if (($pages - 1) != 1 and ($type == 'flamp' or $type == 'yell' or $type == 'user')) { ?>
 				<div class="page_nav"><?php
-																										if ($page >= 1) {
-																											echo '<a href="moderation?type=' . $type . $id_page . '" class="oneLink"></a>'; //На первую
-																											echo '<a href="moderation?type=' . $type . '&page=' . $page . $id_page .
-																												'" class="nav-prev"></a>';                                                  //Назад
-																										}
+                    if ($page >= 1)
+                    {
+                        echo '<a href="moderation?type=' . $type . $id_page . '" class="oneLink"></a>'; //На первую
+                        echo '<a href="moderation?type=' . $type . '&page=' . $page . $id_page .
+                            '" class="nav-prev"></a>';                                                  //Назад
+                    }
 
-																										$сurrent = $page + 1; //Текущая страница
-																										$start = $сurrent - 3; //перед текущей
-																										$end = $сurrent + 3; //После текущей
+                    $сurrent = $page + 1; //Текущая страница
+                    $start = $сurrent - 3; //перед текущей
+                    $end = $сurrent + 3; //После текущей
 
-																										//Навигация по страницам
-																										for ($j = 1; $j < $pages; $j++) {
-																											if ($j >= $start && $j <= $end) {
+                    //Навигация по страницам
+                    for ($j = 1; $j < $pages; $j++)
+                    {
+                        if ($j >= $start && $j <= $end)
+                        {
 
-																												if ($j == ($page + 1))
-																													echo '<a href="moderation?type=' . $type . '&page=' . $j . $id_page . '" class="active">' .
-																														$j . '</a>';
-																												else
-																													echo '<a href="moderation?type=' . $type . '&page=' . $j . $id_page . '">' . $j . '</a>';
-																											}
-																										}
+                            if ($j == ($page + 1))
+                                echo '<a href="moderation?type=' . $type . '&page=' . $j . $id_page .
+                                    '" class="active">' .
+                                    $j . '</a>';
+                            else
+                                echo '<a href="moderation?type=' . $type . '&page=' . $j . $id_page . '">' . $j .
+                                    '</a>';
+                        }
+                    }
 
-																										if ($j > $page && ($page + 2) < $j) {
-																											echo '<a href="moderation?type=' . $type . '&page=' . ($page + 2) . $id_page .
-																												'" class="nav-next"></a>';
-																											echo '<a href="moderation?type=' . $type . '&page=' . ($j - 1) . $id_page .
-																												'" class="lastLimk"></a>';
-																										} ?>
+                    if ($j > $page && ($page + 2) < $j)
+                    {
+                        echo '<a href="moderation?type=' . $type . '&page=' . ($page + 2) . $id_page .
+                            '" class="nav-next"></a>';
+                        echo '<a href="moderation?type=' . $type . '&page=' . ($j - 1) . $id_page .
+                            '" class="lastLimk"></a>';
+                    } ?>
 				</div>
 			<?php } ?>
 		</div>

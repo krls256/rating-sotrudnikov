@@ -31,7 +31,7 @@ class ReviewPublishingRepository extends CoreRepository
             ->select('id')
             ->where('company_id', $company_id)
             ->where('is_moderated', 1)
-            ->where('is_published', 0)
+            ->where('is_published', 1)
             ->where('is_positive', $positive)
             ->take($quantity)
             ->update(['is_published' => 0]);

@@ -25,4 +25,14 @@ class PublishingModule {
         $strategy->newPublishing();
 
     }
+
+    public function normalize(int $strategyIndex) : void {
+        $strategyClass = PublishingConstants::STRATEGY_MAP[$strategyIndex] ?? null;
+        if($strategyClass === null) {
+            throw new ErrorException('Unknown strategy index');
+        }
+        /** @var IPublishingStrategy $strategy */
+        $strategy = new $strategyClass();
+        $strategy->normalizePublishing();
+    }
 }

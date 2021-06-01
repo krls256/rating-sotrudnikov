@@ -23,6 +23,7 @@ $UnModeratedCount = $repository->getUnModeratedCount();
                 </ul>
             </li>
         <?php } ?>
+        <li class="review-table"><a href="/admin/control-unit">Устройство управления</a></li>
     </ul>
     <ul class="menu__link">
             <li>
