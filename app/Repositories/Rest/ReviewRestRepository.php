@@ -17,16 +17,41 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         return Review::class;
     }
 
-    public function getIndex(array $options) : Collection
+    public function getIndex(array $options = []) : Collection
     {
+        $is_published = $options['is_published'] ?? null;
+        $is_positive = $options['is_positive'] ?? null;
+        $limit = $options['limit'] ?? null;
+        $orderByDesc = $options['orderByDesc'] ?? null;
+        $orderByAsc = $options['orderByAsc'] ?? null;
+        $with = $options['with'] ?? null;
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
             'is_positive', 'is_published', 'review_pluses',
-            'review_minuses', 'review_date'];
-        $res = $this->startConditions()
-            ->select($column)
-            ->get();
-        return $res;
+            'review_minuses', 'review_date', 'company_id'];
+        $req = $this->startConditions()
+            ->select($column);
+
+        if($is_published !== null) {
+            $req = $req->where('is_published', $is_published);
+        }
+        if($is_positive !== null) {
+            $req = $req->where('is_positive', $is_positive);
+        }
+        if($limit !== null) {
+            $req = $req->take($limit);
+        }
+        if($orderByDesc !== null) {
+            $req = $req->orderBy($orderByDesc, 'desc');
+        }
+
+        if($orderByAsc !== null) {
+            $req = $req->orderBy($orderByAsc, 'asc');
+        }
+        if($with !== null) {
+            $req = $req->with($with);
+        }
+        return $req->get();
     }
 
     public function getPaginate(int $count, array $options = []) : Paginator
@@ -36,6 +61,9 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         $is_positive = $options['is_positive'] ?? null;
         $is_moderated = $options['is_moderated'] ?? null;
         $review_source = $options['review_source'] ?? null;
+        $limit = $options['limit'] ?? null;
+        $orderByDesc = $options['orderByDesc'] ?? null;
+        $orderByAsc = $options['orderByAsc'] ?? null;
         $page = $options['page'] ?? null;
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
@@ -63,6 +91,17 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
 
         if($review_source !== null) {
             $req = $req->where('review_source', $review_source);
+        }
+
+        if($limit !== null) {
+            $req = $req->take($limit);
+        }
+        if($orderByDesc !== null) {
+            $req = $req->orderBy($orderByDesc, 'desc');
+        }
+
+        if($orderByAsc !== null) {
+            $req = $req->orderBy($orderByAsc, 'asc');
         }
 
         $res = $req->paginate($count, $column, 'page', $page);

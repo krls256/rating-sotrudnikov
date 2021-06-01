@@ -22,5 +22,4 @@ class BaseCompaniesRepository extends CoreRepository
             ->toBase()
             ->get();
     }
-
 }

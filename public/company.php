@@ -21,6 +21,7 @@ if ($type)
 else
     $postfix = '';
 $row = $dataToFormat['company'];
+$companiesSide = $dataToFormat['companies'];
 $pagination = $dataToFormat['pagination'];
 $row_id = $row['id'];
 $pages = $pagination->lastPage();

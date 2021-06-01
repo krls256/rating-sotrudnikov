@@ -67,6 +67,14 @@ class Review extends CoreModel
         return $this->source->russianName($src);
     }
 
+    protected string $defaultReviewerNameForUser = 'Неизвестный пользователь';
+    public function getReviewerNameForUserAttribute()
+    {
+        $name = $this->reviewer_name;
+        $position = $this->reviewer_position;
+        return $name ? $name : ($position ? $position :$this->defaultReviewerNameForUser);
+    }
+
 
     /**
      * RELATIONS

@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class CompanyRestRepository extends CoreRepository implements IRestRepository
 {
+    public const ORDER_BY_DELTA_IN_INDEX = 'delta';
+
     protected function getModelClass()
     {
         return Company::class;
@@ -20,10 +22,34 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
 
     public function getIndex(array $options = []): Collection
     {
-        $column = '*';
-        $companies = $this->startConditions()
+        $column = $options['column'] ?? '*';
+        $orderBy = $options['orderBy'] ?? null;
+        $orderByDesc = $options['orderByDesc'] ?? null;
+        $orderByAsc = $options['orderByAsc'] ?? null;
+        $limit = $options['limit'] ?? null;
+        $req = $this->startConditions()
             ->select($column)
-            ->get();
+            ->withCount('reviewsPublishedPositive')
+            ->withCount('reviewsPublishedNegative');
+
+        if($limit !== null) {
+            $req = $req->take($limit);
+        }
+        if($orderByDesc !== null) {
+            $req = $req->orderBy($orderByDesc, 'desc');
+        }
+
+        if($orderByAsc !== null) {
+            $req = $req->orderBy($orderByAsc, 'asc');
+        }
+
+        $companies = $req->get();
+
+        if($orderBy === self::ORDER_BY_DELTA_IN_INDEX) {
+            $companies = $companies->sortByDesc(function ($company) {
+                return $company->reviews_published_positive_count - $company->reviews_published_negative_count;
+            });
+        }
         return $companies;
     }
 

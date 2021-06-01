@@ -7,6 +7,7 @@ namespace app\Http\Controllers\User;
 use app\Http\Requests\User\UserPageGetRequest;
 use app\Modules\ReviewRanking\ReviewRankingConstants;
 use app\Modules\ReviewRanking\ReviewRankingModule;
+use app\Repositories\Rest\CompanyRestRepository;
 use app\Repositories\SingleEntity\CompanySingleEntityRepository;
 use helperClasses\Request;
 
@@ -25,6 +26,9 @@ class CompanyPageController extends UserController
         $id = $company->id;
         $page = (int) $request->get($this->pageIndex);
         $type = $request->get($this->typeIndex);
+
+        $companies = $this->getSideBarCompanies();
+
         if($type === null) {
             $paginationType = ReviewRankingConstants::DEFAULT_RANKING_INDEX;
         } else if($type === 'positive') {
@@ -40,7 +44,8 @@ class CompanyPageController extends UserController
             notFound();
         return [
             'company' => $company,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'companies' => $companies
         ];
     }
 

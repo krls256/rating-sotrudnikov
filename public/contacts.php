@@ -1,7 +1,20 @@
 <?php
-  require_once "function.php";
 
-  $set = setting($PDO);
+use app\Http\Controllers\User\ContactsPageController;
+use app\Repositories\Base\BaseSettingsRepository;
+use helperClasses\Request;
+
+require_once "function.php";
+
+$settingsRepo = new BaseSettingsRepository();
+$set = $settingsRepo->getSetting();
+
+$request = new Request();
+$controller = new ContactsPageController();
+
+$controllerData = $controller->index($request);
+$companiesSide = $controllerData['companies'];
+
 ?>
 <!DOCTYPE html>
 <html lang="ru" dir="ltr">
