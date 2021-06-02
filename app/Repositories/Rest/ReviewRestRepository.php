@@ -23,6 +23,7 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
     {
         $is_published = $options['is_published'] ?? null;
         $is_positive = $options['is_positive'] ?? null;
+        $limit = $options['limit'] ?? null;
 
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
@@ -37,6 +38,10 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         }
         if($is_positive !== null) {
             $req = $req->where('is_positive', $is_positive);
+        }
+
+        if($limit !== null) {
+            $req = $req->take($limit);
         }
 
         return $req->get();

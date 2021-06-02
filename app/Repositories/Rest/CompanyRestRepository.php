@@ -27,6 +27,7 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
     {
         $column = $options['column'] ?? '*';
         $orderBy = $options['orderBy'] ?? null;
+        $limit = $options['limit'] ?? null;
 
         $req = $this->startConditions()
             ->select($column)
@@ -49,6 +50,9 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
                         $company->reviews_published_negative_count;
                 })
                 ->values();
+        }
+        if($limit !== null) {
+            $companies = $companies->take($limit);
         }
         return $companies;
     }

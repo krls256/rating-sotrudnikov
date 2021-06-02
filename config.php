@@ -9,7 +9,7 @@ require_once 'helpers/index.php';
 use database\Database;
 
 $db = Database::getInstance($dbCredentials);
-$web = true;
+$web = php_sapi_name() !== 'cli';
 
 if($web) {
     $pipeline = new \app\Middleware\Pipeline();
