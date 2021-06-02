@@ -92,8 +92,6 @@ class ReviewsAdminController extends CoreController
         $this->validate(ReviewModerateRequest::class, $request);
         $id = $request['id'];
         $res = $this->repository->update($id, ['is_moderated' => 1]);
-        $publishingModule = new PublishingModule();
-        $publishingModule->reviewPublish(PublishingConstants::DELTA_ORIENTED_INDEX);
         return $res;
     }
 

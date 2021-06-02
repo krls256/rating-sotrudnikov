@@ -1,6 +1,8 @@
 <?php
-  session_start();
-  $_SESSION['id'] = '';
-  session_destroy();
-  header('location: /');
- ?>
+
+use app\Http\Controllers\AuthController;
+
+require_once '../../config.php';
+
+$controller = new AuthController();
+$controller->exit();

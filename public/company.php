@@ -11,6 +11,7 @@ $settingsRepo = new BaseSettingsRepository();
 $set = $settingsRepo->getSetting();
 
 $request = new Request();
+
 $controller = new CompanyPageController();
 $companyRepository = new CompanySingleEntityRepository();
 
@@ -175,7 +176,7 @@ $page = $pagination->currentPage();
                     <div class="snippet review">
                         <div class="review__header">
                             <div class="review__user">
-                                <b><?= $commentRow['reviewer_position'] ?></b>
+                                <b><?= $commentRow->ReviewerNameForUser ?></b>
                                 <span>оставил(а) отзыв</span>
                                 <span>о "<a href="<?= $row['sity']; ?>"><?= $row['name'] ?></a>"</span>
                             </div>

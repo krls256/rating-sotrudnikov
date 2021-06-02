@@ -5,34 +5,50 @@ namespace app\Modules\Publishing;
 use app\Modules\Publishing\Strategy\IPublishingStrategy;
 use ErrorException;
 
-class PublishingModule {
+class PublishingModule
+{
 
+    protected PublishingState $state;
+
+    public function __construct()
+    {
+        $this->state = PublishingState::getInstance();
+    }
 
     /**
-     * не вызывать из observer, иначе будет рекурсивный вызов, если все таки нужно, то нужно написать объект
-     * состояния, который будет содержать состояние
      *
      * @param int $strategyIndex
      * @throws ErrorException
      */
-    public function reviewPublish(int $strategyIndex) : void {
-        $strategyClass = PublishingConstants::STRATEGY_MAP[$strategyIndex] ?? null;
-        if($strategyClass === null) {
-            throw new ErrorException('Unknown strategy index');
+    public function reviewPublish(int $strategyIndex): void
+    {
+        if (!$this->state->isWorking())
+        {
+            $this->state->setIsWorking(true);
+            $strategyClass = PublishingConstants::STRATEGY_MAP[$strategyIndex] ?? null;
+            if ($strategyClass === null)
+            {
+                throw new ErrorException('Unknown strategy index');
+            }
+            /** @var IPublishingStrategy $strategy */
+            $strategy = new $strategyClass();
+            $strategy->newPublishing();
         }
-        /** @var IPublishingStrategy $strategy */
-        $strategy = new $strategyClass();
-        $strategy->newPublishing();
-
     }
 
-    public function normalize(int $strategyIndex) : void {
-        $strategyClass = PublishingConstants::STRATEGY_MAP[$strategyIndex] ?? null;
-        if($strategyClass === null) {
-            throw new ErrorException('Unknown strategy index');
+    public function normalize(int $strategyIndex): void
+    {
+        if (!$this->state->isWorking())
+        {
+            $this->state->setIsWorking(true);
+            $strategyClass = PublishingConstants::STRATEGY_MAP[$strategyIndex] ?? null;
+            if ($strategyClass === null)
+            {
+                throw new ErrorException('Unknown strategy index');
+            }
+            /** @var IPublishingStrategy $strategy */
+            $strategy = new $strategyClass();
+            $strategy->normalizePublishing();
         }
-        /** @var IPublishingStrategy $strategy */
-        $strategy = new $strategyClass();
-        $strategy->normalizePublishing();
     }
 }

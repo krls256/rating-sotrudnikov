@@ -3,10 +3,9 @@
 
 namespace migrations\seeders;
 
-use app\Modules\ReviewRanking\RankingActions\ReviseRankingAction;
-use app\Modules\ReviewRanking\Repositories\ReviewRankingRepository;
-use PDO;
+use app\Modules\ReviewRanking\ReviewRankingModule;
 use migrations\seeders\traits\DefaultSeederTrait;
+use PDO;
 
 require_once __DIR__ . '/../../config.php';
 require_once ROOT_DIR . '/migrations/seeders/Seeder.php';
@@ -17,7 +16,7 @@ class ReviewSeeder extends Seeder
     private $table;
     private $companies;
 
-    public function __construct(PDO $PDO, $db, $rows, $table,  $companies)
+    public function __construct(PDO $PDO, $db, $rows, $table, $companies)
     {
         parent::__construct($PDO, $db);
         $this->table = $table;
@@ -31,10 +30,13 @@ class ReviewSeeder extends Seeder
         $companiesFromDB = $this->getAddedCompanies();
         $DBCompaniesMap = [];
 
-        foreach ($this->rows as $i => $review) {
-            if($review['is_positive']) {
+        foreach ($this->rows as $i => $review)
+        {
+            if ($review['is_positive'])
+            {
                 $this->rows[$i]['is_positive'] = 1;
-            } else {
+            } else
+            {
                 $this->rows[$i]['is_positive'] = 0;
             }
             $this->rows[$i]['company_id'] = $companiesFromDB[$review['company_name']];
@@ -44,15 +46,17 @@ class ReviewSeeder extends Seeder
             unset($this->rows[$i]["company_name"]);
         }
         $perInsert = 300;
-        $this->defaultRun($perInsert, function() use ($perInsert) {
+        $this->defaultRun($perInsert, function () use ($perInsert)
+        {
             echo "$perInsert отзывов было добавлено в базу \n";
         });
 
-        $action = new ReviseRankingAction();
-        $action->do();
+        $module = new ReviewRankingModule();
+        $module->reviseRanking();
     }
 
-    public function getAddedCompanies() {
+    public function getAddedCompanies()
+    {
         $sql = "SELECT id, name FROM company";
         $req = $this->PDO
             ->prepare($sql);

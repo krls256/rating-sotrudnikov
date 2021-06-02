@@ -1,11 +1,17 @@
 <?php
 
+use helperClasses\Request;
+
 require_once '../../config.php';
 
-if (isset($_SESSION['id']) and $_SESSION['id'] != '')
-{
-    header('Location: /admin/');
+$request = new Request();
+$controller = new \app\Http\Controllers\AuthController();
+
+
+if($request->method() === 'POST') {
+    $controller->auth($request);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -16,14 +22,16 @@ if (isset($_SESSION['id']) and $_SESSION['id'] != '')
     <?php include_view('/admin/headImports.php'); ?>
 </head>
 <body>
-<div class="login">
+<div class="login card">
 	<h1 class="login__logo">RATING <span>REMONT</span></h1>
-	<div class="login__error"></div>
+	<?php include_view('includes/adminMessageBar.php'); ?>
 	<div class="login__comment">Вход в административную панель</div>
-	<form class="login__form" action="" method="post" onsubmit="return false;">
-		<input type="text" name="login" placeholder="Логин">
-		<input type="password" name="password" placeholder="Пароль">
-		<input class="submit" type="submit" value="Войти">
+	<form class="login__form" action="" method="post">
+		<input type="text" name="admin_login" placeholder="Логин">
+		<input type="password" name="admin_password" placeholder="Пароль">
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-primary" type="submit">Войти</button>
+        </div>
 	</form>
 </div>
 <script type="text/javascript" src="/js/admin.js"></script>

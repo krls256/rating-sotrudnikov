@@ -14,7 +14,7 @@
       <?php # <li><a href="/rating-hr">Отзывы сотрудников</a></li> ?>
       <li><a href="/all-review">Все отзывы</a></li>
       <li><a href="/contacts">Контакты</a></li>
-      <?if(isset($_SESSION['id']) != ''){?><li><a href="/admin">Админ. панель</a></li><?}?>
+      <?php if(auth()->isAuthed()) { ?><li><a href="/admin">Админ. панель</a></li><?php } ?>
     </menu>
   </nav>
   <div class="home">

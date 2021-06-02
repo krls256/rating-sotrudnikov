@@ -9,3 +9,12 @@ require_once 'helpers/index.php';
 use database\Database;
 
 $db = Database::getInstance($dbCredentials);
+$web = true;
+
+if($web) {
+    $pipeline = new \app\Middleware\Pipeline();
+
+    $pipeline->pipe(\app\Middleware\AuthMiddleware::class);
+    $pipeline->run();
+
+}

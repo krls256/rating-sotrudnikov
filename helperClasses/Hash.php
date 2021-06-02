@@ -15,4 +15,8 @@ class Hash
     {
         return hash($this->hashName, $str);
     }
+
+    public static function compareHash(string $first, string $second) {
+        return hash_equals($first, $second);
+    }
 }

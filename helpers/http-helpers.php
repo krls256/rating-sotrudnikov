@@ -1,5 +1,6 @@
 <?php
 
+use helperClasses\Auth;
 use helperClasses\Session;
 
 function redirect($resource = '/') {
@@ -18,4 +19,8 @@ function back() {
 
 function session() {
     return Session::getInstance();
+}
+
+function auth() : Auth {
+    return Auth::getInstance();
 }

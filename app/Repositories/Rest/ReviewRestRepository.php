@@ -7,11 +7,13 @@ namespace app\Repositories\Rest;
 use app\Repositories\Interfaces\IRestRepository;
 use app\Models\Review;
 use app\Repositories\CoreRepository;
+use app\Repositories\OptionsTrait;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class ReviewRestRepository extends CoreRepository implements IRestRepository
 {
+    use OptionsTrait;
     protected function getModelClass()
     {
         return Review::class;
@@ -21,16 +23,14 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
     {
         $is_published = $options['is_published'] ?? null;
         $is_positive = $options['is_positive'] ?? null;
-        $limit = $options['limit'] ?? null;
-        $orderByDesc = $options['orderByDesc'] ?? null;
-        $orderByAsc = $options['orderByAsc'] ?? null;
-        $with = $options['with'] ?? null;
+
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
             'is_positive', 'is_published', 'review_pluses',
             'review_minuses', 'review_date', 'company_id'];
         $req = $this->startConditions()
             ->select($column);
+        $req = $this->useOptions($req, $options);
 
         if($is_published !== null) {
             $req = $req->where('is_published', $is_published);
@@ -38,19 +38,7 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         if($is_positive !== null) {
             $req = $req->where('is_positive', $is_positive);
         }
-        if($limit !== null) {
-            $req = $req->take($limit);
-        }
-        if($orderByDesc !== null) {
-            $req = $req->orderBy($orderByDesc, 'desc');
-        }
 
-        if($orderByAsc !== null) {
-            $req = $req->orderBy($orderByAsc, 'asc');
-        }
-        if($with !== null) {
-            $req = $req->with($with);
-        }
         return $req->get();
     }
 

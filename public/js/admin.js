@@ -47,40 +47,6 @@ $(document).ready(function () {
         });
     });
 
-    // Форма логина
-    $('.login__form').on('submit', function (e) {
-        console.log('.login__form submitted');
-        let elem = $(this);
-
-        //если в поля авторизации введено менее 3 сиволов, говорим об этом
-        if ((elem.find('[name="login"]').val().length > 3) || (elem.find('[name="password"]').val().length > 3)) {
-            $.ajax({
-                type: "POST",
-                url: 'function?func=login',
-                data: elem.serialize(),
-                cache: false,
-                success: function (res) {
-                    switch (res) {
-                        case 'user':
-                            card__log('Пользователь не найден!');
-                            break;
-                        case 'pass':
-                            card__log('пароль введен не верно!');
-                            break;
-                        case 'ok':
-                            card__log('Вы успешно авторизованы.', 'ok');
-                            window.location.href = '/admin';
-                            break;
-                    }
-                }
-            });
-        } else {
-            card__log("Одно из полей заполнено не верно");
-        }
-        e.preventDefault();
-        return false;
-    });
-
     var files; //Записываем файл
 
     $('.create input[type=file], .articals[type="file"]').on('change', function () {
@@ -488,19 +454,20 @@ closeAlerts();
 
 const paginationLinks = () => {
     const pagination = document.querySelector('.table__pagination');
-
-    const links = pagination.querySelectorAll('a.page-link');
-    links.forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            const page = link.dataset.page
-            const urlSearchParams = new URLSearchParams(window.location.search);
-            const urlObj = Object.fromEntries(urlSearchParams.entries())
-            urlObj.page = page;
-            const newUrl = '?' + Object.entries(urlObj).map(([key, value]) => `${key}=${value}`).join('&');
-            window.location = newUrl;
+    if(pagination) {
+        const links = pagination.querySelectorAll('a.page-link');
+        links.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const page = link.dataset.page
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                const urlObj = Object.fromEntries(urlSearchParams.entries())
+                urlObj.page = page;
+                const newUrl = '?' + Object.entries(urlObj).map(([key, value]) => `${key}=${value}`).join('&');
+                window.location = newUrl;
+            })
         })
-    })
+    }
 }
 
 paginationLinks();

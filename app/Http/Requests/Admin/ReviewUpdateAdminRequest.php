@@ -6,6 +6,7 @@ namespace app\Http\Requests\Admin;
 
 use app\Http\Requests\CoreRequest;
 use app\Rules\ExistsRule;
+use app\Rules\NotPresentRule;
 
 class ReviewUpdateAdminRequest extends CoreRequest
 {
@@ -45,7 +46,7 @@ class ReviewUpdateAdminRequest extends CoreRequest
             'review_pluses' => 'string|nullable',
             'review_minuses' => 'string|nullable',
             'is_positive' => 'boolean|required',
-            'is_published' => 'boolean|required',
+            'is_published' => [new NotPresentRule()],
             'is_moderated' => 'boolean|required',
             'company_id' => ['required', new ExistsRule('company', 'id')],
         ];

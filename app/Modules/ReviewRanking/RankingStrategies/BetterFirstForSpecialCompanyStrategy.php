@@ -28,6 +28,7 @@ class BetterFirstForSpecialCompanyStrategy implements IReviewRankingStrategy
 
         $pagesQuantity = $this->reviewRep->getPagesQuantity($company_id,  $perPage);
 
+        $reviews = $reviews->sortBy('review_hash');
         return new RankingPagination($reviews,
             [
                 'lastPage' => $pagesQuantity,

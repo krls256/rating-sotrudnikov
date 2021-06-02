@@ -18,7 +18,7 @@ class AdminMigration extends Migration
     public function up()
     {
         $table = $this->table;
-        $column = ['id INT AUTO_INCREMENT PRIMARY KEY', 'login VARCHAR(55)', 'pass VARCHAR(55)'];
+        $column = ['id INT AUTO_INCREMENT PRIMARY KEY', 'login VARCHAR(55)', 'pass VARCHAR(191)'];
         $column = implode(', ', $column);
         $this->PDO->exec("CREATE TABLE IF NOT EXISTS $table ($column) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;");
     }

@@ -17,6 +17,12 @@ class Session extends Singleton
         return true;
     }
 
+    public function delete($k) : void {
+        if(isset($_SESSION[$k])) {
+            unset($_SESSION[$k]);
+        }
+    }
+
 
     public function error($v) {
         $_SESSION['error'][] = $v;

@@ -145,12 +145,6 @@ $companies = $controllerData['companies'];
 											</div>
 											<div class="d-flex w-100">
 												<div class="form-group col-3 d-flex align-items-center">
-													<input type="hidden" name="is_published" value="0">
-													<?php $checked = $is_published ? 'checked' : ''; ?>
-													<input type="checkbox" id="<?= $str_index ?>is_published" value="1" name="is_published" <?php echo $checked; ?>>
-													<label for="<?= $str_index ?>is_published" class="mb-0 ml-2">Опубликовано</label>
-												</div>
-												<div class="form-group col-3 d-flex align-items-center">
 													<input type="hidden" name="is_positive" value="0">
 													<?php $checked = $is_positive ? 'checked' : ''; ?>
 													<input type="checkbox" id="<?= $str_index ?>is_positive" value="1" name="is_positive" <?php echo $checked; ?>>

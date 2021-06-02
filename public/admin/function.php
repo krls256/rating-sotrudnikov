@@ -2,12 +2,6 @@
 
 require_once '../../config.php';
 
-//Проверяем авторизацию пользователя
-if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && empty($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-  if(empty($_SESSION['id']) && $_SESSION['id'] == '' && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest'){
-    header('Location: /admin/login');
-  }
-}
 require_once "../class/Mysql.php"; //Подключаем базу данных
 
 # Типы ремонта

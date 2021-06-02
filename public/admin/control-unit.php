@@ -16,6 +16,7 @@ require_once '../../config.php';
 <div class="page__layout">
     <?php include_view('/admin/adminMenu.php'); ?>
     <main class="content">
+        <?php include_view('/includes/adminMessageBar.php'); ?>
         <section class="card p-3">
             <h1>Устройство управления</h1>
             <ul class="pl-4">
@@ -27,8 +28,7 @@ require_once '../../config.php';
             <ul class="list-unstyled d-flex flex-column">
                 <li class="card-body">
                     <h3>Нормализация отзывов</h3>
-                    <p>В таблице с отзывами из можно публиковать в ручную, что может привести нас к тому, что у
-                        какая-то компания будет выше чем СР, для избежания этого можно нормализовать базу
+                    <p>При смене стратегии публикации нужно нормализовать отзывы
                     </p>
                     <form action="review/normalize.php" method="post">
                         <button class="btn btn-info">Нормализовать</button>

@@ -4,6 +4,7 @@
 namespace app\Modules\ReviewRanking;
 
 
+use app\Modules\ReviewRanking\RankingActions\ReviseRankingAction;
 use app\Modules\ReviewRanking\RankingStrategies\IReviewRankingStrategy;
 use ErrorException;
 
@@ -28,5 +29,10 @@ class ReviewRankingModule
         }
 
         return $pagination;
+    }
+
+    public function reviseRanking() {
+        $action = new ReviseRankingAction();
+        $action->do();
     }
 }

@@ -23,10 +23,10 @@ abstract class CoreModel extends Model
             $class = $this->observerClass;
             /** @var IObserver $observer */
             $observer = new $class();
+            $this->fill($attributes);
             if($observer->updating($this) === false) {
                 return false;
             }
-            $this->fill($attributes);
             $attributes = $this->getAttributes();
             $afterUpdate = parent::update($attributes, $options);
 

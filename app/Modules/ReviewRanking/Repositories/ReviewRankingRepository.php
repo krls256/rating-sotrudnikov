@@ -46,7 +46,7 @@ class ReviewRankingRepository extends CoreRepository
     protected $paginationColumn = [
         'id', 'reviewer_name', 'reviewer_position',
         'is_positive', 'is_published', 'is_first_screen_review',
-        'review_pluses', 'review_minuses', 'review_date', 'company_id'
+        'review_pluses', 'review_minuses', 'review_date', 'company_id', 'review_hash'
     ];
 
     public function selectFirstPagePagination(int $company_id, int $perPage): Collection
@@ -63,7 +63,7 @@ class ReviewRankingRepository extends CoreRepository
         // если не хватает отзывов
         if($res->count() < $perPage) {
             $additional = $this->selectPagePagination($company_id, 1, $perPage - $res->count());
-            return $res->merge($additional);
+            $res = $res->merge($additional);
         }
         return $res;
     }
