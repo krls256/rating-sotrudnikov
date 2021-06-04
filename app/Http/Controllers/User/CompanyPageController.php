@@ -5,6 +5,7 @@ namespace app\Http\Controllers\User;
 
 
 use app\Http\Requests\User\UserPageGetRequest;
+use app\Http\Requests\User\UserRequestStoreRequest;
 use app\Http\Requests\User\UserStoreCommentRequest;
 use app\Http\Requests\User\UserStoreReviewRequest;
 use app\Modules\ReCaptcha\ReCaptchaModule;
@@ -13,6 +14,7 @@ use app\Modules\ReviewRanking\ReviewRankingModule;
 use app\Repositories\Rest\CommentRestRepository;
 use app\Repositories\Rest\CompanyRestRepository;
 use app\Repositories\Rest\ReviewRestRepository;
+use app\Repositories\Rest\UserRequestRestRepository;
 use app\Repositories\SingleEntity\CompanySingleEntityRepository;
 use helperClasses\Request;
 
@@ -79,6 +81,21 @@ class CompanyPageController extends UserController
         if($verifying['status'] === true) {
             $commentRepo = new CommentRestRepository();
             return $commentRepo->store($req);
+        } else {
+            return false;
+        }
+    }
+
+    public function storeUserRequest(Request $request) {
+        $req = $request->all();
+        $this->validate(UserRequestStoreRequest::class, $req);
+        $recaptcha_token = $req['recaptcha_token'];
+        $recaptchaModule = new ReCaptchaModule();
+        $verifying = $recaptchaModule->verify($recaptcha_token);
+
+        if($verifying['status'] === true) {
+            $userRequestRepo = new UserRequestRestRepository();
+            return $userRequestRepo->store($req);
         } else {
             return false;
         }

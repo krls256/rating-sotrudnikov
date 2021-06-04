@@ -91,11 +91,51 @@ function modal_error(e, t) {
         a.html(e)
 }
 
+function reactOnFormResponse(overlaySelector) {
+    return function (strResponse) {
+        var response = JSON.parse(strResponse);
+        var status = response.status;
+        switch (status) {
+            case "success": {
+                var messages = response.messages;
+                modal_error(
+                    messages.map(function (message) {
+                        return "<div>" + message + "</div>";
+                    }), 'success')
+            }
+                break;
+            case "failure": {
+                var errors = response.errors;
+                modal_error(
+                    errors.map(function (message) {
+                        return "<div>" + message + "</div>";
+                    }), 'failure');
+            }
+                break;
+        }
+        $(overlaySelector).addClass('d-none');
+    }
+}
+
+function sendRecaptcha(callback, overlaySelector) {
+    $(overlaySelector).removeClass('d-none');
+    if (grecaptcha !== undefined) {
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LdPIwwbAAAAAE0Ra3cw2Xowe9NgPwKqdvqRvGxV', {action: 'submit'})
+                .then(callback) // takes token as an argument
+                .catch(function () {
+                    modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
+                    $(overlaySelector).addClass('d-none');
+                })
+        });
+    } else {
+        $(overlaySelector).addClass('d-none');
+        modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
+    }
+}
 
 $(document).ready(function (e, t) {
     var t;
-
-    $('input[name="phone"]').mask("+7(000) 000-00-00");
     $(".modal__type").styler();
 
     // Перехватываем события ресайза для изменения стилей
@@ -154,88 +194,71 @@ $(document).ready(function (e, t) {
     $("#comment").on("submit", function (e) {
         e.preventDefault();
         var $this = $(this);
-        var pass = true
+        var pass = true;
         var error = '';
         $this.find('[data-check="true"]').each(function () {
             if ($(this).val().length === 0) {
                 pass = false;
-                if(error.length === 0)
+                if (error.length === 0)
                     error += "<div>Пожалуйста заполните все обязательные поля.</div>";
             }
         });
-        if(pass) {
-            $('[data-overlay="comment"]').removeClass('d-none');
-            if(grecaptcha !== undefined) {
-                grecaptcha.ready(function () {
-                    grecaptcha.execute('6LdPIwwbAAAAAE0Ra3cw2Xowe9NgPwKqdvqRvGxV', {action: 'submit'})
-                        .then(function (recaptcha_token) {
-                            var data = {recaptcha_token: recaptcha_token};
-                            var formData = new FormData($this[0]);
-                            for(var entry of formData.entries()) {
-                                var key = entry[0];
-                                var value = entry[1];
-                                data[key] = value;
-                            }
-                            $.post('/api/new-comment.php', data, function (strResponse) {
-                                var response = JSON.parse(strResponse);
-                                var status = response.status;
-                                switch (status) {
-                                    case "success": {
-                                        var messages = response.messages;
-                                        modal_error(
-                                            messages.map(function (message) {
-                                                return "<div>"+message+"</div>";
-                                            }), 'success')
-                                    } break;
-                                    case "failure": {
-                                        var errors = response.errors;
-                                        modal_error(
-                                            errors.map(function (message) {
-                                                return "<div>"+message+"</div>";
-                                            }), 'failure');
-                                    } break;
-                                }
-                                $('[data-overlay="comment"]').addClass('d-none');
-                            })
-                        })
-                        .catch(function () {
-                            modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
-                            $('[data-overlay="comment"]').addClass('d-none');
-                        })
-                });
-            } else {
-                $('[data-overlay="comment"]').addClass('d-none');
-                modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
-            }
+        if (pass) {
+            sendRecaptcha(function (recaptcha_token) {
+                var data = {recaptcha_token: recaptcha_token};
+                var formData = new FormData($this[0]);
+                for (var entry of formData.entries()) {
+                    var key = entry[0];
+                    var value = entry[1];
+                    data[key] = value;
+                }
+                $.post('/api/new-comment.php', data, reactOnFormResponse('[data-overlay="comment"]'))
+            }, '[data-overlay="comment"]')
         } else {
             modal_error(error, 'error');
         }
     });
-
-
+    var validMask = false;
+    var maskOptions = {
+        onChange: function(val) {validMask = val.length === 17},
+    }
+    $('input[name="user_phone"]').mask("+7(000) 000-00-00", maskOptions);
     //Форама отправки заявок
-    $(".send-request").on("click", function () {
-        var t = $(this),
-            e = t.closest("form"),
-            id = e.find('[name="id"]').val();
-
-        e.find('[data-check="true"]').each(function () {
-            if (0 == $(this).val().length)
-                return modal_error("Пожалуйста заполните все поля.");
-        });
-
-        $.post("/ajax?func=new_requests", e.serialize())
-            .then(function (e) {
-
-                if (e == true) {
-                    modal_clear();
-                    t.closest("form").append('<div class="thank"><span>Ваша заявка отправлена представителю компании. Так-же отправили заявку в лучшие компании, рекомендуем обратить на них внимание.</span></div>');
-                    return true;
-                } else {
-                    modal_error(e);
+    $('#request').on("submit", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var pass = true;
+        var errors = '';
+        $this.find('[data-check="true"]').each(function () {
+            if ($(this).val().length === 0) {
+                pass = false;
+                if (errors.length === 0) {
+                    errors += "<div>Пожалуйста заполните все обязательные поля.</div>";
                 }
-            });
-    });
+            }
+        });
+        if(validMask === false) {
+            pass = false;
+            errors += "<div>Некорректный номер</div>"
+        }
+
+        if (pass) {
+            sendRecaptcha(function (recaptcha_token) {
+                var data = {recaptcha_token: recaptcha_token};
+                var formData = new FormData($this[0]);
+                for (var entry of formData.entries()) {
+                    var key = entry[0];
+                    var value = entry[1];
+                    data[key] = value;
+                }
+                $.post('/api/new-user-request.php', data, reactOnFormResponse('[data-overlay="request"]'))
+
+            }, '[data-overlay="request"]')
+        }
+        else {
+            modal_error(errors, 'error');
+        }
+    })
 
     $("#review").on("submit", function (e) {
         e.preventDefault();
@@ -247,8 +270,9 @@ $(document).ready(function (e, t) {
         $this.find('[data-check="true"]').each(function () {
             if ($(this).val().length === 0) {
                 pass = false;
-                if(error.length === 0)
+                if (error.length === 0) {
                     error += "<div>Пожалуйста заполните все обязательные поля.</div>";
+                }
             }
         });
         if (like === undefined) {
@@ -257,55 +281,20 @@ $(document).ready(function (e, t) {
         }
 
         if (pass) {
-            $('[data-overlay="review"]').removeClass('d-none');
-            if(grecaptcha !== undefined) {
-                grecaptcha.ready(function () {
-                    grecaptcha.execute('6LdPIwwbAAAAAE0Ra3cw2Xowe9NgPwKqdvqRvGxV', {action: 'submit'})
-                        .then(function (recaptcha_token) {
-                            var data = {recaptcha_token: recaptcha_token, is_positive: like};
-                            var formData = new FormData($this[0]);
-                            for(var entry of formData.entries()) {
-                                var key = entry[0];
-                                var value = entry[1];
-                                data[key] = value;
-                            }
-                            $.post('/api/new-review.php', data, function (strResponse) {
-                                var response = JSON.parse(strResponse);
-                                $('[data-overlay="review"]').addClass('d-none');
-                                var status = response.status;
-                                switch (status) {
-                                    case 'success': {
-                                        var messages = response.messages;
-                                        modal_error(
-                                            messages.map(function (message) {
-                                            return "<div>"+message+"</div>";
-                                        }), 'success')
-                                    } break;
-                                    case 'failure': {
-                                        var errors = response.errors;
-                                        modal_error(
-                                            errors.map(function (message) {
-                                            return "<div>"+message+"</div>";
-                                        }), 'failure');
-                                    } break;
-                                }
-                                $('[data-overlay="review"]').addClass('d-none');
-                            })
+            sendRecaptcha(function (recaptcha_token) {
+                var data = {recaptcha_token: recaptcha_token, is_positive: like};
+                var formData = new FormData($this[0]);
+                for (var entry of formData.entries()) {
+                    var key = entry[0];
+                    var value = entry[1];
+                    data[key] = value;
+                }
+                $.post('/api/new-review.php', data, reactOnFormResponse('[data-overlay="review"]'))
 
-                        })
-                        .catch(function () {
-                            modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
-                            $('[data-overlay="review"]').addClass('d-none');
-                        })
-                });
-            } else {
-                modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
-                $('[data-overlay="review"]').addClass('d-none');
-            }
+            }, '[data-overlay="review"]')
         } else {
             modal_error(error, 'error');
         }
-
     });
 
     $(" .home__search-item span, .home__search-item i").on("click", function () {

@@ -18,8 +18,6 @@
         <h3>Оставить отзыв<span class="close"></span></h3>
         <div class="modal__error"></div>
         <form class="modal__item" id="review">
-            <input type="hidden" name="id" value="" data-check="true" />
-            <input type="hidden" name="key" value="" data-check="true" />
             <input type="hidden" name="company_id" value="<?php echo ($company->id)?>">
             <label>
                 <span>Имя <b>*</b></span>
@@ -66,21 +64,22 @@
         </form>
     </div>
     <div class="modal__window window__request">
+        <div class="modal__overlay d-none" data-overlay="request">
+            <div class="modal__spinner spin"></div>
+        </div>
         <h3>Оставить заявку<span class="close"></span></h3>
         <div class="modal__error"></div>
         <form class="modal__item" id="request">
-            <input type="hidden" name="id" value="" data-check="true" />
-            <input type="hidden" name="key" value="" data-check="true" />
-            <input type="hidden" name="type" value="" data-check="true">
+            <input type="hidden" name="company_id" value="<?php echo ($company->id)?>" data-check="true" />
             <label>
                 <span>Имя <b>*</b></span>
-                <input type="text" name="fio" value="" data-check="true">
+                <input type="text" name="user_name" value="" data-check="true">
             </label>
             <label>
                 <span>Телефон <b>*</b></span>
-                <input type="text" name="phone" value="" placeholder="+7(___) ___-__-__" data-check="true">
+                <input type="text" name="user_phone" value="" placeholder="+7(___) ___-__-__">
             </label>
-            <button type="button" class="company__bottom-green send-request">Отправить</button>
+            <button  class="company__bottom-green send-request">Отправить</button>
         </form>
     </div>
 </div>
