@@ -11,6 +11,10 @@ class Company extends CoreModel
 
 
     /** Relations */
+    public function userRequests() {
+        return $this->hasMany(UserRequest::class);
+    }
+
     public function reviews()
     {
         return $this->hasMany(Review::class);
