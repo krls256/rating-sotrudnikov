@@ -4,14 +4,6 @@
 namespace migrations\seeders;
 
 require_once __DIR__ . '/../../config.php';
-require_once ROOT_DIR . '/migrations/seeders/Seeder.php';
-require_once ROOT_DIR . '/migrations/seeders/AdminSeeder.php';
-require_once ROOT_DIR . '/migrations/seeders/AdviceSeeder.php';
-require_once ROOT_DIR . '/migrations/seeders/SettingsSeeder.php';
-require_once ROOT_DIR . '/migrations/seeders/CompanySeeder.php';
-require_once ROOT_DIR . '/migrations/seeders/ReviewSeeder.php';
-require_once ROOT_DIR . '/migrations/seeders/CommentSeeder.php';
-
 use PDO;
 
 // TODO: optimise reviews , unify code

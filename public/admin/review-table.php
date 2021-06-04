@@ -33,7 +33,11 @@ $companies = $controllerData['companies'];
 			<section class="block">
                 <h1>Таблица отзывов</h1>
 				<div class="card card-body">
-					<?php include(ROOT_DIR . '/resources/views/admin/reviews/tableControls.php'); ?>
+                    <?php include_view('/admin/reviews/tableControls.php',
+                        [
+                            'request' => $request,
+                            'companies' => $companies
+                        ]); ?>
 				</div>
 				<div class="d-inline-flex card card-body mt-3">
 					<form action="" method="get">

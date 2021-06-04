@@ -20,8 +20,9 @@ class CommentMigration extends Migration
     public function up()
     {
         $table = $this->table;
-        $column = ['id INT AUTO_INCREMENT PRIMARY KEY', 'fio VARCHAR(100)', 'text TEXT', 'review INT(11)',
-            'moderation INT(1)', 'data INT(11)', 'type VARCHAR(30) NULL'];
+        $column = ['id INT AUTO_INCREMENT PRIMARY KEY', 'fio VARCHAR(191)', 'text TEXT', 'review_id INT',
+            'is_moderated INT(1) DEFAULT 0', 'comment_date DATETIME',
+            'FOREIGN KEY (review_id) REFERENCES review(id) ON DELETE CASCADE ON UPDATE CASCADE'];
         $column = implode(', ', $column);
         $this->PDO->exec("CREATE TABLE IF NOT EXISTS $table ($column) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;");
     }

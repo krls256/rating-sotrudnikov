@@ -18,7 +18,10 @@ abstract class UserController extends CoreController
 
 
     protected function handleValidatorFailing(Validator $validator) {
-        notFound();
+        if($this->validationHandler === null)
+            notFound();
+        else
+            $this->validationHandler->handle($validator);
     }
 
     protected function getSideBarCompanies() {

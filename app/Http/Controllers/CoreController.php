@@ -24,7 +24,6 @@ abstract class CoreController
             $validated = $validator->validate(Request::capture()->all());
         }
         if($validated->fails()) {
-
             $this->handleValidatorFailing($validated);
         }
     }

@@ -24,3 +24,7 @@ function session() {
 function auth() : Auth {
     return Auth::getInstance();
 }
+
+function stop() {
+    exit();
+}

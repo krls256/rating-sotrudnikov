@@ -1,23 +1,23 @@
 /**
  * Открываем окно
- * 
- * @param {*} e 
+ *
+ * @param {*} e
  */
 function modal_open(e) {
-        var t = $(".modal");
-        t.css({
-                display: "block"
-        }),
+    var t = $(".modal");
+    t.css({
+        display: "block"
+    }),
         750 < $(window).width() ? t.children(e).css({
-                display: "block"
+            display: "block"
         }).stop().animate({
-                top: 100,
-                opacity: 1
+            top: 100,
+            opacity: 1
         }, 200) : t.children(e).css({
-                display: "block"
+            display: "block"
         }).stop().animate({
-                top: 0,
-                opacity: 1
+            top: 0,
+            opacity: 1
         }, 200)
 }
 
@@ -25,8 +25,8 @@ function modal_open(e) {
  * Обновляем выпадающие списки
  */
 function refresh() {
-        var e = $(".jq-selectbox ul li:first");
-        $(".jq-selectbox__select-text").text(e.text()),
+    var e = $(".jq-selectbox ul li:first");
+    $(".jq-selectbox__select-text").text(e.text()),
         $(".jq-selectbox ul li").removeClass(),
         e.addClass("selected sel"),
         $(".jq-selectbox select").val()
@@ -36,40 +36,40 @@ function refresh() {
  * Стираем данные из форм
  */
 function modal_clear() {
-        var e = $(".modal");
-        
-        refresh();
-        e.find('input:not([type="hidden"]), textarea').val("");
-        e.find(".active").removeClass("active");
-        e.find(".g-recaptcha").each(function () {
-                grecaptcha.reset($(this).data("wi"));
-        }),
+    var e = $(".modal");
+
+    refresh();
+    e.find('input:not([type="hidden"]), textarea').val("");
+    e.find(".active").removeClass("active");
+    e.find(".g-recaptcha").each(function () {
+        grecaptcha.reset($(this).data("wi"));
+    }),
         e.find(".thank").remove();
-        e.find(".modal__error").css({
-                display: "none"
-        }).text();
+    e.find(".modal__error").css({
+        display: "none"
+    }).text();
 }
 
 /**
  * Закрываем окно
- * 
- * @param {*} e 
+ *
+ * @param {*} e
  */
 function modal_close(e) {
-        var t, a = $(".modal");
-        t = 750 < $(window).width() ? 50 : 0,
+    var t, a = $(".modal");
+    t = 750 < $(window).width() ? 50 : 0,
         a.children(e).stop().animate({
-                top: t,
-                opacity: "0"
+            top: t,
+            opacity: "0"
         }, 200, function () {
-                a.css({
-                        display: "none"
-                }),
+            a.css({
+                display: "none"
+            }),
                 a.find(".modal__error").css({
-                        display: "none"
+                    display: "none"
                 }).removeClass("success"),
                 $(this).css({
-                        display: "none"
+                    display: "none"
                 }),
                 modal_clear()
         })
@@ -77,221 +77,322 @@ function modal_close(e) {
 
 /**
  * Вывод ошибок в окне
- * 
- * @param {*} e 
- * @param {*} t 
+ *
+ * @param {*} e
+ * @param {*} t
  */
 function modal_error(e, t) {
-        var a = $(".modal__error");
-        a.removeClass("success"),
-        "success" == t && a.addClass("success"),
+    var a = $(".modal__error");
+    a.removeClass("success"),
+    "success" === t && a.addClass("success"),
         a.css({
-                display: "block"
+            display: "block"
         }),
-        a.text(e)
+        a.html(e)
 }
 
 
-$(document).ready(function () {
-        var t;
+$(document).ready(function (e, t) {
+    var t;
 
-        $('input[name="phone"]').mask("+7(000) 000-00-00");
-        $(".modal__type").styler();
+    $('input[name="phone"]').mask("+7(000) 000-00-00");
+    $(".modal__type").styler();
 
-        // Перехватываем события ресайза для изменения стилей
-        $(window).on("load resize", function () {
-                950 < $(this).width() && ($(".home__search-item").find("*").removeAttr("style"), $("header .header__menu").removeAttr("style"), $("header .button-menu").removeClass("active")),
-                $(document).width() <= 950 && $("header .button-menu").on("click", function () {
-                        $(this).hasClass("active") ? ($(this).removeClass("active"), $("header .header__menu").stop().animate({
-                                left: "100%"
-                        }, 300, function () {
-                                $(this).removeAttr("style")
-                        })) : ($(this).addClass("active"), $("header .header__menu").stop().animate({
-                                left: "0"
-                        }, 300))
-                })
+    // Перехватываем события ресайза для изменения стилей
+    $(window).on("load resize", function () {
+        950 < $(this).width() && ($(".home__search-item").find("*").removeAttr("style"), $("header .header__menu").removeAttr("style"), $("header .button-menu").removeClass("active")),
+        $(document).width() <= 950 && $("header .button-menu").on("click", function () {
+            $(this).hasClass("active") ? ($(this).removeClass("active"), $("header .header__menu").stop().animate({
+                left: "100%"
+            }, 300, function () {
+                $(this).removeAttr("style")
+            })) : ($(this).addClass("active"), $("header .header__menu").stop().animate({
+                left: "0"
+            }, 300))
+        })
+    });
+
+    $(".review_modal, .comment_modal, .request_modal").on("click", function () {
+        var e = $(this).data();
+        switch (e.type) {
+            case "review":
+                elem = $("#review");
+                break;
+            case "comment":
+                elem = $("#comment");
+                elem.find('[name="type"]').val(e.val);
+                elem.find('[name="review_id"]').val(e.id);
+                break;
+            case "request":
+                elem = $("#request");
+                elem.find('[name="type"]').val(e.val);
+                break;
+        }
+
+
+        elem.find('[name="key"]').val(e.key);
+
+        modal_open(".window__" + e.type);
+    });
+
+    $(".modal__window .close").on("click", function () {
+        modal_close($(this).closest(".modal__window"))
+    });
+
+    $(".modal").on("click", function (e) {
+        var t = $(".modal__window");
+        t.is(e.target) || 0 !== t.has(e.target).length || modal_close($(this).closest(".modal__window"))
+    });
+
+    $(".modal__like span").on("click", function () {
+        var e = $(this).parent();
+        e.find("span").hasClass("active") && e.find("span").removeClass("active"),
+            $(this).toggleClass("active")
+    });
+
+    // Новый комментарий
+    $("#comment").on("submit", function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var pass = true
+        var error = '';
+        $this.find('[data-check="true"]').each(function () {
+            if ($(this).val().length === 0) {
+                pass = false;
+                if(error.length === 0)
+                    error += "<div>Пожалуйста заполните все обязательные поля.</div>";
+            }
+        });
+        if(pass) {
+            $('[data-overlay="comment"]').removeClass('d-none');
+            if(grecaptcha !== undefined) {
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('6LdPIwwbAAAAAE0Ra3cw2Xowe9NgPwKqdvqRvGxV', {action: 'submit'})
+                        .then(function (recaptcha_token) {
+                            var data = {recaptcha_token: recaptcha_token};
+                            var formData = new FormData($this[0]);
+                            for(var entry of formData.entries()) {
+                                var key = entry[0];
+                                var value = entry[1];
+                                data[key] = value;
+                            }
+                            $.post('/api/new-comment.php', data, function (strResponse) {
+                                var response = JSON.parse(strResponse);
+                                var status = response.status;
+                                switch (status) {
+                                    case "success": {
+                                        var messages = response.messages;
+                                        modal_error(
+                                            messages.map(function (message) {
+                                                return "<div>"+message+"</div>";
+                                            }), 'success')
+                                    } break;
+                                    case "failure": {
+                                        var errors = response.errors;
+                                        modal_error(
+                                            errors.map(function (message) {
+                                                return "<div>"+message+"</div>";
+                                            }), 'failure');
+                                    } break;
+                                }
+                                $('[data-overlay="comment"]').addClass('d-none');
+                            })
+                        })
+                        .catch(function () {
+                            modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
+                            $('[data-overlay="comment"]').addClass('d-none');
+                        })
+                });
+            } else {
+                $('[data-overlay="comment"]').addClass('d-none');
+                modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
+            }
+        } else {
+            modal_error(error, 'error');
+        }
+    });
+
+
+    //Форама отправки заявок
+    $(".send-request").on("click", function () {
+        var t = $(this),
+            e = t.closest("form"),
+            id = e.find('[name="id"]').val();
+
+        e.find('[data-check="true"]').each(function () {
+            if (0 == $(this).val().length)
+                return modal_error("Пожалуйста заполните все поля.");
         });
 
-        $(".review_modal, .comment_modal, .request_modal").on("click", function () {
-                var e = $(this).data();
-                switch (e.type) {
-                        case "review":
-                                elem = $("#review");
-                                break;
-                        case "comment":
-                                elem = $("#comment");
-                                elem.find('[name="type"]').val(e.val);
-                                break;
-                        case "request":
-                                elem = $("#request");
-                                elem.find('[name="type"]').val(e.val);
-                                break;
+        $.post("/ajax?func=new_requests", e.serialize())
+            .then(function (e) {
+
+                if (e == true) {
+                    modal_clear();
+                    t.closest("form").append('<div class="thank"><span>Ваша заявка отправлена представителю компании. Так-же отправили заявку в лучшие компании, рекомендуем обратить на них внимание.</span></div>');
+                    return true;
+                } else {
+                    modal_error(e);
                 }
-
-                elem.find('[name="id"]').val(e.id);
-                elem.find('[name="key"]').val(e.key);
-                
-                modal_open(".window__" + e.type);
-        });
-
-        $(".modal__window .close").on("click", function () {
-                modal_close($(this).closest(".modal__window"))
-        });
-
-        $(".modal").on("click", function (e) {
-                var t = $(".modal__window");
-                t.is(e.target) || 0 !== t.has(e.target).length || modal_close($(this).closest(".modal__window"))
-        });
-
-        $(".modal__like span").on("click", function () {
-                var e = $(this).parent();
-                e.find("span").hasClass("active") && e.find("span").removeClass("active"),
-                $(this).toggleClass("active")
-        });
-
-        // Новый комментарий
-        $(".send-comment").on("click", function () {
-                var e = $("#comment"),
-                        t = !0,
-                        a = $(this);
-                e.find('[data-check="true"]').each(function () {
-                        "" == $(this).val() && (t = !1)
-                }),
-                1 == t ? $.post("/ajax?func=create_comment", e.serialize(), function (e) {
-                        "ok" == e ? (modal_clear(), a.closest("form").append('<div class="thank"><span>Спасибо! Ваш комментарий будет опубликован после модерации.</span></div>')) : modal_error(e)
-                }) : modal_error("Пожалуйста заполните все поля.")
-        }),
-
-
-        //Форама отправки заявок
-        $(".send-request").on("click", function () {
-                var t   = $(this),
-                    e   = t.closest("form"),
-                    id  = e.find('[name="id"]').val();
-
-                e.find('[data-check="true"]').each(function () {
-                        if (0 == $(this).val().length )
-                                return modal_error("Пожалуйста заполните все поля.");
-                });
-
-                $.post("/ajax?func=new_requests", e.serialize())
-                        .then(function (e) {
-            
-                                if(e == true){
-                                        modal_clear();
-                                        t.closest("form").append('<div class="thank"><span>Ваша заявка отправлена представителю компании. Так-же отправили заявку в лучшие компании, рекомендуем обратить на них внимание.</span></div>');
-                                        return true;
-                                }else{
-                                        modal_error(e);
-                                }
-                        });
-        });
-
-        $("#review").on("submit", function (e) { 
-                e.preventDefault();
-
-                var $this       = $(this);
-                var like        = $this.find('.modal__like span.active').data('like');
-
-                $this.find('[data-check="true"]').each(function() { 
-                        if ( $(this).val().length == 0 )
-                                return modal_error("Пожалуйста заполните все поля.");
-                });
-
-                $.post("/ajax?func=new_reviews", $this.serialize() + "&like=" + like )
-                        .then(function(e) { 
-                                if (e) {
-                                        modal_clear();
-                                        $this.append('<div class="thank"><span>Спасибо! Ваш отзыв опубликован.</span></div>');
-                                }
-                        });
-        });
-
-        $(" .home__search-item span, .home__search-item i").on("click", function () {
-                $(".home__search").trigger("focus")
-        });
-
-        $(".home__search").on("focus", function () {
-                $(this).closest(".home__item").addClass("active"),
-                950 < $(window).width() ? $(this).parent().stop().animate({
-                        width: "100%"
-                }, 300) : ($(this).stop().animate({
-                        width: "100%",
-                        padding: "6px 7px"
-                }, 300), setTimeout(function () {
-                        $(".home__search-item").stop().animate({
-                                width: "100%"
-                        }, 200),
-                        $(".home__search-item span").fadeIn("fast", "swing")
-                }, 100))
-        }).on("input", function () {
-                var e = $(this).val();
-                clearTimeout(t),
-                "" == $(this).val() ? ($(this).siblings("span").css({
-                        display: "block"
-                }), $('input[name="home__search"]').removeAttr("style"), $(".search").stop().animate({
-                        top: 50,
-                        opacity: 0
-                }, 300, function () {
-                        $(this).css({
-                                display: "none"
-                        })
-                })) : ($(this).siblings("span").css({
-                        display: "none"
-                }), t = setTimeout(function () {
-                        $.ajax({
-                                type: "POST",
-                                url: "/ajax?func=search",
-                                data: {
-                                        value: e
-                                },
-                                cache: !1,
-                                success: function (e) {
-                                        $(".search").is(":visible") || ($('input[name="home__search"]').css({
-                                                "border-radius": "3px 3px 0 0"
-                                        }), $(".search").css({
-                                                display: "block"
-                                        }).stop().animate({
-                                                top: 30,
-                                                opacity: 1
-                                        }, 300)),
-                                        $(".search").html(e)
-                                }
-                        })
-                }, 300))
-        });
-
-        $(document).on("click", function (e) {
-                var t = $(".home__search-item");
-                t.is(e.target) || 0 !== t.has(e.target).length || "" == t.find("input").val() && (950 < $(window).width() ? t.stop().animate({
-                        width: "200px"
-                }, 300, function () {
-                        $(this).closest(".home__item").removeClass("active"),
-                        $(this).removeAttr("style")
-                }) : (t.find("input").stop().animate({
-                        width: "0",
-                        padding: "6px 0"
-                }, 300, function () {
-                        $(this).closest(".home__item").removeClass("active"),
-                        $(this).removeAttr("style"),
-                        $(".home__search-item span").removeAttr("style")
-                }), $(".home__search-item span").fadeOut(250, "swing")))
-        });
-
-        $(window).on('scroll load', function(){
-          var bannerBlock     = $('.banner-block'),
-              navBlcok        = $('.content__item-right > div:nth-child(1)'),
-              nav             = ( navBlcok.offset().top + navBlcok.height() + 5 ),
-              scrollT         = $(this).scrollTop();
-
-          if(nav < scrollT){
-            bannerBlock.css({
-                position:'fixed',
-                top:15
             });
-          }else{
-            bannerBlock.removeAttr('style');
-          }
+    });
 
+    $("#review").on("submit", function (e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var like = $this.find('.modal__like span.active').data('like');
+        var pass = true
+        var error = '';
+        $this.find('[data-check="true"]').each(function () {
+            if ($(this).val().length === 0) {
+                pass = false;
+                if(error.length === 0)
+                    error += "<div>Пожалуйста заполните все обязательные поля.</div>";
+            }
         });
+        if (like === undefined) {
+            pass = false;
+            error += "<div>Выберете понравилась ли вам компания.</div>";
+        }
+
+        if (pass) {
+            $('[data-overlay="review"]').removeClass('d-none');
+            if(grecaptcha !== undefined) {
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('6LdPIwwbAAAAAE0Ra3cw2Xowe9NgPwKqdvqRvGxV', {action: 'submit'})
+                        .then(function (recaptcha_token) {
+                            var data = {recaptcha_token: recaptcha_token, is_positive: like};
+                            var formData = new FormData($this[0]);
+                            for(var entry of formData.entries()) {
+                                var key = entry[0];
+                                var value = entry[1];
+                                data[key] = value;
+                            }
+                            $.post('/api/new-review.php', data, function (strResponse) {
+                                var response = JSON.parse(strResponse);
+                                $('[data-overlay="review"]').addClass('d-none');
+                                var status = response.status;
+                                switch (status) {
+                                    case 'success': {
+                                        var messages = response.messages;
+                                        modal_error(
+                                            messages.map(function (message) {
+                                            return "<div>"+message+"</div>";
+                                        }), 'success')
+                                    } break;
+                                    case 'failure': {
+                                        var errors = response.errors;
+                                        modal_error(
+                                            errors.map(function (message) {
+                                            return "<div>"+message+"</div>";
+                                        }), 'failure');
+                                    } break;
+                                }
+                                $('[data-overlay="review"]').addClass('d-none');
+                            })
+
+                        })
+                        .catch(function () {
+                            modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
+                            $('[data-overlay="review"]').addClass('d-none');
+                        })
+                });
+            } else {
+                modal_error('Что-то пошло не так попробуйте отправить форму чуть позже.', 'error');
+                $('[data-overlay="review"]').addClass('d-none');
+            }
+        } else {
+            modal_error(error, 'error');
+        }
+
+    });
+
+    $(" .home__search-item span, .home__search-item i").on("click", function () {
+        $(".home__search").trigger("focus")
+    });
+
+    $(".home__search").on("focus", function () {
+        $(this).closest(".home__item").addClass("active"),
+            950 < $(window).width() ? $(this).parent().stop().animate({
+                width: "100%"
+            }, 300) : ($(this).stop().animate({
+                width: "100%",
+                padding: "6px 7px"
+            }, 300), setTimeout(function () {
+                $(".home__search-item").stop().animate({
+                    width: "100%"
+                }, 200),
+                    $(".home__search-item span").fadeIn("fast", "swing")
+            }, 100))
+    }).on("input", function () {
+        var e = $(this).val();
+        clearTimeout(t),
+            "" == $(this).val() ? ($(this).siblings("span").css({
+                display: "block"
+            }), $('input[name="home__search"]').removeAttr("style"), $(".search").stop().animate({
+                top: 50,
+                opacity: 0
+            }, 300, function () {
+                $(this).css({
+                    display: "none"
+                })
+            })) : ($(this).siblings("span").css({
+                display: "none"
+            }), t = setTimeout(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/ajax?func=search",
+                    data: {
+                        value: e
+                    },
+                    cache: !1,
+                    success: function (e) {
+                        $(".search").is(":visible") || ($('input[name="home__search"]').css({
+                            "border-radius": "3px 3px 0 0"
+                        }), $(".search").css({
+                            display: "block"
+                        }).stop().animate({
+                            top: 30,
+                            opacity: 1
+                        }, 300)),
+                            $(".search").html(e)
+                    }
+                })
+            }, 300))
+    });
+
+    $(document).on("click", function (e) {
+        var t = $(".home__search-item");
+        t.is(e.target) || 0 !== t.has(e.target).length || "" == t.find("input").val() && (950 < $(window).width() ? t.stop().animate({
+            width: "200px"
+        }, 300, function () {
+            $(this).closest(".home__item").removeClass("active"),
+                $(this).removeAttr("style")
+        }) : (t.find("input").stop().animate({
+            width: "0",
+            padding: "6px 0"
+        }, 300, function () {
+            $(this).closest(".home__item").removeClass("active"),
+                $(this).removeAttr("style"),
+                $(".home__search-item span").removeAttr("style")
+        }), $(".home__search-item span").fadeOut(250, "swing")))
+    });
+
+    $(window).on('scroll load', function () {
+        var bannerBlock = $('.banner-block'),
+            navBlcok = $('.content__item-right > div:nth-child(1)'),
+            nav = (navBlcok.offset().top + navBlcok.height() + 5),
+            scrollT = $(this).scrollTop();
+
+        if (nav < scrollT) {
+            bannerBlock.css({
+                position: 'fixed',
+                top: 15
+            });
+        } else {
+            bannerBlock.removeAttr('style');
+        }
+
+    });
 });

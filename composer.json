@@ -6,14 +6,16 @@
     "illuminate/validation": "^8.42",
     "illuminate/translation": "^8.42",
     "illuminate/http": "^8.42",
-    "illuminate/pagination": "^8.43"
+    "illuminate/pagination": "^8.43",
+    "guzzlehttp/guzzle": "^7.3"
   },
   "autoload": {
     "psr-4": {
       "app\\": "app",
       "database\\": "database",
       "patterns\\": "patterns",
-      "helperClasses\\": "helperClasses"
+      "helperClasses\\": "helperClasses",
+      "migrations\\": "migrations"
     }
   }
 }

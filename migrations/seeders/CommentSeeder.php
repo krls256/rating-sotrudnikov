@@ -7,8 +7,6 @@ use migrations\seeders\traits\DefaultSeederTrait;
 use PDO;
 
 require_once __DIR__ . '/../../config.php';
-require_once ROOT_DIR . '/migrations/seeders/Seeder.php';
-require_once ROOT_DIR . '/migrations/seeders/traits/DefaultSeederTrait.php';
 
 class CommentSeeder extends Seeder
 {

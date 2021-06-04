@@ -58,6 +58,15 @@
                 >Не прошел модерацию</option>
             </select>
         </div>
+        <div class="form-group mb-0 mr-2">
+            <label for="is_moderated">Сортировка</label>
+            <select name="sort_by" id="is_moderated" class="form-control">
+                <option value="asc" <?php if($request->get('sort_by') === 'asc') echo
+                'selected'?>>По возрастанию</option>
+                <option value="desc" <?php if($request->get('sort_by') === 'desc') echo
+                'selected'?>>По убыванию</option>
+            </select>
+        </div>
         <button class="btn btn-info">Применить</button>
     </div>
 </form>

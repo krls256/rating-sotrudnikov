@@ -21,7 +21,8 @@ class ReviewIndexAdminRequest extends CoreRequest
             'is_published' => 'nullable|boolean',
             'is_moderated' => 'nullable|boolean',
             'page' => 'nullable|integer|min:1',
-            'review_source' => ['nullable', new InArrayRule(Review::source()->all())]
+            'review_source' => ['nullable', new InArrayRule(Review::source()->all())],
+            'sort_by' => ['nullable', new InArrayRule(['asc', 'desc'])]
         ];
     }
 

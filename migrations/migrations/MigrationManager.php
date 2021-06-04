@@ -3,13 +3,6 @@
 
 namespace migrations\migrations;
 
-require_once ROOT_DIR . '/migrations/migrations/AdminMigration.php';
-require_once ROOT_DIR . '/migrations/migrations/AdviceMigration.php';
-require_once ROOT_DIR . '/migrations/migrations/CommentMigration.php';
-require_once ROOT_DIR . '/migrations/migrations/CompanyMigration.php';
-require_once ROOT_DIR . '/migrations/migrations/ReviewMigration.php';
-require_once ROOT_DIR . '/migrations/migrations/SettingsMigration.php';
-
 use PDO;
 
 class MigrationManager
@@ -18,10 +11,11 @@ class MigrationManager
     private $migrations = [
         AdminMigration::class,
         AdviceMigration::class,
-        CommentMigration::class,
         CompanyMigration::class,
         ReviewMigration::class,
-        SettingsMigration::class
+        CommentMigration::class,
+        SettingsMigration::class,
+        UserRequestMigration::class
     ];
 
     public function __construct(PDO $PDO) {

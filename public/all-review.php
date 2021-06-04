@@ -152,7 +152,7 @@ if ($page + 1 != 1)
                       echo $date->isoFormat('YYYY-MM-DD');
                       ?></span>
                             <?php $comm =
-                                $PDO->query("SELECT * FROM `comment` WHERE `review` = $commentID and `moderation` = 1"); ?>
+                                $PDO->query("SELECT * FROM `comment` WHERE `review_id` = $commentID and `is_moderated` = 1"); ?>
                             <span><?= $comm->rowCount() ?></span>
                             <a href="/otzyvy-sotrudnikov-<?= $companyRow['url'] ?>/" class="company__bottom-green">Все
                                 отзывы о компании</a>

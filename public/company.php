@@ -22,6 +22,7 @@ if ($type)
 else
     $postfix = '';
 $row = $dataToFormat['company'];
+$company = &$row;
 $companiesSide = $dataToFormat['companies'];
 $pagination = $dataToFormat['pagination'];
 $row_id = $row['id'];
@@ -43,7 +44,7 @@ $page = $pagination->currentPage();
     if ($page + 1 != 1)
     {
         echo " — страница " . $dp;
-    } ?><!--. Почитайте отзывы, напишите свой или оставьте заявку на обратный звонок.">
+    } ?>. Почитайте отзывы, напишите свой или оставьте заявку на обратный звонок.">
     <?php
     //Линки next и prev
     if ($page + 1 === 1)
@@ -95,8 +96,7 @@ $page = $pagination->currentPage();
         <div class="content__item-left">
             <div class="snippet company">
                 <div class="company__title">
-                    <h1>Отзывы сотрудников о компании <?= $row['name'] ?><span>Дата основания: <?= date('d.m.Y',
-                                $row['data']) ?></span></h1>
+                    <h1>Отзывы сотрудников о компании <?= $row['name'] ?><span>Дата основания: <?= date('d.m.Y', $row['data']) ?></span></h1>
                 </div>
                 <div class="compaty__item">
                     <div>
@@ -214,25 +214,24 @@ $page = $pagination->currentPage();
                         </div>
                         <!--comment-->
                         <?php
-                        $comm = $PDO->query("SELECT * FROM `comment` WHERE `review` = $reviewID and `type` = 'hr'");
-                        if ($comm->rowCount() > 0)
+                        if ($commentRow->comments->count())
                         {
                             ?>
                             <div class="comments">
                                 <div class="comments__title">Комментарии</div>
                                 <?php
-                                while ($commRow = $comm->fetch())
+                                foreach ($commentRow->comments as $comment)
                                 {
                                     ?>
                                     <div class="comments__item">
                                         <div class="comments__header">
-                                            <?= $commRow['fio'] ?>
+                                            <?= $comment['fio'] ?>
                                         </div>
                                         <div class="comments__text">
-                                            <?= $commRow['text'] ?>
+                                            <?= $comment['text'] ?>
                                         </div>
                                         <div class="comments__footer">
-                                            <?= date('d.m.Y G:i', $commRow['data']) ?>
+                                            <?= $comment->UserDate ?>
                                         </div>
                                     </div>
                                 <?php } ?>

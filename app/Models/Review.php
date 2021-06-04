@@ -85,5 +85,8 @@ class Review extends CoreModel
         return $this->belongsTo(Company::class);
     }
 
-
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

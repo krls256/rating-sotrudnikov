@@ -56,6 +56,9 @@ class ReviewRankingRepository extends CoreRepository
             ->where('company_id', $company_id)
             ->where('is_first_screen_review', 1)
             ->where('is_published', 1)
+            ->with(['comments' => function($query) {
+                return $query->where('is_moderated', 1);
+            }])
             ->orderBy('review_date', 'desc')
             ->take($perPage)
             ->get();
@@ -94,6 +97,9 @@ class ReviewRankingRepository extends CoreRepository
             ->where('company_id', $company_id)
             ->where('is_first_screen_review', 0)
             ->where('is_published', 1)
+            ->with(['comments' => function($query) {
+                return $query->where('is_moderated', 1);
+            }])
             ->orderBy('review_date', 'desc')
             ->take($perPage)
             ->skip($skip)
@@ -118,6 +124,9 @@ class ReviewRankingRepository extends CoreRepository
             ->where('company_id', $company_id)
             ->where('is_positive', 1)
             ->where('is_published', 1)
+            ->with(['comments' => function($query) {
+                return $query->where('is_moderated', 1);
+            }])
             ->orderBy('review_date', 'desc')
             ->take($perPage)
             ->skip($skip)
@@ -132,6 +141,9 @@ class ReviewRankingRepository extends CoreRepository
             ->where('company_id', $company_id)
             ->where('is_positive', 0)
             ->where('is_published', 1)
+            ->with(['comments' => function($query) {
+                return $query->where('is_moderated', 1);
+            }])
             ->orderBy('review_date', 'desc')
             ->take($perPage)
             ->skip($skip)

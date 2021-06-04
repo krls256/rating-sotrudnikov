@@ -58,6 +58,7 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         $orderByDesc = $options['orderByDesc'] ?? null;
         $orderByAsc = $options['orderByAsc'] ?? null;
         $page = $options['page'] ?? null;
+        $sort = $options['sort_by'] ?? null;
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
             'is_positive', 'is_published', 'is_moderated', 'review_pluses',
@@ -88,6 +89,9 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
 
         if($limit !== null) {
             $req = $req->take($limit);
+        }
+        if($sort !== null) {
+            $req = $req->orderBy('id', $sort);
         }
         if($orderByDesc !== null) {
             $req = $req->orderBy($orderByDesc, 'desc');

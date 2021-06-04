@@ -8,6 +8,7 @@ use app\Models\CoreModel;
 use app\Modules\Publishing\PublishingConstants;
 use app\Modules\Publishing\PublishingModule;
 use app\Modules\ReviewRanking\ReviewRankingModule;
+use Carbon\Carbon;
 
 class ReviewObserver extends CoreObserver
 {
@@ -52,6 +53,10 @@ class ReviewObserver extends CoreObserver
 
     public function creating(CoreModel $model): bool
     {
+        $date = $model->getAttribute('review_date');
+        if($date === null) {
+            $model->setAttribute('review_date', Carbon::now());
+        }
         $hash = getHash($model->getAttribute('review_pluses') . $model->getAttribute('review_minuses'));
         $model->setAttribute('review_hash', $hash);
         $src = $model->getAttribute('review_source');

@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'Chrome-Lighthouse') === false): ?>
 
-	<script>$(window).on("load",function(){var e=document.createElement("script");e.src="https://www.google.com/recaptcha/api.js",$(".wrapper").after(e)});</script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdPIwwbAAAAAE0Ra3cw2Xowe9NgPwKqdvqRvGxV" async></script>
 	<script src="/js/jquery.mask.min.js?v=0.0.1"></script>
 	<script src="/js/formstyler.js?v=0.0.1"></script>
 	
