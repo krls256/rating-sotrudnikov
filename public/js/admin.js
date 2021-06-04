@@ -371,9 +371,13 @@ const toggleTableForm = () => {
         const toggleControl = header.querySelector('[data-action="toggle-control"]');
         toggleControl.addEventListener('click', () => {
             const maxHeight = `${wrapper.scrollHeight}px`;
-            line.style.padding = line.style.padding === '0px 0.75rem' ? '0.75rem' : '0px 0.75rem';
-            wrapper.style.maxHeight = wrapper.style.maxHeight === maxHeight ? '0' : maxHeight;
-
+            if(wrapper.style.maxHeight === maxHeight) {
+                wrapper.style.maxHeight = '0';
+                line.style.padding = '0px 0.75rem';
+            } else {
+                wrapper.style.maxHeight = maxHeight
+                line.style.padding = '0.75rem';
+            }
         })
     })
 }
@@ -436,18 +440,13 @@ const ajaxUpdateTable = () => {
 ajaxUpdateTable();
 
 const closeAlerts = () => {
-    const wrappers = document.querySelectorAll('[data-type="form-wrapper"]');
-    wrappers.forEach(wrapper => {
-        const alerts = wrapper.querySelectorAll('.alert');
+        const alerts = document.querySelectorAll('.alert');
         alerts.forEach(alert => {
             alert.addEventListener('click', (e) => {
                 alert.textContent = '';
                 alert.classList.add('d-none');
-                resizeTableForm(wrapper)
             })
         })
-    })
-
 }
 
 closeAlerts();
