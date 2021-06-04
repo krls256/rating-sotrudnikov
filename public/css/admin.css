@@ -94,35 +94,32 @@ body, html {
     opacity: 1;
 }
 
-.menu__link li:nth-child(1) > a::before {
+.i-exclamation::before {
     background: url('/images/new_releases.svg');
 }
 
-.menu__link li:nth-child(2) > a::before {
+.i-edit::before {
     background: url('/images/create.svg');
 }
 
-.menu__link .harmonic > div::before {
+.i-moderation::before {
     background: url('/images/maderation.svg');
 }
 
-/*.menu__link li:nth-child(4) > a::before{*/
-/*   background: url('/images/forum.svg');*/
-/*}*/
-.menu__link li:nth-child(3) > a::before {
+.i-article::before {
     background: url('/images/artical.svg');
 }
 
-.menu__link li:nth-child(6) > a::before {
+.i-gear::before {
     background: url('/images/gear.svg') center center / contain;
 }
 
-.menu__link li:nth-child(7) > a::before {
-    background: url('/images/flamp.svg');
+.i-review::before {
+    background: url("/images/review.svg");
 }
 
-.review-table > a::before {
-    background: url("/images/review.svg");
+.i-comment::before {
+    background: url("/images/comment.svg") center center / contain;
 }
 
 .menu .menu__link:last-child {

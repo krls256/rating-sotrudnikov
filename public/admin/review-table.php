@@ -94,7 +94,7 @@ $companies = $controllerData['companies'];
                                 echo "<td class='$is_moderated_class'></td>";
 								echo "<td><span class='badge bg-info text-dark p-2' data-action='toggle-control' role='button'>Изменить</span></td>";
 								echo "</tr>";
-								echo "<tr data-type='table-form'><td colspan='8' class='toggleable'>";
+								echo "<tr data-type='table-form'><td colspan='8'>";
 							?>
 								<div class="d-block toggleable table-form__wrapper" data-type="form-wrapper">
 									<div class="table-form__loading">
@@ -174,63 +174,15 @@ $companies = $controllerData['companies'];
 				</div>
 				<?php
 				$lastPage = $reviews->lastPage();
-				$firstPage = 1;
 				$currentPage = $reviews->currentPage();
-				$width = 3; // на один больше
+				$width = 2; // на один больше
+                    include_view('/admin/table-pagination.php', [
+                        'lastPage' => $lastPage,
+                        'currentPage' => $currentPage,
+                        'width' => $width
+                    ]);
 				?>
-				<div class="table__pagination d-flex justify-content-center">
-					<div class="pagination">
-						<nav aria-label="Page navigation example">
-							<ul class="pagination">
-								<?php
-								if ($currentPage > $firstPage) {
-								?>
-									<li class="page-item">
-										<a class="page-link" href="#" data-page="<?= $firstPage ?>">
-											<i class="bi bi-chevron-double-left"></i>
-										</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#" data-page="<?= $currentPage - 1 ?>">
-											<i class="bi bi-arrow-left"></i>
-										</a>
-									</li>
-								<?php
-								}
-								?>
-								<?php
-								for ($i = $currentPage - 1; $i > $currentPage - $width; $i--) {
-									$page = $i;
-									if ($page >= $firstPage)
-										echo "<li class='page-item'><a class='page-link' href='#' data-page='$page' >$page</a></li>";
-								}
-								echo "<li class='page-item active'><span class='page-link' >$currentPage</span></li>";
-								for ($i = 1; $i < $width; $i++) {
-									$page = $currentPage + $i;
-									if ($page <= $lastPage)
-										echo "<li class='page-item'><a class='page-link' href='#' data-page='$page' >$page</a></li>";
-								}
-								?>
-								<?php
-								if ($currentPage < $lastPage) {
-								?>
-									<li class="page-item">
-										<a class="page-link" href="#" data-page="<?= $currentPage + 1 ?>">
-											<i class="bi bi-arrow-right"></i>
-										</a>
-									</li>
-									<li class="page-item">
-										<a class="page-link" href="#" data-page="<?= $lastPage ?>">
-											<i class="bi bi-chevron-double-right"></i>
-										</a>
-									</li>
-								<?php
-								}
-								?>
-							</ul>
-						</nav>
-					</div>
-				</div>
+
 			</section>
 		</main>
 	</div>

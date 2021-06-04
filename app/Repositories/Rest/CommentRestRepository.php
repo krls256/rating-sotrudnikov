@@ -27,9 +27,21 @@ class CommentRestRepository extends CoreRepository implements IRestRepository
 
     public function getPaginate(int $count, array $options): Paginator
     {
-        return $this->startConditions()
-            ->select('*')
-            ->paginate($count);
+        $column = '*';
+        $page = $options['page'] ?? 1;
+        $sort_by = $options['sort_by'] ?? null;
+        $is_moderated = $options['is_moderated'] ?? null;
+        $req = $this->startConditions()
+            ->select($column)
+            ->with('review');
+        if($is_moderated !== null) {
+            $req = $req->where('is_moderated', $is_moderated);
+        }
+        if($sort_by !== null) {
+            $req = $req->orderBy('id', $sort_by);
+        }
+
+        return $req->paginate($count, $column, 'page', $page);
     }
 
     public function getEdit(int $id): ?Model
