@@ -1,5 +1,5 @@
 <form action="" method="get" class="review-form">
-    <div class="d-flex align-items-end justify-content-between">
+    <div class="d-flex align-items-end">
         <div class="form-group mb-0 mr-2">
             <label for="company_id">Компания</label>
             <select name="company_id" id="company_id" class="form-control">
@@ -12,16 +12,6 @@
                     echo "<option value='$id' $selected >$name</option>";
                 }
                 ?>
-            </select>
-        </div>
-        <div class="form-group mb-0 mr-2">
-            <label for="is_watched">Просмотрен</label>
-            <select name="is_watched" id="is_watched" class="form-control">
-                <option value="">Не указано</option>
-                <option value="0" <?php if($request->get('is_watched') === '0') echo 'selected';?> >Не
-                    просмотрен</option>
-                <option value="1" <?php if($request->get('is_watched') === '1') echo 'selected';?>
-                >Просмотрен</option>
             </select>
         </div>
         <div class="form-group mb-0 mr-2">

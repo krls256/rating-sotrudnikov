@@ -1,8 +1,11 @@
 <?php
+$needPagination = $request->get('pagination') !== '0';
 $lastPage = $lastPage;
 $firstPage = 1;
 $currentPage = $currentPage;
 $width = $width + 1; // на один больше
+
+if($needPagination) {
 ?>
 <div class="table__pagination d-flex justify-content-center">
     <div class="pagination">
@@ -57,3 +60,4 @@ $width = $width + 1; // на один больше
         </nav>
     </div>
 </div>
+<?php } ?>

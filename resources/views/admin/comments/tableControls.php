@@ -1,5 +1,5 @@
 <form action="" method="get" class="review-form">
-    <div class="d-flex align-items-end justify-content-between">
+    <div class="d-flex align-items-end">
         <div class="form-group mb-0 mr-2">
             <label for="company_id">Компания</label>
             <select name="company_id" id="company_id" class="form-control">

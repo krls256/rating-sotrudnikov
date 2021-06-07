@@ -39,9 +39,14 @@ $companies = $controllerData['companies'];
                     'companies' => $companies
                 ]); ?>
         </div>
-        <div class="d-inline-flex card card-body mt-3">
+        <div class="d-inline-flex flex-row card card-body mt-3">
             <form action="" method="get">
                 <button class="btn btn-info">Сбросить фильтры</button>
+            </form>
+            <form action="" method="get" class="ml-4">
+                <input type="hidden" name="is_watched" value="0">
+                <input type="hidden" name="pagination" value="0">
+                <button class="btn btn-info">Показать новые заявки</button>
             </form>
         </div>
         <section class="d-flex card card-body mt-3 mb-5">
