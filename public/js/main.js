@@ -166,6 +166,7 @@ $(document).ready(function (e, t) {
             case "request":
                 elem = $("#request");
                 elem.find('[name="type"]').val(e.val);
+                elem.find('[name="company_id"]').val(e.id);
                 break;
         }
 
