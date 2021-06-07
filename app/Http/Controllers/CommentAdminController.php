@@ -9,6 +9,7 @@ use app\Http\Requests\Admin\CommentIndexAdminRequest;
 use app\Http\Requests\Admin\CommentPublishAdminRequest;
 use app\Http\Requests\Admin\CommentUpdateAdminRequest;
 use app\Http\ValidationHandlers\IValidationHandler;
+use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\Interfaces\IRestRepository;
 use helperClasses\Request;
 
@@ -28,8 +29,11 @@ class CommentAdminController extends CoreController
         $count = 25;
         $comments = $this->repository->getPaginate($count, $req);
 
+        $companiesRepository = new BaseCompaniesRepository();
+        $companies = $companiesRepository->getCompaniesNames();
         return [
-            'comments' => $comments
+            'comments' => $comments,
+            'companies' => $companies
         ];
     }
 

@@ -6,6 +6,7 @@ namespace app\Http\Controllers\CRUD;
 
 use app\Http\Requests\CRUD\UserRequests\UserRequestsIndexCRUDRequest;
 use app\Http\ValidationHandlers\IValidationHandler;
+use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\Rest\UserRequestRestRepository;
 use helperClasses\Request;
 
@@ -23,8 +24,12 @@ class UserRequestCRUDController extends CRUDController
         $count = 25;
         $userRequests = $this->repository->getPaginate($count, $req);
 
+        $companiesRepository = new BaseCompaniesRepository();
+        $companies = $companiesRepository->getCompaniesNames();
+
         return [
-            'userRequests' => $userRequests
+            'userRequests' => $userRequests,
+            'companies' => $companies
         ];
     }
 }

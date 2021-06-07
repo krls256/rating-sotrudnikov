@@ -30,12 +30,27 @@ class UserRequestRestRepository extends CoreRepository implements IRestRepositor
     {
         $column = '*';
         $page = $options['page'] ?? 1;
-        $res = $this
+        $sort_by = $options['sort_by'] ?? null;
+        $is_watched = $options['is_watched'] ?? null;
+        $company_id = $options['company_id'] ?? null;
+
+        $req = $this
             ->startConditions()
             ->select('*')
-            ->with('company')
-            ->paginate($count, $column, 'page', $page);
+            ->with('company');
 
+
+        if($company_id !== null) {
+            $req = $req->where('company_id', $company_id);
+        }
+        if($is_watched !== null) {
+            $req = $req->where('is_watched', $is_watched);
+        }
+        if($sort_by !== null) {
+            $req = $req->orderBy('id', $sort_by);
+        }
+
+        $res = $req->paginate($count, $column, 'page', $page);
         $ids = $res->map(function ($it) {return $it->id;})->toArray();
         $this->watch($ids);
         return $res;

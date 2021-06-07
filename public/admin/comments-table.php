@@ -11,6 +11,7 @@ $repository = new CommentRestRepository();
 $controller = new CommentAdminController($repository);
 $controllerData = $controller->index($request);
 $comments = $controllerData['comments'];
+$companies = $controllerData['companies'];
 ?>
 <!DOCTYPE html>
 <html lang="ru-Ru" dir="ltr">
@@ -26,7 +27,20 @@ $comments = $controllerData['comments'];
 <div class="page__layout">
     <?php include_view('/admin/adminMenu.php'); ?>
     <main class="content">
+        <div class="card card-body">
+            <h1 class="card-title">Таблица комментариев</h1>
+            <?php include_view('/admin/comments/tableControls.php',
+                [
+                    'request' => $request,
+                    'companies' => $companies
+                ]); ?>
+        </div>
         <?php include_view('/includes/adminMessageBar.php') ?>
+        <div class="d-inline-flex card card-body mt-3">
+            <form action="" method="get">
+                <button class="btn btn-info">Сбросить фильтры</button>
+            </form>
+        </div>
         <section class="d-flex card card-body mt-3 mb-5">
             <h2>Информация о таблице</h2>
             <ul class="ml-4">
@@ -34,7 +48,6 @@ $comments = $controllerData['comments'];
             </ul>
         </section>
         <section class="card card-body">
-            <h2 class="card-title">Таблица комментариев</h2>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -43,6 +56,7 @@ $comments = $controllerData['comments'];
                         <th scope="col">Имя</th>
                         <th scope="col">Комментарий</th>
                         <th scope="col">Дата</th>
+                        <th scope="col">Компания</th>
                         <th scope="col">Ссылки</th>
                     </tr>
                     </thead>
@@ -61,12 +75,16 @@ $comments = $controllerData['comments'];
                         $review_id = $review->id;
                         $review_pluses = $review->review_pluses;
                         $review_minuses = $review->review_minuses;
+
+                        $company = $review->company;
+                        $company_name = $company->name;
                         ?>
                         <tr data-type="table-header" class="<?php if (!$is_moderated) echo 'bg-gray-light' ?>">
                             <th scope="row"><?= $comment_id ?></th>
                             <td><?= $commenter_name ?></td>
                             <td><?= $comment_text_cropped ?></td>
                             <td><?= $comment_date ?></td>
+                            <td><?= $company_name ?></td>
                             <td>
                                 <div class="d-flex">
                                     <button class="btn btn-primary badge p-2 mr-3" data-action="toggle-control">

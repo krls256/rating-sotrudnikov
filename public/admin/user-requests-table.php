@@ -13,6 +13,7 @@ $controller = new UserRequestCRUDController($repository);
 
 $controllerData = $controller->index($request);
 $userRequests = $controllerData['userRequests'];
+$companies = $controllerData['companies'];
 
 ?>
 <!DOCTYPE html>
@@ -20,7 +21,7 @@ $userRequests = $controllerData['userRequests'];
 
 <head>
     <meta charset="utf-8">
-    <title>Таблица комментариев</title>
+    <title>Таблица заявок</title>
     <?php include_view('/admin/headImports.php'); ?>
 </head>
 
@@ -30,6 +31,19 @@ $userRequests = $controllerData['userRequests'];
     <?php include_view('/admin/adminMenu.php'); ?>
     <main class="content">
         <?php include_view('/includes/adminMessageBar.php') ?>
+        <div class="card card-body">
+            <h1 class="card-title">Таблица заявок</h1>
+            <?php include_view('/admin/userRequests/tableControls.php',
+                [
+                    'request' => $request,
+                    'companies' => $companies
+                ]); ?>
+        </div>
+        <div class="d-inline-flex card card-body mt-3">
+            <form action="" method="get">
+                <button class="btn btn-info">Сбросить фильтры</button>
+            </form>
+        </div>
         <section class="d-flex card card-body mt-3 mb-5">
             <h2>Информация о таблице</h2>
             <ul class="ml-4">
@@ -39,7 +53,6 @@ $userRequests = $controllerData['userRequests'];
             </ul>
         </section>
         <section class="card card-body">
-            <h2 class="card-title">Таблица заявок</h2>
             <div class="table-responsive">
                 <table class="table">
                     <thead>

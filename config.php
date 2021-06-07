@@ -2,14 +2,16 @@
 
 session_start();
 define('ROOT_DIR', __DIR__);
+define('DEBUG', false);
 require_once "vendor/autoload.php";
 require_once "credentials.php";
 require_once 'helpers/index.php';
 
 use database\Database;
-
+/** @var Database $db */
 $db = Database::getInstance($dbCredentials);
 $web = php_sapi_name() !== 'cli';
+
 
 if($web) {
     $pipeline = new \app\Middleware\Pipeline();

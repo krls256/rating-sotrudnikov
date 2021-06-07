@@ -17,7 +17,8 @@ class CommentIndexAdminRequest extends CoreRequest
         return [
             'is_moderated' => 'nullable|boolean',
             'page' => 'nullable|integer|min:1',
-            'sort_by' => ['nullable', new InArrayRule(['asc', 'desc'])]
+            'sort_by' => ['nullable', new InArrayRule(['asc', 'desc'])],
+            'company_id' => ['nullable', new ExistsRule('company', 'id')]
         ];
     }
 

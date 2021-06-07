@@ -22,4 +22,12 @@ class BaseCompaniesRepository extends CoreRepository
             ->toBase()
             ->get();
     }
+
+    public function getWithComments(int $id) {
+        return $this->startConditions()
+            ->select('*')
+            ->where('id', $id)
+            ->with('comments')
+            ->first();
+    }
 }

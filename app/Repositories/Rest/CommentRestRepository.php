@@ -5,6 +5,8 @@ namespace app\Repositories\Rest;
 
 
 use app\Models\Comment;
+use app\Repositories\Base\BaseCommentsRepository;
+use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\CoreRepository;
 use app\Repositories\Interfaces\IRestRepository;
 use Illuminate\Contracts\Pagination\Paginator;
@@ -25,15 +27,35 @@ class CommentRestRepository extends CoreRepository implements IRestRepository
             ->get();
     }
 
+    protected function getCommentsIdsByCompanyId(int $id) {
+        $companiesRepo = new BaseCompaniesRepository();
+        $company = $companiesRepo->getWithComments($id);
+        return $company
+            ->comments
+            ->map(function ($it) {return $it->id;})
+            ->toArray();
+    }
+
     public function getPaginate(int $count, array $options): Paginator
     {
         $column = '*';
         $page = $options['page'] ?? 1;
         $sort_by = $options['sort_by'] ?? null;
         $is_moderated = $options['is_moderated'] ?? null;
+        $company_id = $options['company_id'] ?? null;
+
+
+
         $req = $this->startConditions()
             ->select($column)
-            ->with('review');
+            ->with(['review' => function($query) use ($company_id) {
+                return $query->with('company:id,name');
+            }]);
+
+        if($company_id !== null) {
+            $ids = $this->getCommentsIdsByCompanyId($company_id);
+            $req = $req->whereIn('id', $ids);
+        }
         if($is_moderated !== null) {
             $req = $req->where('is_moderated', $is_moderated);
         }

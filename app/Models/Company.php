@@ -40,4 +40,8 @@ class Company extends CoreModel
     {
         return $this->reviews()->where('is_published', 0)->where('is_positive', 0);
     }
+
+    public function comments() {
+        return $this->hasManyThrough(Comment::class, Review::class);
+    }
 }
