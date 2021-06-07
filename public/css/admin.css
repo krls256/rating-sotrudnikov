@@ -122,6 +122,40 @@ body, html {
     background: url("/images/comment.svg") center center / contain;
 }
 
+.i-request::before {
+    background: url("/images/request.svg") center center / contain;
+}
+
+.i-success::before {
+    background: url("/images/success.svg") center center / contain;
+}
+.i-attention::before {
+    background: url("/images/exclamation.svg") center center / contain;
+}
+
+.i {
+    position: relative;
+
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.i::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    float: none;
+    margin-right: 0;
+    opacity: 1;
+}
+
 .menu .menu__link:last-child {
     position: absolute;
     bottom: 20px;

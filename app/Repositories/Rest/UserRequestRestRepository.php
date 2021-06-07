@@ -28,10 +28,17 @@ class UserRequestRestRepository extends CoreRepository implements IRestRepositor
 
     public function getPaginate(int $count, array $options): Paginator
     {
-        return $this
+        $column = '*';
+        $page = $options['page'] ?? 1;
+        $res = $this
             ->startConditions()
             ->select('*')
-            ->paginate($count);
+            ->with('company')
+            ->paginate($count, $column, 'page', $page);
+
+        $ids = $res->map(function ($it) {return $it->id;})->toArray();
+        $this->watch($ids);
+        return $res;
     }
 
     public function getEdit(int $id): ?Model
@@ -79,6 +86,12 @@ class UserRequestRestRepository extends CoreRepository implements IRestRepositor
             ->where('id', $id)
             ->first()
             ->delete();
+    }
+
+    protected function watch(array $ids) : int {
+        return $this->startConditions()
+            ->whereIn('id', $ids)
+            ->update(['is_watched' => 1]);
     }
 
 }

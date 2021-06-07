@@ -27,6 +27,12 @@ $comments = $controllerData['comments'];
     <?php include_view('/admin/adminMenu.php'); ?>
     <main class="content">
         <?php include_view('/includes/adminMessageBar.php') ?>
+        <section class="d-flex card card-body mt-3 mb-5">
+            <h2>Информация о таблице</h2>
+            <ul class="ml-4">
+                <li>После изменения формочки соответствующей строки таблицы, таблица пока ещё не меняется, но если в сообщении написано, что таблица обновлена, то она действительно обновлена</li>
+            </ul>
+        </section>
         <section class="card card-body">
             <h2 class="card-title">Таблица комментариев</h2>
             <div class="table-responsive">

@@ -1,9 +1,13 @@
 <?php
-//количество неопубликованных пользовательских отзывов
+//количество неопубликованных пользовательских отзывов и не просмотренных заявок
 use app\Repositories\Base\BaseReviewsRepository;
+use app\Repositories\Base\BaseUserRequestsRepository;
 
-$repository = new BaseReviewsRepository();
-$UnModeratedCount = $repository->getUnModeratedCount();
+$reviewsRepository = new BaseReviewsRepository();
+$userRequestsRepository = new BaseUserRequestsRepository();
+$UnModeratedCount = $reviewsRepository->getUnModeratedCount();
+$UnWatchedCount = $userRequestsRepository->getUnWatchedCount();
+
 
 ?>
 <div class="menu">
@@ -16,6 +20,7 @@ $UnModeratedCount = $repository->getUnModeratedCount();
         <li><a class="i-article" href="/admin/create-review">Добавить отзыв</a></li>
         <li><a class="i-review" href="/admin/review-table">Таблица отзывов</a></li>
         <li><a class="i-comment" href="/admin/comments-table">Таблица комментариев</a></li>
+        <li><a class="i-request" href="/admin/user-requests-table">Таблица заявок<span><?= $UnWatchedCount ?></span></a></li>
         <?php if (($set['moderation'] ?? null) == 0) { ?>
             <li class="harmonic active">
                 <div class="i-moderation">Модирация отзывов</div>
