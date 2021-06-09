@@ -20,4 +20,8 @@ class Auth extends Singleton
     public function auth() {
         $this->isAuthed = true;
     }
+
+    public static function isAuthedStatic() {
+        return self::getInstance()->isAuthed();
+    }
 }

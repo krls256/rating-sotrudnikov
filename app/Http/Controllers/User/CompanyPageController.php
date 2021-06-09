@@ -16,6 +16,7 @@ use app\Repositories\Rest\CompanyRestRepository;
 use app\Repositories\Rest\ReviewRestRepository;
 use app\Repositories\Rest\UserRequestRestRepository;
 use app\Repositories\SingleEntity\CompanySingleEntityRepository;
+use helperClasses\Auth;
 use helperClasses\Request;
 
 class CompanyPageController extends UserController
@@ -46,8 +47,10 @@ class CompanyPageController extends UserController
 
 
         $pagination = $reviewRankingModule->getRankingPagination($id, $page, $paginationType);
-        // TODO: for admin
-        if($company->dev || ($pagination->currentPage() > $pagination->lastPage() && $pagination->currentPage() !== 1))
+        if(
+            ($company->dev && Auth::isAuthedStatic() === false) ||
+            ($pagination->currentPage() > $pagination->lastPage() && $pagination->currentPage() !== 1)
+        )
             notFound();
         return [
             'company' => $company,

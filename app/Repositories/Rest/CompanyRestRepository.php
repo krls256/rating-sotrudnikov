@@ -28,12 +28,18 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
         $column = $options['column'] ?? '*';
         $orderBy = $options['orderBy'] ?? null;
         $limit = $options['limit'] ?? null;
+        $auth = $options['auth'] ?? null;
 
         $req = $this->startConditions()
             ->select($column)
             ->withCount('reviewsPublishedPositive')
             ->withCount('reviewsPublishedNegative');
         $req = $this->useOptions($req, $options);
+
+        if($auth === false) {
+            $req->where('dev', 0)->orWhereNull('dev');
+        }
+
         $companies = $req->get();
 
         if ($orderBy === self::ORDER_BY_DELTA_IN_INDEX)

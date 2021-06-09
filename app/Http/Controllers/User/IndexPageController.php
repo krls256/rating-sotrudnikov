@@ -6,6 +6,7 @@ namespace app\Http\Controllers\User;
 
 use app\Repositories\Rest\CompanyRestRepository;
 use app\Repositories\Rest\ReviewRestRepository;
+use helperClasses\Auth;
 use helperClasses\Request;
 
 class IndexPageController extends UserController
@@ -14,7 +15,8 @@ class IndexPageController extends UserController
         $companiesRepo = new CompanyRestRepository();
         $reviewsRepo = new ReviewRestRepository();
         $companies = $companiesRepo->getIndex([
-            'orderBy' => CompanyRestRepository::ORDER_BY_DELTA_IN_INDEX
+            'orderBy' => CompanyRestRepository::ORDER_BY_DELTA_IN_INDEX,
+            'auth' => Auth::isAuthedStatic()
         ]);
         $reviews = $reviewsRepo->getIndex([
             'limit' => 4,
