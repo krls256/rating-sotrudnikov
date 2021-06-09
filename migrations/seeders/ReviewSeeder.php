@@ -28,9 +28,12 @@ class ReviewSeeder extends Seeder
 
         $companiesFromDB = $this->getAddedCompanies();
         $DBCompaniesMap = [];
+        $seedCompanies = collect($this->companies)->keyBy('id');
 
         foreach ($this->rows as $i => $review)
         {
+            $review['company_name'] = $seedCompanies[$review['company_id']]['name'];
+            unset($review['company_id']);
             if ($review['is_positive'])
             {
                 $this->rows[$i]['is_positive'] = 1;
