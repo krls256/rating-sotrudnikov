@@ -169,27 +169,27 @@ $page = $pagination->currentPage();
 
             if ($countReview > 0)
             {
-                foreach ($pagination as $commentRow)
+                foreach ($pagination as $review)
                 {
-                    $reviewID = $commentRow['id'];
+                    $reviewID = $review['id'];
                     ?>
                     <div class="snippet review">
                         <div class="review__header">
                             <div class="review__user">
-                                <b><?= $commentRow->ReviewerNameForUser ?></b>
+                                <b><?= $review->ReviewerNameForUser ?></b>
                                 <span>оставил(а) отзыв</span>
                                 <span>о "<a href="<?= $row['sity']; ?>"><?= $row['name'] ?></a>"</span>
                             </div>
-                            <div class="review__like <?php echo $commentRow['is_positive'] == 1 ? 'positive' :
+                            <div class="review__like <?php echo $review['is_positive'] == 1 ? 'positive' :
                                 'negativ'; ?>">
                                 <i></i>
-                                <?php echo $commentRow['is_positive'] == 1 ? 'Рекомендую' : 'Не рекомендую'; ?>
+                                <?php echo $review['is_positive'] == 1 ? 'Рекомендую' : 'Не рекомендую'; ?>
                             </div>
                         </div>
                         <div class="review__text">
                             <?php
-                            $pluses = $commentRow['review_pluses'];
-                            $minuses = $commentRow['review_minuses'];
+                            $pluses = $review['review_pluses'];
+                            $minuses = $review['review_minuses'];
                             if ($pluses)
                             {
                                 $plusesClear = htmlspecialchars_decode($pluses);
@@ -204,9 +204,9 @@ $page = $pagination->currentPage();
                             ?>
                         </div>
                         <div class="review__footer">
-                            <span><?php echo $commentRow->UserDate; ?></span>
+                            <span><?php echo $review->UserDate; ?></span>
                             <button type="button" class="company__bottom-green comment_modal"
-                                    data-id="<?= $commentRow['id'] ?>" data-key="<?= $func->hash($commentRow['id']); ?>"
+                                    data-id="<?= $review['id'] ?>" data-key="<?= $func->hash($review['id']); ?>"
                                     data-type="comment" data-val="hr">КОММЕНТИРОВАТЬ
                             </button>
                             <?php if (isset($_SESSION['id']) != '') { ?><a
@@ -214,13 +214,13 @@ $page = $pagination->currentPage();
                         </div>
                         <!--comment-->
                         <?php
-                        if ($commentRow->comments->count())
+                        if ($review->comments->count())
                         {
                             ?>
                             <div class="comments">
                                 <div class="comments__title">Комментарии</div>
                                 <?php
-                                foreach ($commentRow->comments as $comment)
+                                foreach ($review->comments as $comment)
                                 {
                                     ?>
                                     <div class="comments__item">

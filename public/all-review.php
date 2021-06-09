@@ -12,8 +12,9 @@ $set = $settingsRepo->getSetting();
 
 $request = new Request();
 $controller = new AllReviewsPageController();
-$controllerData = $controller->index($request);
+$controllerData = $controller->index($request, 10);
 $companiesSide = $controllerData['companies'];
+$reviews = $controllerData['reviews'];
 
 //Количество записей
 // TODO: add is publish check
@@ -37,21 +38,21 @@ $list = --$page * $show;
 
 $sqlDev = (!empty($_SESSION['id']) and $_SESSION['id'] != '') ? '' : 'and c.dev IS NULL';
 
-$commentQuery = $PDO->query("SELECT 
-                                    r.id, 
-                                    c.dev, 
-                                    r.reviewer_position, 
-                                    r.is_positive, 
+$commentQuery = $PDO->query("SELECT
+                                    r.id,
+                                    c.dev,
+                                    r.reviewer_position,
+                                    r.is_positive,
                                     r.review_pluses,
        								r.review_minuses,
-                                    r.company_id, 
+                                    r.company_id,
                                     r.review_date,
                                     r.is_published
-                                FROM 
-                                  `review` r 
-                                LEFT OUTER JOIN `company` c ON 
-                                  r.company_id = c.id 
-                                WHERE 
+                                FROM
+                                  `review` r
+                                LEFT OUTER JOIN `company` c ON
+                                  r.company_id = c.id
+                                WHERE
                                   r.review_pluses != '' and r.review_minuses != '' $sqlDev and r.is_published = 1
                                 ORDER BY r.review_date DESC LIMIT $show OFFSET $list");
 
@@ -116,78 +117,93 @@ if ($page + 1 != 1)
                 <p class="index__text"><?php echo $set['all_rev_text']; ?></p>
             </div>
             <?php
-            if ($commentQuery->rowCount() > 0)
+            if ($reviews->count() > 0)
             {
-                while ($commentRow = $commentQuery->fetch())
+                foreach ($reviews as $review)
                 {
-                    $CompanyID = $commentRow['company_id'];
-                    $commentID = $commentRow['id'];
-
-                    /*Нужно получить название компании
-                      Можно получить из первого запроса,
-                      пишу на будущее для раздела "все отзывы"
-                    */
-                    $companyQuery = $PDO->query("SELECT * FROM `company` WHERE `id`=$CompanyID LIMIT 1");
-                    $companyRow = $companyQuery->fetch();
+                    $reviewID = $review['id'];
+                    $company = $review->company;
                     ?>
                     <div class="snippet review">
                         <div class="review__header">
                             <div class="review__user">
-                                <b><?= $commentRow['reviewer_position'] ?></b> <span>о компании "<a
-                                        href="/otzyvy-sotrudnikov-<?= $companyRow['url']; ?>/"><?= $companyRow['name'] ?></a>"</span>
+                                <b><?= $review->ReviewerNameForUser ?></b>
+                                <span>оставил(а) отзыв</span>
+                                <span>о "<a href="<?= $company['sity']; ?>"><?= $company['name'] ?></a>"</span>
                             </div>
-                            <div class="review__like <?php echo $commentRow['is_positive'] == 1 ? 'positive' :
+                            <div class="review__like <?php echo $review['is_positive'] == 1 ? 'positive' :
                                 'negativ'; ?>">
-                                <i></i> <?php echo $commentRow['is_positive'] == 1 ? 'Рекомендую' : 'Не рекомендую'; ?>
+                                <i></i>
+                                <?php echo $review['is_positive'] == 1 ? 'Рекомендую' : 'Не рекомендую'; ?>
                             </div>
                         </div>
                         <div class="review__text">
-                            <?= htmlspecialchars_decode($commentRow['review_pluses'] .
-                                $commentRow['review_minuses']); ?>
+                            <?php
+                            $pluses = $review['review_pluses'];
+                            $minuses = $review['review_minuses'];
+                            if ($pluses)
+                            {
+                                $plusesClear = htmlspecialchars_decode($pluses);
+                                echo "<span class='review__label mt-0 mb-2'>Плюсы</span>";
+                                echo "<p  class='mt-0 mb-2'>$plusesClear</p>";
+                            }
+                            if($minuses) {
+                                $minusesClear = htmlspecialchars_decode($minuses);
+                                echo "<span class='review__label mt-0 mb-2'>Минусы</span>";
+                                echo "<p>$minusesClear</p>";
+                            }
+                            ?>
                         </div>
-                        <div class="review__footer all-review__footer">
-                  <span><?php
-                      $date = \Carbon\Carbon::parse($commentRow['review_date']);
-                      $date->setTimezone('+3');
-                      echo $date->isoFormat('YYYY-MM-DD');
-                      ?></span>
-                            <?php $comm =
-                                $PDO->query("SELECT * FROM `comment` WHERE `review_id` = $commentID and `is_moderated` = 1"); ?>
-                            <span><?= $comm->rowCount() ?></span>
-                            <a href="/otzyvy-sotrudnikov-<?= $companyRow['url'] ?>/" class="company__bottom-green">Все
-                                отзывы о компании</a>
+                        <div class="review__footer">
+                            <span><?php echo $review->UserDate; ?></span>
+                            <button type="button" class="company__bottom-green comment_modal"
+                                    data-id="<?= $review['id'] ?>" data-key="<?= $func->hash($review['id']); ?>"
+                                    data-type="comment" data-val="hr">КОММЕНТИРОВАТЬ
+                            </button>
+                            <?php if (isset($_SESSION['id']) != '') { ?><a
+                                href="/admin/moderation_edit?id=<?= $reviewID ?>"><i></i></a><?php } ?>
                         </div>
+                        <!--comment-->
+                        <?php
+                        if ($review->comments->count())
+                        {
+                            ?>
+                            <div class="comments">
+                                <div class="comments__title">Комментарии</div>
+                                <?php
+                                foreach ($review->comments as $comment)
+                                {
+                                    ?>
+                                    <div class="comments__item">
+                                        <div class="comments__header">
+                                            <?= $comment['fio'] ?>
+                                        </div>
+                                        <div class="comments__text">
+                                            <?= $comment['text'] ?>
+                                        </div>
+                                        <div class="comments__footer">
+                                            <?= $comment->UserDate ?>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php } ?>
+                        <!--comment-->
                     </div>
                 <?php } ?>
                 <div class="page_nav">
                 <?php
-                if ($page >= 1)
-                {
-                    echo '<a href="/all-review?page=1" class="oneLink"></a>';              //На первую
-                    echo '<a href="/all-review?page=' . $page . '" class="nav-prev"></a>'; //Назад
-                }
+                    $currentPage = $reviews->currentPage();
 
-                $сurrent = $page + 1; //Текущая страница
-                $start = $сurrent - 3; //перед текущей
-                $end = $сurrent + 3; //После текущей
-
-                for ($j = 1; $j < $pages; $j++)
-                {
-                    if ($j >= $start && $j <= $end)
-                    {
-
-                        if ($j == ($page + 1))
-                            echo '<a href="all-review?page=' . $j . '" class="active">' . $j . '</a>';
-                        else
-                            echo '<a href="all-review?page=' . $j . '">' . $j . '</a>';
-                    }
-                }
-
-                if ($j > $page && ($page + 2) < $j)
-                {
-                    echo '<a href="all-review?page=' . ($page + 2) . '" class="nav-next"></a>';
-                    echo '<a href="all-review?page=' . ($j - 1) . '" class="lastLimk"></a>';
-                }
+                    include_view('/includes/reviewPagination.php', [
+                        'count' =>  $reviews->count(),
+                        'currentPage' => $currentPage,
+                        'lastPage' => $reviews->lastPage(),
+                        'start' => $currentPage - 3,
+                        'end' => $currentPage + 3,
+                        'prefix' => '/all-review?page=',
+                        'postfix' => ''
+                    ]);
                 ?></div><?php
             } else
             {

@@ -34,11 +34,17 @@ class RankingPagination extends Collection
         else
             $postfix = '';
 
-        $count = $this->count();
+
+
         $currentPage = $this->currentPage();
-        $lastPage = $this->lastPage();
-        $start = $currentPage - 3;
-        $end = $currentPage + 3;
-        include (ROOT_DIR . '/resources/views/includes/reviewPagination.php');
+        include_view('/includes/reviewPagination.php', [
+            'count' => $this->count(),
+            'currentPage' => $currentPage,
+            'lastPage' => $this->lastPage(),
+            'start' => $currentPage - 3,
+            'end' => $currentPage + 3,
+            'prefix' => '/otzyvy-sotrudnikov-' . $companyUrl . '/',
+            'postfix' => $postfix . '#rew_block'
+            ]);
     }
 }

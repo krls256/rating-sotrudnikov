@@ -1,13 +1,19 @@
+<!--$count-->
+<!--$currentPage-->
+<!--$lastPage-->
+<!--$start-->
+<!--$end-->
+<!--$prefix-->
+<!--$postfix-->
+
 <?php if ($count !== 0) { ?>
     <div class="page_nav">
         <?php
         //Ссылки на 1 и на преведущую
         if ($currentPage > 1)
         {
-            echo '<a href="/otzyvy-sotrudnikov-' . $companyUrl . '/1' . $postfix .
-                '#rew_block" class="oneLink"></a>';  //На первую
-            echo '<a href="/otzyvy-sotrudnikov-' . $companyUrl . '/' . $currentPage . $postfix .
-                '#rew_block" class="nav-prev"></a>'; //Назад
+            echo '<a href="' . $prefix . '1' . $postfix . '" class="oneLink"></a>';  //На первую
+            echo '<a href="' . $prefix . ($currentPage - 1) . $postfix . '" class="nav-prev"></a>'; //Назад
         }
 
 
@@ -19,10 +25,10 @@
             {
 
                 if ($pageNum === ($currentPage))
-                    echo '<a href="/otzyvy-sotrudnikov-' . $companyUrl . '/' . $pageNum . $postfix .
-                        '#rew_block" class="active">' . $pageNum . '</a>';
+                    echo '<a href="' . $prefix . $pageNum . $postfix .
+                        '" class="active">' . $pageNum . '</a>';
                 else
-                    echo '<a href="/otzyvy-sotrudnikov-' . $companyUrl . '/' . $pageNum . $postfix . '#rew_block">' .
+                    echo '<a href="' . $prefix . $pageNum . $postfix . '">' .
                         $pageNum . '</a>';
             }
         }
@@ -30,10 +36,8 @@
         //На следующую и на последнюю
         if($currentPage < $lastPage)
         {
-            echo '<a href="/otzyvy-sotrudnikov-' . $companyUrl . '/' . ($currentPage + 1) . $postfix .
-                '#rew_block" class="nav-next"></a>';
-            echo '<a href="/otzyvy-sotrudnikov-' . $companyUrl . '/' . ($lastPage) . $postfix .
-                '#rew_block" class="lastLimk"></a>';
+            echo '<a href="' . $prefix . ($currentPage + 1) . $postfix . '" class="nav-next"></a>';
+            echo '<a href="' . $prefix . ($lastPage) . $postfix . '" class="lastLimk"></a>';
         }
         ?>
     </div>

@@ -72,7 +72,8 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
             'review_minuses', 'review_date', 'company_id', 'review_source'];
         $req = $this->startConditions()
             ->select($column)
-            ->with('company:id,name');
+            ->with('company:id,name,sity')
+            ->with('comments');
 
         if($company !== null) {
             $req = $req->where('company_id', $company);
