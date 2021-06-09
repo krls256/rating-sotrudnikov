@@ -42,4 +42,14 @@ class BaseCompaniesRepository extends CoreRepository
             ->toArray();
         return $res;
     }
+
+    public function getPublishedCompanies() : Collection {
+        $res = $this->startConditions()
+            ->select('*')
+            ->where('dev', 0)
+            ->orWhereNull('dev')
+            ->get();
+
+        return $res;
+    }
 }
