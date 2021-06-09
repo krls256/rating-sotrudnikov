@@ -4,6 +4,7 @@
 namespace app\Repositories\Rest;
 
 
+use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\Interfaces\IRestRepository;
 use app\Models\Review;
 use app\Repositories\CoreRepository;
@@ -24,6 +25,7 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         $is_published = $options['is_published'] ?? null;
         $is_positive = $options['is_positive'] ?? null;
         $limit = $options['limit'] ?? null;
+        $auth = $options['auth'] ?? null;
 
         $column = [
             'id', 'reviewer_name', 'reviewer_position',
@@ -32,7 +34,12 @@ class ReviewRestRepository extends CoreRepository implements IRestRepository
         $req = $this->startConditions()
             ->select($column);
         $req = $this->useOptions($req, $options);
+        if($auth === false) {
+            $baseCompaniesRepo = new BaseCompaniesRepository();
 
+            $publishedCompanies = $baseCompaniesRepo->getPublishedIds();
+            $req = $req->whereIn('company_id', $publishedCompanies);
+        }
         if($is_published !== null) {
             $req = $req->where('is_published', $is_published);
         }

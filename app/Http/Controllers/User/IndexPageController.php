@@ -22,7 +22,8 @@ class IndexPageController extends UserController
             'limit' => 4,
             'orderByDesc' => 'review_date',
             'is_published' => 1,
-            'with' => 'company:id,name,url'
+            'with' => 'company:id,name,url',
+            'auth' => Auth::isAuthedStatic()
         ]);
 
         $companiesSide = $this->getSideBarCompanies();

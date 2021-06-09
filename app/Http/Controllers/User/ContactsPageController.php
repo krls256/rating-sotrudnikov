@@ -5,6 +5,7 @@ namespace app\Http\Controllers\User;
 
 
 use app\Repositories\Rest\ReviewRestRepository;
+use helperClasses\Auth;
 use helperClasses\Request;
 
 class ContactsPageController extends UserController
@@ -16,7 +17,8 @@ class ContactsPageController extends UserController
             'limit' => 4,
             'orderByDesc' => 'review_date',
             'is_published' => 1,
-            'with' => 'company:id,name,url'
+            'with' => 'company:id,name,url',
+            'auth' => Auth::isAuthedStatic()
         ]);
         return [
             'companies' => $companies,

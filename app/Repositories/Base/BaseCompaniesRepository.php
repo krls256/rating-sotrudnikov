@@ -30,4 +30,16 @@ class BaseCompaniesRepository extends CoreRepository
             ->with('comments')
             ->first();
     }
+
+    public function getPublishedIds() : array {
+        $res = $this->startConditions()
+            ->select(['id'])
+            ->where('dev', 0)
+            ->orWhereNull('dev')
+            ->toBase()
+            ->get()
+            ->map(function ($obj) {return $obj->id;})
+            ->toArray();
+        return $res;
+    }
 }
