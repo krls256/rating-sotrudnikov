@@ -10,6 +10,7 @@ use helperClasses\Request;
 $settingsRepo = new BaseSettingsRepository();
 $set = $settingsRepo->getSetting();
 
+
 $request = new Request();
 
 $controller = new CompanyPageController();

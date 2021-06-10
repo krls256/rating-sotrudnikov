@@ -17,16 +17,16 @@
             foreach ($companiesSide as $bc)
             {
                 ?>
-                <a href="/otzyvy-sotrudnikov-<?= $bc['url'] ?>/">
-                    <li>
+                <li>
+                    <a href="/otzyvy-sotrudnikov-<?= $bc['url'] ?>/">
                         <span class="banner-block__number"><?= $i ?></span>
                         <span class="banner-block__logo">
-            <img src="/<?= $bc['logo'] ?>" alt="<?= $bc['name'] ?>" />
-          </span>
+                            <img src="/<?= $bc['logo'] ?>" alt="<?= $bc['name'] ?>" />
+                          </span>
                         <span class="banner-block__name"><?= $bc['name'] ?></span>
                         <span class="banner-block__next"></span>
-                    </li>
-                </a>
+                    </a>
+                </li>
                 <?php $i++;
             } ?>
         </ul>

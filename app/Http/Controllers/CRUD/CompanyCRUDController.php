@@ -23,6 +23,7 @@ class CompanyCRUDController extends CRUDController
 
     public function update(Request $request) {
         $req = $request->all();
+
         $this->validate(CompanyUpdateCRUDRequest::class, $req);
         $id = $req['id'];
         $file = $request->get('file');
