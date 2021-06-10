@@ -14,7 +14,7 @@
 		<div class="block">
 			<h1 class="block__title">Добавить компанию</h1>
 			<div class="login__error"></div>
-			<form method="" action="" class="create" data-type="1" onsubmit="return false;">
+			<form method="post" action="/admin/company/store.php" id="create-company" class="create">
 				<div class="create__item">
 					<p>
 						<span>Название компании</span>

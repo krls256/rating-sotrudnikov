@@ -1,12 +1,17 @@
-<?php include "function.php"; //Управляющий файл
+<?php
 
-$id = $_GET['id'];
-if (!is_numeric($id)) header('Location: /404');
+use app\Http\Controllers\CRUD\CompanyCRUDController;
+use app\Repositories\Rest\CompanyRestRepository;
+use helperClasses\Request;
 
-$query = $PDO->query("SELECT * FROM `company` WHERE `id` = $id LIMIT 1");
-$row = $query->fetch();
+include "function.php"; //Управляющий файл
 
-if ($query->rowCount() == 0) header('Location: /404');
+$request = new Request();
+$repository = new CompanyRestRepository();
+$controller = new CompanyCRUDController($repository);
+$controllerData = $controller->edit($request);
+$company = $controllerData['company']
+
 ?>
 
 <!DOCTYPE html>
@@ -21,51 +26,54 @@ if ($query->rowCount() == 0) header('Location: /404');
     <?php include_view('/admin/adminMenu.php'); ?>
 	<div class="content">
 		<div class="block">
-			<h1 class="block__title">Редактировать компанию "<?= $row['name'] ?>"</h1>
+			<h1 class="block__title">Редактировать компанию "<?= $company['name'] ?>"</h1>
+            <?php include_view('/includes/adminMessageBar.php'); ?>
 			<div class="login__error"></div>
-			<form method="" action="" class="create" data-type="2" onsubmit="return false;">
-				<input type="hidden" name="id" value="<?= $row['id'] ?>" data-check="true">
-				<input type="hidden" name="hash" value="<?= substr(md5($row['id']), 0, 8) ?>" data-check="true">
+			<form method="post" action="/admin/company/update.php" id="edit-company" class="create" enctype="multipart/form-data">
+				<input type="hidden" name="id" value="<?= $company['id'] ?>" data-check="true">
+				<input type="hidden" name="hash" value="<?= substr(md5($company['id']), 0, 8) ?>" data-check="true">
 				<div class="create__item">
 					<p>
 						<span>Название компании</span>
-						<input type="text" name="name" value="<?= $row['name'] ?>" data-check="true">
+						<input type="text" name="name" value="<?= $company['name'] ?>" data-check="true">
 					</p>
 					<p>
 						<span>Контактный номер</span>
-						<input type="text" name="phone" value="<?= $row['phone'] ?>" data-check="true">
+						<input type="text" name="phone" value="<?= $company['phone'] ?>" data-check="true">
 					</p>
 					<p>
 						<span>Сайт компании</span>
-						<input type="text" name="sity" value="<?= $row['sity'] ?>" data-check="true">
+						<input type="text" name="sity" value="<?= $company['sity'] ?>" data-check="true">
 					</p>
 					<p>
 						<span>E-mail компании</span>
-						<input type="text" name="email" value="<?= $row['email'] ?>" data-check="true">
+						<input type="text" name="email" value="<?= $company['email'] ?>" data-check="true">
 					</p>
 					<p>
 						<span>Позиция</span>
 						<select class="width-auto" id="position" name="position">
-							<option value="0" <? echo $row['position'] == 0 ? 'selected' : ''; ?> >По умолчанию</option>
-							<option value="1" <? echo $row['position'] == 1 ? 'selected' : ''; ?>>Первое(1) место
+							<option value="0" <? echo $company['position'] == 0 ? 'selected' : ''; ?> >По
+                                умолчанию</option>
+							<option value="1" <? echo $company['position'] == 1 ? 'selected' : ''; ?>>Первое(1) место
 							</option>
-							<option value="2" <? echo $row['position'] == 2 ? 'selected' : ''; ?>>Второе(2) место
+							<option value="2" <? echo $company['position'] == 2 ? 'selected' : ''; ?>>Второе(2) место
 							</option>
-							<option value="3" <? echo $row['position'] == 3 ? 'selected' : ''; ?>>Третье(3) место
+							<option value="3" <? echo $company['position'] == 3 ? 'selected' : ''; ?>>Третье(3) место
 							</option>
-							<option value="4" <? echo $row['position'] == 4 ? 'selected' : ''; ?>>Четвёртое(4) место
+							<option value="4" <? echo $company['position'] == 4 ? 'selected' : ''; ?>>Четвёртое(4) место
 							</option>
-							<option value="5" <? echo $row['position'] == 5 ? 'selected' : ''; ?>>Пятое(5) место
+							<option value="5" <? echo $company['position'] == 5 ? 'selected' : ''; ?>>Пятое(5) место
 							</option>
-							<option value="6" <? echo $row['position'] == 6 ? 'selected' : ''; ?>>Шестое(6) место
+							<option value="6" <? echo $company['position'] == 6 ? 'selected' : ''; ?>>Шестое(6) место
 							</option>
-							<option value="7" <? echo $row['position'] == 7 ? 'selected' : ''; ?>>Седьмое(7) место
+							<option value="7" <? echo $company['position'] == 7 ? 'selected' : ''; ?>>Седьмое(7) место
 							</option>
-							<option value="8" <? echo $row['position'] == 8 ? 'selected' : ''; ?>>Восьмое(8) место
+							<option value="8" <? echo $company['position'] == 8 ? 'selected' : ''; ?>>Восьмое(8) место
 							</option>
-							<option value="9" <? echo $row['position'] == 9 ? 'selected' : ''; ?>>Девятое(9) место
+							<option value="9" <? echo $company['position'] == 9 ? 'selected' : ''; ?>>Девятое(9) место
 							</option>
-							<option value="10" <? echo $row['position'] == 10 ? 'selected' : ''; ?>>Десятое(10) место
+							<option value="10" <? echo $company['position'] == 10 ? 'selected' : ''; ?>>Десятое(10)
+                                место
 							</option>
 
 						</select>
@@ -73,26 +81,28 @@ if ($query->rowCount() == 0) header('Location: /404');
 					<p>
 						<span>Город</span>
 						<select class="width-auto" id="city" name="city" data-check="true">
-							<option value="1" <? echo $row['sity'] == 1 ? 'selected' : ''; ?> >Москва и Московская
+							<option value="1" <? echo $company['sity'] == 1 ? 'selected' : ''; ?> >Москва и Московская
 								обл.
 							</option>
-							<option value="2" <? echo $row['sity'] == 2 ? 'selected' : ''; ?>>Тула и Тульская обл.
+							<option value="2" <? echo $company['sity'] == 2 ? 'selected' : ''; ?>>Тула и Тульская обл.
 							</option>
-							<option value="3" <? echo $row['sity'] == 3 ? 'selected' : ''; ?>>Республика Крым</option>
+							<option value="3" <? echo $company['sity'] == 3 ? 'selected' : ''; ?>>Республика
+                                Крым</option>
 						</select>
 					</p>
 					<p>
 						<span>Адрес офиса</span>
-						<input type="text" name="address" value="<?= $row['address'] ?>" data-check="true">
+						<input type="text" name="address" value="<?= $company['address'] ?>" data-check="true">
 					</p>
 					<p>
 						<span>Место нахождения офиса</span>
 					<div id="map" class="map"></div>
-					<input type="hidden" name="map" value="<?= $row['map'] ?>" data-check="true">
+					<input type="hidden" name="map" value="<?= $company['map'] ?>" data-check="true">
 					</p>
 					<p class="checkbox_wraper">
 						<label class="label--checkbox">
-							<input type='checkbox' class="checkbox" name="davCompany" <?= $row['dev'] == 1 ? "checked" :
+                            <input type="hidden" name="dev" value="0">
+							<input type='checkbox' value="1" class="checkbox" name="dev" <?= $company['dev'] == 1 ? "checked" :
                                 ""; ?>/>
 							В разработке
 						</label>
@@ -101,57 +111,57 @@ if ($query->rowCount() == 0) header('Location: /404');
 				<div class="create__item" style="padding-left:25px;">
 					<p>
 						<span>Дата основания компании(DD.MM.YYYY)</span>
-						<input type="text" name="data" value="<?= date('d.m.Y', $row['data']) ?>" data-check="true">
+						<input type="text" name="data" value="<?= date('d.m.Y', $company['data']) ?>" data-check="true">
 					</p>
 					<p>
 						<span>ИНН</span>
-						<input type="text" name="inn" value="<?= $row['inn'] ?>">
+						<input type="text" name="inn" value="<?= $company['inn'] ?>">
 					</p>
 					<p>
 						<span>Логотип компании</span>
-						<input type="file" name="file" id="create__file" accept=".jpg, .jpeg, .png" />
+						<input type="file" name="file" id="create__file" accept=".jpg, .jpeg, .png" value="1"/>
 					</p>
 					<p>
 						<span>Facebook(Ссылка)</span>
-						<input type="text" name="fb" value="<?= $row['fb'] ?>">
+						<input type="text" name="fb" value="<?= $company['fb'] ?>">
 					</p>
 					<p>
 						<span>Однокласники(Ссылка)</span>
-						<input type="text" name="ok" value="<?= $row['ok'] ?>">
+						<input type="text" name="ok" value="<?= $company['ok'] ?>">
 					</p>
 					<p>
 						<span>Вконтакте(Ссылка)</span>
-						<input type="text" name="vk" value="<?= $row['vk'] ?>">
+						<input type="text" name="vk" value="<?= $company['vk'] ?>">
 					</p>
 					<p>
 						<span>WhatsApp(сылка)</span>
-						<input type="text" name="wa" value="<?= $row['wa'] ?>">
+						<input type="text" name="wa" value="<?= $company['wa'] ?>">
 					</p>
 					<p>
 						<span>Viber(сылка)</span>
-						<input type="text" name="vb" value="<?= $row['tw'] ?>">
+						<input type="text" name="vb" value="<?= $company['tw'] ?>">
 					</p>
 					<p>
 						<span>Telegram(сылка)</span>
-						<input type="text" name="tg" value="<?= $row['tg'] ?>">
+						<input type="text" name="tg" value="<?= $company['tg'] ?>">
 					</p>
 					<p>
 						<span>Twitter(Ссылка)</span>
-						<input type="text" name="tw" value="<?= $row['tw'] ?>">
+						<input type="text" name="tw" value="<?= $company['tw'] ?>">
 					</p>
 					<p>
 						<span>Instagram(ник)</span>
-						<input type="text" name="ins" value="<?= $row['ins'] ?>">
+						<input type="text" name="ins" value="<?= $company['ins'] ?>">
 					</p>
 					<p>
 						<span>Youtube(Ссылка)</span>
-						<input type="text" name="yb" value="<?= $row['yb'] ?>">
+						<input type="text" name="yb" value="<?= $company['yb'] ?>">
 					</p>
 				</div>
-				<p style="display:block; order:4px; width:100%; margin-left:30px;">
+				<p style="display:block; order:4; width:100%; margin-left:30px;">
 					<span>Описание</span>
 					<textarea name="description" data-check="true"
-					          class="edit-input__text"><?= $row['description'] ?></textarea>
+					          class="edit-input__text"><?= $company['description'] ?></textarea>
 				</p>
 				<input type="submit" name="" value="Сохранить" class="submit">
 			</form>
@@ -202,7 +212,7 @@ if ($query->rowCount() == 0) header('Location: /404');
         type="text/javascript"></script>
 <script src="/js/formstyler.js"></script>
 <script src="/js/maps.js"></script>
-<script> ymaps.ready(adminMap([<?=$row['map']?>], 17, 'point')); </script>
+<script> ymaps.ready(adminMap([<?=$company['map']?>], 17, 'point')); </script>
 <script src="/js/admin.js"></script>
 </body>
 </html>

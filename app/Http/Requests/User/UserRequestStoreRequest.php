@@ -21,7 +21,6 @@ class UserRequestStoreRequest extends CoreRequest
             'company_id' => 'Компания обязательная',
             'user_phone' => 'Телефон обязательный',
 
-
             'recaptcha_token.required' => 'Токен обязательное поле',
             'recaptcha_token.string' => 'Токен должен быть строкой'
         ];

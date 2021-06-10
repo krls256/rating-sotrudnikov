@@ -14,7 +14,13 @@ class Request extends Collection
 
     public function __construct($items = [])
     {
-        parent::__construct(array_merge($items, $_GET, $_POST));
+        $clearFiles = [];
+        foreach ($_FILES as $key => $FILE) {
+            if($FILE['name']) {
+                $clearFiles[$key] = $FILE;
+            }
+        }
+        parent::__construct(array_merge($items, $_GET, $_POST, $clearFiles));
         $url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
         $parsed = parse_url($url);
         $this->url = collect([

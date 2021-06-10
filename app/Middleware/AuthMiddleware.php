@@ -12,7 +12,7 @@ use helperClasses\Session;
 
 class AuthMiddleware extends CoreMiddleware
 {
-    protected $adminPart = '/admin';
+    protected $adminPart = '/';
     protected $loginFormPart = '/admin/login';
 
     public function handle(Request $request): bool

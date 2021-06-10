@@ -20,6 +20,16 @@ $(document).ready(function () {
         }, 5000);
     }
 
+    function checkForm (form, selector = '[data-check="true"]') {
+        var pass = true;
+        form.find(selector).each(function () {
+            if ($(this).val().length == '') {
+                pass = false;
+            }
+        });
+        return pass
+    }
+
     $('[name="banner"]').on('change', function () {
         var $input = $(this);
         var fd = new FormData;
@@ -53,76 +63,26 @@ $(document).ready(function () {
         files = this.files;
     });
 
-    // Создание компании
-    $('.create').on('submit', function (e) {
-        console.log('.create submitted');
-        e.stopPropagation(); // Остановка происходящего
-        e.preventDefault();  // Полная остановка происходящего
+    // Изменение компании
+    $('#edit-company').on('submit', function (e) {
+        e.preventDefault();
+        var elem = $(this);
+        var pass = checkForm(elem,'[data-check="true"]');
 
-        let elem = $(this),
-            file__data = new FormData(elem.get(0)), //Перезаписываем форму что бы добавить file
-            status = true,
-            type = elem.data('type');
+        if (pass) {
+            var dateInput = $('input[name="data"]');
+            var date = dateInput.val().split('.').reverse().join('-');
+            var dateObj = new Date(date);
+            dateInput.val(dateObj.getTime().toString().slice(0, -3));
 
-        //Проверяем поля на пустоту
-        elem.find('[data-check="true"]').each(function () {
-            if ($(this).val().length == '') {
-                status = false;
-            }
-        });
-
-        let url = type == 1 ? 'create-company' : 'edit_company';
-
-        if (status == true) {
-            $.ajax({
-                type: 'POST',
-                contentType: false,
-                processData: false,
-                url: 'function?func=' + url,
-                data: file__data,
-                cache: false,
-                success: function (res) {
-                    switch (res) {
-                        case 'file_error':
-                            card__log('Ошибка загрузки файла.');
-                            break;
-                        case 'file_size':
-                            card__log('Размер логотипа не должен привышать 2 мб. и быть не больше 50х50 px.');
-                            break;
-                        case 'yell_error':
-                            card__log('Такой yell ID уже зарегистрирован.');
-                            break;
-                        case 'flamp_error':
-                            card__log('Такой flamp ID уже зарегистрирован.');
-                            break;
-                        case 'input_error':
-                            card__log('Пожалуйста заполните все поля.');
-                            break;
-                        case 'fatal':
-                            card__log('Что-то пошло не так...');
-                            break;
-                        case 'ok':
-                            if (type == 1) {
-                                card__log('Компания успешно добавлена.', 'ok');
-                                elem.find('input[type="text"], textarea, input[type="file"], input[type="hidden"], .jq-file__name').val('');
-                                elem.find('.jq-file__name').text('Файл не выбран');
-                                elem.find('#map').text('');
-                                adminMap();
-                                $('.content').animate({scrollTop: 0}, 500);
-                            } else {
-                                card__log('Данные компании успешно обновлены!', 'ok');
-                                $('.content').animate({scrollTop: '5px'}, 500);
-                            }
-                            break;
-                    }
-                }
-            });
+            elem.unbind('submit').submit()
         } else {
-            card__log('Заполните все поля.');
+            card__log('Заполните все обязательные поля', 'validation_error');
         }
+    })
 
-        return false;
-    });
+    // Создание компании
+
 
 
     // Отключить отзыв
@@ -173,7 +133,6 @@ $(document).ready(function () {
         console.log('.create_review_name submitted');
         e.stopPropagation(); // Остановка происходящего
         e.preventDefault();  // Полная остановка происходящего
-        console.log('hello');
         let elem = $(this),
             status = true;
 
