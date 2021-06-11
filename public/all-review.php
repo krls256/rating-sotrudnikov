@@ -217,6 +217,7 @@ if ($page + 1 != 1)
         <?php include 'modules/right.php'; ?>
     </div>
     <?php include 'modules/footer.php'; ?>
+    <?php include 'modules/modal.php'; ?>
 </div>
 <?php include 'modules/scripts.php'; ?>
 </body>

@@ -24,16 +24,16 @@ $sub = array_shift($exploded);
             <div class="home__item">
                 <span><?= $header ?></span>
             </div>
-<!--            <div class="home__item">-->
-<!--                <div class="home__search-item">-->
-<!--                    <input type="text" name="home__search" class="home__search">-->
-<!--                    <span>Поиск...</span>-->
-<!--                    <i></i>-->
-<!--                </div>-->
-<!--                <div class="search">-->
-<!--                    <div class="search__error">Что желаете найти?</div>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="home__item">
+                <div class="home__search-item">
+                    <input type="text" name="home__search" class="home__search">
+                    <span>Поиск...</span>
+                    <i></i>
+                </div>
+                <div class="search">
+                    <div class="search__error">Что желаете найти?</div>
+                </div>
+            </div>
         </div>
     </div>
 </header>

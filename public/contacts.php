@@ -42,19 +42,19 @@ $reviews = $controllerData['reviews'];
             <div class="snippet">
                 <div class="home_articls">
                     <div class="home_articls__text">
-                        <h3>О нас</h3>
+                        <h1>О нас</h1>
                         <span>Наш сайт создан для быстрого и честного поиска компании для работы. На данном ресурсе собрана информация и отзывы сотрудников о ремонтных компаниях Москвы и МО.</span>
                         <span><b><i style="color:red;">* </i>Внимание </b> Используя наш ресурс вы автоматически соглашаетесь с правилами и условиями испльзования нашего ресурса.</span>
                         <span><a
                                 href="/upload/pologenie_sayta.doc">Ознакомиться с положением вы можете по данной ссылке <?= $_SERVER['HTTP_HOST'] ?></a></span>
-                        <h3>Связь с нами</h3>
+                        <h2>Связь с нами</h2>
                         <span>Все вопросы или претензии вы может написать нам на нашу электронную почту.</span>
                         <span><b>Email: </b> info@<?= $_SERVER['HTTP_HOST'] ?></span>
                     </div>
                 </div>
             </div>
             <div class="snippet snippet-title">
-                <h3>Последние отзывы сотрудников</h3>
+                <h2>Последние отзывы сотрудников</h2>
             </div>
             <div class="last-review">
                 <?php include_view('/includes/lastReviews.php', ['reviews' => $reviews]); ?>

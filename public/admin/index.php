@@ -17,9 +17,11 @@ $set = setting($PDO);
 	<div class="content">
 		<div class="block">
 			<h1 class="block__title">Настройки</h1>
+            <div class="login__error"></div>
 			<div class="setting">
 				<form class="edit-index" action="" method="post">
 					<span class="line_title">Главная</span>
+                    <input type="hidden" name="id" value="1">
 					<p>
 						<span>Title</span>
 						<input type="text" value="<?= $set['title'] ?>" name="title">
@@ -89,7 +91,6 @@ $set = setting($PDO);
 		</div>
 		<div class="block">
 			<h1 class="block__title">Советы</h1>
-			<div class="login__error"></div>
 			<div class="review-edit">
                 <?php $QuerAdvice = $PDO->query("SELECT * FROM `advice`"); ?>
 				<form method="" action="" class="advice" onsubmit="return false;">

@@ -74,39 +74,6 @@ if($_GET['func'] == 'create_comment')
   }
 }
 
-if($_GET['func'] == 'search'){
-  $textSearch = trim($_POST['value']);
-
-  try{
-    $Qsearch= $PDO->prepare("SELECT id, name, description, url FROM company WHERE (name LIKE :search) or (description LIKE :search)");
-    $Qsearch->execute(array("search"=>"%$textSearch%"));
-  }catch(PDOException $e){
-    echo $e->getMassage();
-  }
-
-  if($Qsearch and $Qsearch->rowCount() > 0){
-    while($row = $Qsearch->fetch()){
-      $url  = '/otzyvy-sotrudnikov-' . $row['url'] . '/';
-      $type = 'company';
-
-      if(mb_strlen($row['description']) > 250){
-        $text = $func->crop($row['description'], 250);
-      }else{
-        $text = $row['description'];
-      }
-      
-      echo '<a href="'.$url.'" class="result-search">
-              <div class="result-search__item">
-                <h4>'.$row['name'].'</h4>
-                <span>'.$text.'</span>
-              </div>
-            </a>';
-    }
-  }else{
-    echo '<div class="search__error">По вашему запросу, нечего не найдено?</div>';
-  }
-}
-
 if($_GET['func'] == 'new_requests'){
 
   //Выкидываем хитрых

@@ -12,7 +12,7 @@ $(document).ready(function () {
         if (type == 'ok') {
             log.addClass('success'); //если успешно авторизоаван показываем зеленую карточку
         }
-        log.text(text).css({display: 'block'}); //Добавляем текст сообщения и делаем видимым
+        log.html(text).css({display: 'block'}); //Добавляем текст сообщения и делаем видимым
 
         //Скрываем блок через 5 секунд
         setTimeout(function () {
@@ -232,38 +232,23 @@ $(document).ready(function () {
 
     //Обработка настроек сайта
     $('.edit-index').on('submit', function (e) {
-        console.log('.edit-index submitted');
-        e.stopPropagation(); // Остановка происходящего
         e.preventDefault();  // Полная остановка происходящего
-
-        var is = $(this);
-        var data = is.serialize();
-
-        $.ajax({
-            type: 'POST',
-            url: 'function?func=edit_setting',
-            data: data,
-            beforeSend: function () {
-                //code...
-            },
-            success: function (res) {
-                var log = $('.index_log');
-                if (res.res == 'ok') {
-                    is.find('[name]').removeClass('error');
-
-                    log.addClass('success');
-                    log.text('Сохранино!');
+        var url = '/admin/settings/api/update.php'
+        var is = $(this)[0];
+        fetch(url, {
+            method: 'POST',
+            body: new FormData(is)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    card__log('Настройки успешно обновлены', 'ok');
                 } else {
-                    for (var i = 0; i < res['error'].length; i++) {
-                        $('[name=' + res['error'][i] + ']').addClass('error');
-
-                        log.removeClass('success');
-                        log.css({'display': 'block'});
-                        log.text('Заполнены не все поля!');
-                    }
+                    var content = data.message.map(mes => '<div>' + mes + '</div>')
+                    card__log(content, 'error')
                 }
-            }
-        });
+            })
+            .catch(console.error)
 
     });
 

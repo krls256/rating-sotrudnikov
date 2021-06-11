@@ -109,7 +109,7 @@ $sub = array_shift($exploded);
                 </div>
             </div>
             <div class="snippet snippet-title">
-                <h3>Последние отзывы сотрудников</h3>
+                <h2>Последние отзывы сотрудников</h2>
             </div>
             <div class="last-review">
                 <?php include_view('/includes/lastReviews.php', ['reviews' => $reviews]); ?>
@@ -165,6 +165,7 @@ $sub = array_shift($exploded);
         <?php include 'modules/right.php'; ?>
     </div>
     <?php include 'modules/footer.php'; ?>
+    <?php include 'modules/modal.php'; ?>
 </div>
 <?php include 'modules/scripts.php'; ?>
 </body>

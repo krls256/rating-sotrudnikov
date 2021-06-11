@@ -34,15 +34,15 @@ $page = $pagination->currentPage();
 <!DOCTYPE html>
 <html lang="ru" dir="ltr">
 <head>
-    <title>Отзывы сотрудников о компании «<?= $row['name'] ?>» — Топ рейтиг ремонтных компаний по отзывам
-        сотрудников</title>
+    <title>Отзывы сотрудников о компании «<?= $row['name'] ?>»</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <meta name="description" content="Актуальные отзывы сотрудников о компании
 	«<?= $row['name'] ?>»<?php
-    $dp = $page + 1;
-    if ($page + 1 != 1)
+
+    $dp = $page;
+    if ($page != 1)
     {
         echo " — страница " . $dp;
     } ?>. Почитайте отзывы, напишите свой или оставьте заявку на обратный звонок.">
@@ -97,7 +97,8 @@ $page = $pagination->currentPage();
         <div class="content__item-left">
             <div class="snippet company">
                 <div class="company__title">
-                    <h1>Отзывы сотрудников о компании <?= $row['name'] ?><span>Дата основания: <?= date('d.m.Y', $row['data']) ?></span></h1>
+                    <h1>Отзывы сотрудников о компании <?= $row['name'] ?></h1>
+                    <span>Дата основания: <?= date('d.m.Y', $row['data']) ?></span>
                 </div>
                 <div class="compaty__item">
                     <div>
@@ -263,6 +264,7 @@ $page = $pagination->currentPage();
         <?php include 'modules/right.php' ?>
     </div>
     <?php include 'modules/footer.php'; ?>
+    <?php include 'modules/modal.php'; ?>
 </div>
 <script>function MapInit() {
         var e = new ymaps.Map("c_map", {

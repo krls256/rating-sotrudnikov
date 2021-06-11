@@ -140,17 +140,20 @@ $(document).ready(function (e, t) {
 
     // Перехватываем события ресайза для изменения стилей
     $(window).on("load resize", function () {
-        950 < $(this).width() && ($(".home__search-item").find("*").removeAttr("style"), $("header .header__menu").removeAttr("style"), $("header .button-menu").removeClass("active")),
-        $(document).width() <= 950 && $("header .button-menu").on("click", function () {
-            $(this).hasClass("active") ? ($(this).removeClass("active"), $("header .header__menu").stop().animate({
-                left: "100%"
-            }, 300, function () {
-                $(this).removeAttr("style")
-            })) : ($(this).addClass("active"), $("header .header__menu").stop().animate({
-                left: "0"
-            }, 300))
-        })
+        var breakPoint = 850;
+        breakPoint < $(this).width() && ($(".home__search-item").find("*").removeAttr("style"), $("header .header__menu").removeAttr("style"), $("header .button-menu").removeClass("active"))
     });
+
+    $("header .button-menu").on("click", function () {
+        console.log($(this))
+        $(this).hasClass("active") ? ($(this).removeClass("active"), $("header .header__menu").stop().animate({
+            left: "100%"
+        }, 300, function () {
+            $(this).removeAttr("style")
+        })) : ($(this).addClass("active"), $("header .header__menu").stop().animate({
+            left: "0"
+        }, 300))
+    })
 
     $(".review_modal, .comment_modal, .request_modal").on("click", function () {
         var e = $(this).data();
@@ -330,23 +333,44 @@ $(document).ready(function (e, t) {
             })) : ($(this).siblings("span").css({
                 display: "none"
             }), t = setTimeout(function () {
-                $.ajax({
-                    type: "POST",
-                    url: "/ajax?func=search",
-                    data: {
-                        value: e
-                    },
-                    cache: !1,
-                    success: function (e) {
-                        $(".search").is(":visible") || ($('input[name="home__search"]').css({
-                            "border-radius": "3px 3px 0 0"
-                        }), $(".search").css({
-                            display: "block"
-                        }).stop().animate({
-                            top: 30,
-                            opacity: 1
-                        }, 300)),
-                            $(".search").html(e)
+                console.log(e)
+                $.get('/api/search.php', {search: e}, function (responseStr) {
+                    var response = JSON.parse(responseStr);
+                    var status = response.status;
+                    if(status === 'success') {
+                        var data = response.data;
+                        if(data.length === 0) {
+                            $('.search').html('<div class="search__error">По вашему запросу ничего не найдено</div>');
+                        } else {
+                            var content = data.map(function (company) {
+                                var url = company.url;
+                                var name = company.name;
+                                var description = company.description;
+                                var sIndex = description.indexOf('</')
+                                var eIndex = description.indexOf('>', sIndex);
+                                var elementPrefix = description.slice(sIndex, eIndex).replace('/', '');
+                                var elementPrefixIndex = description.indexOf(elementPrefix)
+                                var textStartIndex = description.indexOf('>', elementPrefixIndex);
+
+                                description = description.slice(textStartIndex + 1, sIndex)
+                                description = description.slice(0, 100) + '...';
+
+                                return (
+                                    '<a href="/otzyvy-sotrudnikov-' + url + '" class="result-search">' +
+                                    '<div class="result-search__item">' +
+                                    '<h4>' + name +'</h4>' +
+                                    '<span>' + description + '</span>' +
+                                    '</div>' +
+                                    '</a>'
+                                )
+                            })
+                            $('.search')
+                                .html(content)
+                                .css({ display: 'block'})
+                                .animate({
+                                    top: '30px', opacity: '1'
+                                });
+                        }
                     }
                 })
             }, 300))
