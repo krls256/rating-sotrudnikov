@@ -1,14 +1,14 @@
 <?php
 
 
-namespace app\Http\Controllers\CRUD;
+namespace app\Http\Controllers\Rest;
 
 
 use app\Http\Controllers\CoreController;
 use app\Http\ValidationHandlers\IValidationHandler;
 use app\Repositories\Interfaces\IRestRepository;
 
-abstract class CRUDController extends CoreController
+abstract class RestController extends CoreController
 {
     protected IRestRepository $repository;
 

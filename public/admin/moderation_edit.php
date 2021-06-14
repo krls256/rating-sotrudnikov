@@ -1,12 +1,12 @@
 <?php
 
-use app\Http\Controllers\ReviewsAdminController;
+use app\Http\Controllers\Rest\ReviewsRestController;
 use app\Repositories\Rest\ReviewRestRepository;
 use Illuminate\Http\Request;
 include 'function.php';
 
 $repository = new ReviewRestRepository();
-$controller = new ReviewsAdminController($repository);
+$controller = new ReviewsRestController($repository);
 $data = $controller->edit(Request::capture()->all());
 $row = $data['review'];
 $companies = $data['companies'];

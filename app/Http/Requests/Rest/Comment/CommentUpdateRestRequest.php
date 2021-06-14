@@ -1,13 +1,13 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Rest\Comment;
 
 
 use app\Http\Requests\CoreRequest;
 use app\Rules\ExistsRule;
 
-class CommentUpdateAdminRequest extends CoreRequest
+class CommentUpdateRestRequest extends CoreRequest
 {
     protected function getMessages(): array
     {

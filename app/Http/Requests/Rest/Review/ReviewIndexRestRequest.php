@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Rest\Review;
 
 
 use app\Http\Requests\CoreRequest;
@@ -9,7 +9,7 @@ use app\Models\Review;
 use app\Rules\ExistsRule;
 use app\Rules\InArrayRule;
 
-class ReviewIndexAdminRequest extends CoreRequest
+class ReviewIndexRestRequest extends CoreRequest
 {
     protected function getMessages(): array {   return [    ];  }
 

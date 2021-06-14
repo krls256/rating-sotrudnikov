@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Auth;
 
 
 use app\Http\Requests\CoreRequest;

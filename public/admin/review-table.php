@@ -1,13 +1,13 @@
 <?php
 
-use app\Http\Controllers\ReviewsAdminController;
+use app\Http\Controllers\Rest\ReviewsRestController;
 use app\Repositories\Rest\ReviewRestRepository;
 use Illuminate\Http\Request;
 
 require_once '../../config.php';
 
 $repository = new ReviewRestRepository();
-$controller = new ReviewsAdminController($repository);
+$controller = new ReviewsRestController($repository);
 $request = Request::capture();
 
 

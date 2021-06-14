@@ -1,7 +1,7 @@
 <?php
 
 
-use app\Http\Controllers\CRUD\UserRequestCRUDController;
+use app\Http\Controllers\Rest\UserRequestRestController;
 use app\Repositories\Rest\UserRequestRestRepository;
 use helperClasses\Request;
 
@@ -9,7 +9,7 @@ require_once '../../config.php';
 
 $request = new Request();
 $repository = new UserRequestRestRepository();
-$controller = new UserRequestCRUDController($repository);
+$controller = new UserRequestRestController($repository);
 
 $controllerData = $controller->index($request);
 $userRequests = $controllerData['userRequests'];

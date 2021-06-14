@@ -4,7 +4,7 @@
 namespace app\Http\Controllers;
 
 
-use app\Http\Requests\Admin\AuthRequest;
+use app\Http\Requests\Auth\AuthRequest;
 use app\Repositories\SingleEntity\UserSingleEntityRepository;
 use helperClasses\Auth;
 use helperClasses\Hash;

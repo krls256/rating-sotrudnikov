@@ -1,20 +1,19 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Rest\Review;
 
 
 use app\Http\Requests\CoreRequest;
 use app\Rules\ExistsRule;
 
-class ReviewDeleteAdminRequest extends CoreRequest
+class ReviewPublishRestRequest extends CoreRequest
 {
-
     protected function getMessages(): array
     {
-        return [
-            'id.required' => 'Идентификатор - обязательный'
-        ];
+       return [
+           'id.required' => 'Идентификатор - обязательный'
+       ];
     }
 
     protected function getRules(): array
@@ -23,4 +22,5 @@ class ReviewDeleteAdminRequest extends CoreRequest
             'id' => ['required', new ExistsRule('review', 'id')]
         ];
     }
+
 }

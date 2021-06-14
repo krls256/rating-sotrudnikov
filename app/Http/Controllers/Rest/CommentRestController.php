@@ -1,31 +1,27 @@
 <?php
 
 
-namespace app\Http\Controllers;
+namespace app\Http\Controllers\Rest;
 
 
-use app\Http\Requests\Admin\CommentDeleteAdminRequest;
-use app\Http\Requests\Admin\CommentIndexAdminRequest;
-use app\Http\Requests\Admin\CommentPublishAdminRequest;
-use app\Http\Requests\Admin\CommentUpdateAdminRequest;
+use app\Http\Requests\Rest\Comment\CommentDeleteRestRequest;
+use app\Http\Requests\Rest\Comment\CommentIndexRestRequest;
+use app\Http\Requests\Rest\Comment\CommentPublishRestRequest;
+use app\Http\Requests\Rest\Comment\CommentUpdateRestRequest;
 use app\Http\ValidationHandlers\IValidationHandler;
 use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\Interfaces\IRestRepository;
 use helperClasses\Request;
 
-class CommentAdminController extends CoreController
+class CommentRestController extends RestController
 {
-    protected IRestRepository $repository;
-
-
     public function __construct(IRestRepository $rep, ?IValidationHandler $validationHandler = null) {
-        parent::__construct($validationHandler);
-        $this->repository = $rep;
+        parent::__construct($rep, $validationHandler);
     }
 
     public function index(Request $request) {
         $req = $request->all();
-        $this->validate(CommentIndexAdminRequest::class, $req);
+        $this->validate(CommentIndexRestRequest::class, $req);
         $count = 25;
         $comments = $this->repository->getPaginate($count, $req);
 
@@ -39,21 +35,21 @@ class CommentAdminController extends CoreController
 
     public function update(Request $request) {
         $req = $request->all();
-        $this->validate(CommentUpdateAdminRequest::class, $req);
+        $this->validate(CommentUpdateRestRequest::class, $req);
         $id = $req['id'];
         return $this->repository->update($id, $req);
     }
 
     public function moderate(Request $request) {
         $req = $request->all();
-        $this->validate(CommentPublishAdminRequest::class, $req);
+        $this->validate(CommentPublishRestRequest::class, $req);
         $id = $req['id'];
         return $this->repository->update($id, ['is_moderated' => 1]);
     }
 
     public function delete(Request $request) {
         $req = $request->all();
-        $this->validate(CommentDeleteAdminRequest::class, $req);
+        $this->validate(CommentDeleteRestRequest::class, $req);
         $id = $req['id'];
         return $this->repository->delete($id);
     }

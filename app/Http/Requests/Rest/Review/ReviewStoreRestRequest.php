@@ -1,13 +1,13 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Rest\Review;
 
 
 use app\Http\Requests\CoreRequest;
 use app\Rules\ExistsRule;
 
-class ReviewStoreAdminRequest extends CoreRequest
+class ReviewStoreRestRequest extends CoreRequest
 {
 
     protected function getMessages(): array

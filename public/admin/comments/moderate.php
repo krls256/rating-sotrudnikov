@@ -1,6 +1,6 @@
 <?php
 
-use app\Http\Controllers\CommentAdminController;
+use app\Http\Controllers\Rest\CommentRestController;
 use app\Repositories\Rest\CommentRestRepository;
 use helperClasses\Request;
 
@@ -8,7 +8,7 @@ require_once '../../../config.php';
 
 $request = new Request();
 $repository = new CommentRestRepository();
-$controller = new CommentAdminController($repository);
+$controller = new CommentRestController($repository);
 $res = $controller->moderate($request);
 $url = '/admin/comments-table';
 

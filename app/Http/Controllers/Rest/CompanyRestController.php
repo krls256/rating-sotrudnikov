@@ -1,19 +1,19 @@
 <?php
 
 
-namespace app\Http\Controllers\CRUD;
+namespace app\Http\Controllers\Rest;
 
 
-use app\Http\Requests\CRUD\Company\CompanyEditCRUDRequest;
-use app\Http\Requests\CRUD\Company\CompanyUpdateCRUDRequest;
+use app\Http\Requests\Rest\Company\CompanyEditRestRequest;
+use app\Http\Requests\Rest\Company\CompanyUpdateRestRequest;
 use helperClasses\Request;
 use helperClasses\Storage;
 
-class CompanyCRUDController extends CRUDController
+class CompanyRestController extends RestController
 {
     public function edit(Request $request) {
         $req = $request->all();
-        $this->validate(CompanyEditCRUDRequest::class, $req);
+        $this->validate(CompanyEditRestRequest::class, $req);
         $id = $req['id'];
         $company = $this->repository->getEdit($id);
         return [
@@ -24,7 +24,7 @@ class CompanyCRUDController extends CRUDController
     public function update(Request $request) {
         $req = $request->all();
 
-        $this->validate(CompanyUpdateCRUDRequest::class, $req);
+        $this->validate(CompanyUpdateRestRequest::class, $req);
         $id = $req['id'];
         $file = $request->get('file');
         // TODO: move to observer

@@ -1,7 +1,7 @@
 <?php
 
 
-use app\Http\Controllers\ReviewsAdminController;
+use app\Http\Controllers\Rest\ReviewsRestController;
 use app\Repositories\Rest\ReviewRestRepository;
 use Illuminate\Http\Request;
 
@@ -10,7 +10,7 @@ require_once '../../../config.php';
 
 $request = Request::capture();
 $repository = new ReviewRestRepository();
-$controller = new ReviewsAdminController($repository);
+$controller = new ReviewsRestController($repository);
 $res = $controller->delete($request->all());
 
 $company_id = $request->get('company_id');

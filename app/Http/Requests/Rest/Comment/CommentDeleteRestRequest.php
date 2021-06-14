@@ -1,20 +1,17 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Rest\Comment;
 
 
 use app\Http\Requests\CoreRequest;
 use app\Rules\ExistsRule;
 
-class CommentPublishAdminRequest extends CoreRequest
+class CommentDeleteRestRequest extends CoreRequest
 {
-
     protected function getMessages(): array
     {
-        return [
-            'required' => ':attribute - обязательное поле.'
-        ];
+        return ['required' => 'Поле :attribute - обязательно'];
     }
 
     protected function getRules(): array
@@ -23,4 +20,5 @@ class CommentPublishAdminRequest extends CoreRequest
             'id' => ['required', new ExistsRule('comment', 'id')]
         ];
     }
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-use app\Http\Controllers\CRUD\CompanyCRUDController;
+use app\Http\Controllers\Rest\CompanyRestController;
 use app\Repositories\Rest\CompanyRestRepository;
 use helperClasses\Request;
 
@@ -8,7 +8,7 @@ require_once '../../../config.php';
 
 $request = new Request();
 $repository = new CompanyRestRepository();
-$controller = new CompanyCRUDController($repository);
+$controller = new CompanyRestController($repository);
 
 $res = $controller->update($request);
 $id = $request->get('id');

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Rest\Review;
 
 
 use app\Http\Requests\CoreRequest;
 use app\Rules\ExistsRule;
 use app\Rules\NotPresentRule;
 
-class ReviewUpdateAdminRequest extends CoreRequest
+class ReviewUpdateRestRequest extends CoreRequest
 {
     protected function getMessages(): array
     {

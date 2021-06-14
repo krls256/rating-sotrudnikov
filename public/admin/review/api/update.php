@@ -1,7 +1,7 @@
 <?php
 
 
-use app\Http\Controllers\ReviewsAdminController;
+use app\Http\Controllers\Rest\ReviewsRestController;
 use app\Http\ValidationHandlers\AdminApiValidationHandler;
 use app\Repositories\Rest\ReviewRestRepository;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ $request = Request::capture()
     ->all();
 $repository = new ReviewRestRepository();
 $validationHelper = new AdminApiValidationHandler();
-$controller = new ReviewsAdminController($repository, $validationHelper);
+$controller = new ReviewsRestController($repository, $validationHelper);
 $res = $controller->update($request);
 
 if($res) {

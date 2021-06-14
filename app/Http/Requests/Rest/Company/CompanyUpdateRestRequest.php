@@ -1,7 +1,7 @@
 <?php
 
 
-namespace app\Http\Requests\CRUD\Company;
+namespace app\Http\Requests\Rest\Company;
 
 
 use app\Http\Requests\CoreRequest;
@@ -9,9 +9,8 @@ use app\Rules\ExistsRule;
 use app\Rules\ImageRule;
 use app\Rules\NumberMaskRule;
 
-class CompanyUpdateCRUDRequest extends CoreRequest
+class CompanyUpdateRestRequest extends CoreRequest
 {
-    // TODO: закончить
     protected function getMessages(): array
     {
         return [

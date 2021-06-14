@@ -1,6 +1,6 @@
 <?php
 
-use app\Http\Controllers\CommentAdminController;
+use app\Http\Controllers\Rest\CommentRestController;
 use app\Http\ValidationHandlers\AdminApiValidationHandler;
 use app\Repositories\Rest\CommentRestRepository;
 use helperClasses\Request;
@@ -11,7 +11,7 @@ require_once '../../../../config.php';
 $request = new Request();
 $repository = new CommentRestRepository();
 $validationHelper = new AdminApiValidationHandler();
-$controller = new CommentAdminController($repository, $validationHelper);
+$controller = new CommentRestController($repository, $validationHelper);
 $res = $controller->update($request);
 
 if($res)

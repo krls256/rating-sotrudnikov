@@ -1,16 +1,16 @@
 <?php
 
 
-namespace app\Http\Controllers\CRUD;
+namespace app\Http\Controllers\Rest;
 
 
-use app\Http\Requests\CRUD\UserRequests\UserRequestsIndexCRUDRequest;
+use app\Http\Requests\Rest\UserRequests\UserRequestsIndexRestRequest;
 use app\Http\ValidationHandlers\IValidationHandler;
 use app\Repositories\Base\BaseCompaniesRepository;
 use app\Repositories\Rest\UserRequestRestRepository;
 use helperClasses\Request;
 
-class UserRequestCRUDController extends CRUDController
+class UserRequestRestController extends RestController
 {
     public function __construct(UserRequestRestRepository $repository, ?IValidationHandler $validationHandler = null)
     {
@@ -20,7 +20,7 @@ class UserRequestCRUDController extends CRUDController
     public function index(Request $request)
     {
         $req = $request->all();
-        $this->validate(UserRequestsIndexCRUDRequest::class, $req);
+        $this->validate(UserRequestsIndexRestRequest::class, $req);
         $count = 25;
         $userRequests = $this->repository->getPaginate($count, $req);
 

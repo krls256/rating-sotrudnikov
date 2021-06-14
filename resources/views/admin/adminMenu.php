@@ -27,7 +27,7 @@ $UnModeratedComments = $commentsRepository->getUnModeratedCount();
                     ?></span></a></li>
         <?php if (($set['moderation'] ?? null) == 0) { ?>
             <li class="harmonic active">
-                <div class="i-moderation">Модирация отзывов</div>
+                <div class="i-moderation">Модерация отзывов</div>
                 <ul>
                     <li><a href="/admin/moderation?type=user">Пользователи<span><?= $UnModeratedReviews ?></span></a></li>
                 </ul>

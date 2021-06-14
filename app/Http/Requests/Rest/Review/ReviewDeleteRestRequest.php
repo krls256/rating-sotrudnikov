@@ -1,19 +1,19 @@
 <?php
 
 
-namespace app\Http\Requests\Admin;
+namespace app\Http\Requests\Rest\Review;
+
 
 use app\Http\Requests\CoreRequest;
 use app\Rules\ExistsRule;
-use Illuminate\Validation\Validation;
 
-class ReviewEditAdminRequest extends CoreRequest
+class ReviewDeleteRestRequest extends CoreRequest
 {
 
     protected function getMessages(): array
     {
         return [
-            'id.required' => 'id - Обязательное поле'
+            'id.required' => 'Идентификатор - обязательный'
         ];
     }
 

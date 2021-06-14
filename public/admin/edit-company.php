@@ -1,6 +1,6 @@
 <?php
 
-use app\Http\Controllers\CRUD\CompanyCRUDController;
+use app\Http\Controllers\Rest\CompanyRestController;
 use app\Repositories\Rest\CompanyRestRepository;
 use helperClasses\Request;
 
@@ -8,7 +8,7 @@ include "function.php"; //Управляющий файл
 
 $request = new Request();
 $repository = new CompanyRestRepository();
-$controller = new CompanyCRUDController($repository);
+$controller = new CompanyRestController($repository);
 $controllerData = $controller->edit($request);
 $company = $controllerData['company']
 

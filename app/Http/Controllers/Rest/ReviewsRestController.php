@@ -1,16 +1,16 @@
 <?php
 
 
-namespace app\Http\Controllers;
+namespace app\Http\Controllers\Rest;
 
 
-use app\Http\Requests\Admin\ReviewDeleteAdminRequest;
-use app\Http\Requests\Admin\ReviewEditAdminRequest;
-use app\Http\Requests\Admin\ReviewIndexAdminRequest;
-use app\Http\Requests\Admin\ReviewModerateRequest;
-use app\Http\Requests\Admin\ReviewPublishRequest;
-use app\Http\Requests\Admin\ReviewStoreAdminRequest;
-use app\Http\Requests\Admin\ReviewUpdateAdminRequest;
+use app\Http\Requests\Rest\Review\ReviewDeleteRestRequest;
+use app\Http\Requests\Rest\Review\ReviewEditRestRequest;
+use app\Http\Requests\Rest\Review\ReviewIndexRestRequest;
+use app\Http\Requests\Rest\Review\ReviewModerateRestRequest;
+use app\Http\Requests\Rest\Review\ReviewPublishRestRequest;
+use app\Http\Requests\Rest\Review\ReviewStoreRestRequest;
+use app\Http\Requests\Rest\Review\ReviewUpdateRestRequest;
 use app\Http\ValidationHandlers\IValidationHandler;
 use app\Modules\Publishing\PublishingConstants;
 use app\Modules\Publishing\PublishingModule;
@@ -19,18 +19,14 @@ use app\Repositories\Interfaces\IRestRepository;
 use app\Repositories\Rest\CompanyRestRepository;
 
 
-class ReviewsAdminController extends CoreController
+class ReviewsRestController extends RestController
 {
-    protected IRestRepository $repository;
-
-
     public function __construct(IRestRepository $rep, ?IValidationHandler $validationHandler = null) {
-        parent::__construct($validationHandler);
-        $this->repository = $rep;
+        parent::__construct($rep, $validationHandler);
     }
 
     public function index(array $request) {
-        $this->validate(ReviewIndexAdminRequest::class, $request);
+        $this->validate(ReviewIndexRestRequest::class, $request);
         $count = 25;
         $reviews = $this->repository->getPaginate($count, $request);
 
@@ -50,7 +46,7 @@ class ReviewsAdminController extends CoreController
         ];
     }
     public function store(array $request) {
-        $this->validate(ReviewStoreAdminRequest::class, $request);
+        $this->validate(ReviewStoreRestRequest::class, $request);
 
         $res = $this->repository->store($request);
         return $res;
@@ -58,7 +54,7 @@ class ReviewsAdminController extends CoreController
 
     public function edit(array $request) {
         $companyRepository = new CompanyRestRepository();
-        $this->validate(ReviewEditAdminRequest::class, $request);
+        $this->validate(ReviewEditRestRequest::class, $request);
         $id = $request['id'];
         return [
             'review' => $this->repository->getEdit($id),
@@ -67,21 +63,21 @@ class ReviewsAdminController extends CoreController
     }
 
     public function update(array $request) {
-        $this->validate(ReviewUpdateAdminRequest::class, $request);
+        $this->validate(ReviewUpdateRestRequest::class, $request);
         $id = $request['id'];
         $res = $this->repository->update($id, $request);
         return $res;
     }
 
     public function publish(array $request) {
-        $this->validate(ReviewPublishRequest::class, $request);
+        $this->validate(ReviewPublishRestRequest::class, $request);
         $id = $request['id'];
         $res = $this->repository->update($id, ['is_published' => 1]);
         return $res;
     }
 
     public function delete(array $request) {
-        $this->validate(ReviewDeleteAdminRequest::class, $request);
+        $this->validate(ReviewDeleteRestRequest::class, $request);
         $id = $request['id'];
         $res = $this->repository->delete($id);
 
@@ -89,7 +85,7 @@ class ReviewsAdminController extends CoreController
     }
 
     public function moderate(array $request) {
-        $this->validate(ReviewModerateRequest::class, $request);
+        $this->validate(ReviewModerateRestRequest::class, $request);
         $id = $request['id'];
         $res = $this->repository->update($id, ['is_moderated' => 1]);
         return $res;
