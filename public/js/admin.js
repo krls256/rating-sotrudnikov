@@ -414,3 +414,53 @@ const paginationLinks = () => {
 }
 
 paginationLinks();
+
+const reviewsJsonFileConverter = () => {
+    const input = document.querySelector('#reviews_file');
+    const button = document.querySelector('#reviews_file_button');
+    const form = document.querySelector('#reviews_file_form');
+    let reviews;
+    if(input && button && form) {
+
+        input.addEventListener('change', (e) => {
+            const reader = new FileReader();
+            reader.readAsText(e.target.files[0]);
+            reader.onload = (file) => {
+                reviews = JSON.parse(file.target.result);
+
+                button.removeAttribute('disabled')
+            }
+        })
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fd = new FormData(form);
+            const url = form.getAttribute('action');
+            fd.append('reviews', JSON.stringify(reviews))
+            fetch(url, {
+                method: 'POST',
+                body: fd
+            })
+                .then(r => r.json())
+                .then(({status, message}) => {
+                    const list = message.map(m => `<div>${m}</div>`)
+                    switch (status) {
+                        case 'success': {
+                            const s = document.querySelector('#reviews_file_success_tracker')
+                            s.classList.remove('d-none');
+                            s.innerHTML = list;
+                        } break;
+                        case 'failure': {
+                            const f = document.querySelector('#reviews_file_failure_tracker')
+                            f.classList.remove('d-none');
+                            f.innerHTML = list;
+                        } break;
+                    }
+                })
+                .catch(console.error)
+
+        })
+    }
+}
+
+reviewsJsonFileConverter();
