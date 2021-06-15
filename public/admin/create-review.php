@@ -69,12 +69,6 @@ $companies = $data['companies'];
 					<label for="is_positive">Положительный</label>
 
 				</p>
-				<p>
-					<input type="hidden" value="0" name="is_published">
-					<input type="checkbox" value="1" name="is_published" id="is_published">
-					<label for="is_published">Опубликован</label>
-
-				</p>
                 <p>
 					<input type="hidden" value="0" name="is_moderated">
 					<input type="checkbox" value="1" name="is_moderated" id="is_moderated" checked>

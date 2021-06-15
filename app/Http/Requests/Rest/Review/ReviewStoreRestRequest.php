@@ -7,6 +7,7 @@ namespace app\Http\Requests\Rest\Review;
 use app\Http\Requests\CoreRequest;
 use app\Repositories\Base\BaseReviewsRepository;
 use app\Rules\ExistsRule;
+use app\Rules\NotPresentRule;
 use app\Rules\UniqueReviewHashRule;
 
 class ReviewStoreRestRequest extends CoreRequest
@@ -48,7 +49,7 @@ class ReviewStoreRestRequest extends CoreRequest
             'review_pluses' => 'string|nullable',
             'review_minuses' => 'string|nullable',
             'is_positive' => 'boolean|required',
-            'is_published' => 'boolean|required',
+            'is_published' => [new NotPresentRule()],
             'company_id' => ['required', new ExistsRule('company', 'id')]
         ];
     }
