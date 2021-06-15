@@ -11,13 +11,13 @@ use PDO;
 class AdminSeeder extends Seeder
 {
     private $rows;
-    private $table;
+    private $model;
 
-    public function __construct(PDO $PDO, $db, $rows, $table)
+    public function __construct(PDO $PDO, $db, $rows, $model)
     {
         parent::__construct($PDO, $db);
         $this->rows = $rows;
-        $this->table = $table;
+        $this->model = new $model();
     }
 
     public function run()
@@ -34,14 +34,13 @@ class AdminSeeder extends Seeder
         return $this->rows;
     }
 
-    protected function getTable()
-    {
-        return $this->table;
-    }
-
     protected function getPDO()
     {
         return $this->PDO;
     }
 
+    protected function getModel()
+    {
+        return $this->model;
+    }
 }

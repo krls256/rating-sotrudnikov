@@ -11,41 +11,18 @@ class CompanySeeder extends Seeder
 {
 
     private $rows;
-    private $table;
+    private $model;
 
-    public function __construct(PDO $PDO,$db , $rows, $table)
+    public function __construct(PDO $PDO,$db , $rows, $model)
     {
         parent::__construct($PDO, $db);
         $this->rows = $rows;
-        $this->table = $table;
+        $this->model = new $model();
     }
 
     public function run()
     {
-        $sql = '';
-        $table = $this->getTable();
-        foreach ($this->getRows() as $row)
-        {
-
-            $column = array_keys($row);
-            $column = array_splice($column, 1);
-            $values = array_values($row);
-            $values = array_splice($values, 1);
-
-            $columnStr = implode(', ', $column);
-            $prepareArray = [];
-
-            foreach($values as $index => $value) {
-                $k = ':' . $column[$index];
-                $prepareArray[$k] = $value;
-            }
-            $prepareStr = implode(', ', array_keys($prepareArray));
-
-
-            $sql = "INSERT INTO $table ($columnStr) VALUES ($prepareStr);";
-            $req = $this->getPDO()->prepare($sql);
-            $req->execute($prepareArray);
-        }
+        $this->getModel()->insert($this->getRows());
     }
 
     // DEFAULT
@@ -56,13 +33,13 @@ class CompanySeeder extends Seeder
         return $this->rows;
     }
 
-    protected function getTable()
-    {
-        return $this->table;
-    }
-
     protected function getPDO()
     {
         return $this->PDO;
+    }
+
+    protected function getModel()
+    {
+        return $this->model;
     }
 }

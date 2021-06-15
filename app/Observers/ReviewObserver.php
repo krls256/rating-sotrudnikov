@@ -5,6 +5,7 @@ namespace app\Observers;
 
 
 use app\Models\CoreModel;
+use app\Models\Review;
 use app\Modules\Publishing\PublishingConstants;
 use app\Modules\Publishing\PublishingModule;
 use app\Modules\ReviewRanking\ReviewRankingModule;
@@ -19,8 +20,10 @@ class ReviewObserver extends CoreObserver
 
     public function updating(CoreModel $model): bool
     {
-        $hash = getHash($model->getAttribute('review_pluses') . $model->getAttribute('review_minuses'));
-        $model->setAttribute('review_hash', $hash);
+        $model->setAttribute('review_hash',
+            Review::getHash($model->getAttribute('review_pluses'), $model->getAttribute('review_minuses'))
+        );
+
         if ($model->isDirty('is_moderated'))
         {
             $this->needToPublish = true;
@@ -57,8 +60,9 @@ class ReviewObserver extends CoreObserver
         if($date === null) {
             $model->setAttribute('review_date', Carbon::now());
         }
-        $hash = getHash($model->getAttribute('review_pluses') . $model->getAttribute('review_minuses'));
-        $model->setAttribute('review_hash', $hash);
+        $model->setAttribute('review_hash',
+            Review::getHash($model->getAttribute('review_pluses'), $model->getAttribute('review_minuses'))
+        );
         $src = $model->getAttribute('review_source');
         if (!$src)
         {

@@ -13,6 +13,7 @@ use Illuminate\Validation\Validator;
 abstract class CoreRequest
 {
     protected Factory $validator;
+    protected ?array $validationData;
 
     public function __construct() {
         $filesystem = new Filesystem();
@@ -22,8 +23,14 @@ abstract class CoreRequest
         $this->validator = $validator;
     }
 
+    protected function prepareForValidation() {
+
+    }
+
     public function validate(array $data) : Validator {
-        return $this->validator->make($data, $this->getRules(), $this->getMessages());
+        $this->validationData = $data;
+        $this->prepareForValidation();
+        return $this->validator->make($this->validationData, $this->getRules(), $this->getMessages());
     }
 
     abstract protected function getMessages() : array;

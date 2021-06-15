@@ -5,7 +5,9 @@ namespace app\Http\Requests\Rest\Review;
 
 
 use app\Http\Requests\CoreRequest;
+use app\Repositories\Base\BaseReviewsRepository;
 use app\Rules\ExistsRule;
+use app\Rules\UniqueReviewHashRule;
 
 class ReviewStoreRestRequest extends CoreRequest
 {
@@ -35,7 +37,11 @@ class ReviewStoreRestRequest extends CoreRequest
 
     protected function getRules(): array
     {
+        $reviewRepo = new BaseReviewsRepository();
+        $reviewsWithHash = $reviewRepo->getReviewsHashes();
+
         return [
+            'full_review' => [new UniqueReviewHashRule($reviewsWithHash)],
             'reviewer_name' => 'string|nullable|max:100',
             'reviewer_position' => 'string|nullable|max:100',
             'review_date' => 'date|required',
@@ -45,5 +51,16 @@ class ReviewStoreRestRequest extends CoreRequest
             'is_published' => 'boolean|required',
             'company_id' => ['required', new ExistsRule('company', 'id')]
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->validationData = array_merge(
+            $this->validationData,
+            ['full_review' => [
+                'review_pluses' => $this->validationData['review_pluses'] ?? '',
+                'review_minuses' => $this->validationData['review_minuses'] ?? ''
+            ]]
+        );
     }
 }

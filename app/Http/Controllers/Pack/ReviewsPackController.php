@@ -3,12 +3,8 @@
 
 namespace app\Http\Controllers\Pack;
 
-
-use app\Http\Controllers\CoreController;
 use app\Http\Requests\Pack\ReviewsPackRequest;
-use app\Http\ValidationHandlers\IValidationHandler;
 use app\Repositories\Base\BaseCompaniesRepository;
-use app\Repositories\Rest\ReviewRestRepository;
 use helperClasses\Request;
 
 class ReviewsPackController extends PackController

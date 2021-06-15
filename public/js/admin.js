@@ -443,7 +443,7 @@ const reviewsJsonFileConverter = () => {
             })
                 .then(r => r.json())
                 .then(({status, message}) => {
-                    const list = message.map(m => `<div>${m}</div>`)
+                    const list = message.map(m => `<div>${m}</div>`).join('\n');
                     switch (status) {
                         case 'success': {
                             const s = document.querySelector('#reviews_file_success_tracker')

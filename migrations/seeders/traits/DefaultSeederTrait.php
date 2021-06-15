@@ -7,15 +7,12 @@ namespace migrations\seeders\traits;
 trait DefaultSeederTrait
 {
     abstract protected function getRows();
-    abstract protected function getTable();
+    abstract protected function getModel();
     abstract protected function getPDO();
-    abstract protected function getDB();
 
     private int $sqlLengthLimit = 2097152; // 2^21 - empirical number
 
     protected function defaultRun($insertItems = 400, $eachTickFunction = null) {
-        $sql = '';
-        $table = $this->getTable();
         $rows = $this->getRows();
         $i = 0;
         while (($currentTickRows = array_slice($rows, $i * $insertItems, $insertItems)) !== []) {
@@ -45,8 +42,7 @@ trait DefaultSeederTrait
 
     private function insertSQL($data) {
         try {
-            $this->getDB()->table($this->getTable())->insert($data);
-
+            $this->getModel()->insert($data);
         } catch (\Exception $exception) {
             dd($exception);
         }

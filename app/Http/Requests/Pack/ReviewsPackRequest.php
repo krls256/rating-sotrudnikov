@@ -6,8 +6,10 @@ namespace app\Http\Requests\Pack;
 
 use app\Http\Requests\CoreRequest;
 use app\Models\Review;
+use app\Repositories\Base\BaseReviewsRepository;
 use app\Rules\ExistsRule;
 use app\Rules\InArrayRule;
+use app\Rules\UniqueReviewHashRule;
 
 class ReviewsPackRequest extends CoreRequest
 {
@@ -21,9 +23,13 @@ class ReviewsPackRequest extends CoreRequest
 
     protected function getRules(): array
     {
+        $reviewRepo = new BaseReviewsRepository();
+        $reviewsWithHash = $reviewRepo->getReviewsHashes();
+
+
         return [
             'reviews' => 'required|array',
-            'reviews.*' => 'array',
+            'reviews.*' => ['array', new UniqueReviewHashRule($reviewsWithHash)],
             'reviews.*.reviewer_name' => 'string|nullable|max:191',
             'reviews.*.reviewer_position' => 'string|nullable|max:191',
             'reviews.*.is_positive' => 'required|boolean',

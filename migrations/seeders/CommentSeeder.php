@@ -11,13 +11,13 @@ require_once __DIR__ . '/../../config.php';
 class CommentSeeder extends Seeder
 {
     private $rows;
-    private $table;
+    private $model;
     private $reviews;
 
-    public function __construct(PDO $PDO, $db, $rows, $table,  $reviews)
+    public function __construct(PDO $PDO, $db, $rows, $model,  $reviews)
     {
         parent::__construct($PDO, $db);
-        $this->table = $table;
+        $this->model = new $model();
         $this->rows = $rows;
         $this->reviews = $reviews;
     }
@@ -45,22 +45,6 @@ class CommentSeeder extends Seeder
 //        $this->defaultRun();
     }
 
-    public function getAddedReviews() {
-        $sql = "SELECT id, reviewer_name, review_date, review_source FROM review";
-        $req = $this->PDO
-            ->prepare($sql);
-
-        $req->execute();
-        $res = $req->fetchAll();
-        $companiesMap = [];
-
-        foreach ($res as $review) {
-            $companiesMap[$review['reviewer_name'].$review['review_date'].$review['review_source']] = $review['id'];
-        }
-
-        return $companiesMap;
-    }
-
     // DEFAULT
     use DefaultSeederTrait;
 
@@ -69,13 +53,13 @@ class CommentSeeder extends Seeder
         return $this->rows;
     }
 
-    protected function getTable()
-    {
-        return $this->table;
-    }
-
     protected function getPDO()
     {
         return $this->PDO;
+    }
+
+    protected function getModel()
+    {
+        return $this->getModel();
     }
 }

@@ -6,6 +6,7 @@ namespace app\Repositories\Base;
 
 use app\Repositories\CoreRepository;
 use app\Models\Review as Model;
+use Illuminate\Support\Collection;
 
 class BaseReviewsRepository extends CoreRepository
 {
@@ -29,6 +30,13 @@ class BaseReviewsRepository extends CoreRepository
         return $this->startConditions()
             ->where('is_moderated', 0)
             ->count();
+    }
+
+    public function getReviewsHashes() : Collection {
+        return $this->startConditions()
+            ->select(['id', 'review_hash'])
+            ->toBase()
+            ->get();
     }
 
 }

@@ -3,7 +3,6 @@
 
 namespace app\Models;
 
-
 use app\Models\Aggregates\ReviewSource;
 use app\Observers\ReviewObserver;
 
@@ -88,5 +87,17 @@ class Review extends CoreModel
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * HELPERS
+     */
+
+    public function fillHash() {
+        $this->hash = getHash($this->review_pluses . $this->review_minuses);
+    }
+
+    public static function getHash($pluses, $minuses) {
+        return getHash($pluses . $minuses);
     }
 }
