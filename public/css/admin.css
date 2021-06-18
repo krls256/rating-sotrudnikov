@@ -997,3 +997,7 @@ body, html {
     background: url('/images/cancel.svg') center center / contain no-repeat;
     transform: translate(-50%, -50%);
 }
+[data-check="true"] {
+    position: relative;
+    box-shadow: 2px 2px 4px #3b3e44;
+}

@@ -37,7 +37,7 @@ class NumberMaskRule implements Rule
 
     public function message()
     {
-        return ":attribute не соответствует маске";
+        return ":attribute не соответствует маске " . $this->mask;
     }
 
 }

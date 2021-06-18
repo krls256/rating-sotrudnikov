@@ -20,6 +20,7 @@ class CompanyUpdateRestRequest extends CoreRequest
             'url' => ':attribute - поле должно быть ссылкой',
             'boolean' => ':attribute - поле должно быть логическим',
             'email' => ':attribute - поле должно быть почтой',
+            'min' => ":attribute - слишком короткая строка"
         ];
     }
 
