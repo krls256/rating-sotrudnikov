@@ -36,8 +36,10 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
             ->withCount('reviewsPublishedNegative');
         $req = $this->useOptions($req, $options);
 
-        if($auth === false) {
-            $req->where('dev', 0)->orWhereNull('dev');
+        if ($auth === false)
+        {
+            $req->where('dev', 0)
+                ->orWhereNull('dev');
         }
 
         $companies = $req->get();
@@ -45,19 +47,18 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
         if ($orderBy === self::ORDER_BY_DELTA_IN_INDEX)
         {
             $companies = $companies
-                ->sortByDesc(function ($company)
-                {
-                    return $company->reviews_published_positive_count -
-                        $company->reviews_published_negative_count;
-                })
-                ->sortByDesc(function ($company)
-                {
-                    return $company->reviews_published_positive_count +
-                        $company->reviews_published_negative_count;
-                })
+                ->sortByDesc(
+                    function ($company)
+                    {
+                        $difference = $company->reviews_published_positive_count - $company->reviews_published_negative_count;
+                        $sum = $company->reviews_published_positive_count + $company->reviews_published_negative_count;
+                        $sumDischarge = ceil(log10(abs($sum)));
+                        return $difference + $sum / (10 * $sumDischarge);
+                    })
                 ->values();
         }
-        if($limit !== null) {
+        if ($limit !== null)
+        {
             $companies = $companies->take($limit);
         }
         return $companies;
