@@ -52,8 +52,7 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
                     {
                         $difference = $company->reviews_published_positive_count - $company->reviews_published_negative_count;
                         $sum = $company->reviews_published_positive_count + $company->reviews_published_negative_count;
-                        $sumDischarge = ceil(log10(abs($sum)));
-                        return $difference + $sum / (10 * $sumDischarge);
+                        return $difference + $sum * 0.0001;
                     })
                 ->values();
         }
