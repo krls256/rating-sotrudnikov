@@ -15,7 +15,7 @@ class IndexPageController extends UserController
         $companiesRepo = new CompanyRestRepository();
         $reviewsRepo = new ReviewRestRepository();
         $companies = $companiesRepo->getIndex([
-            'orderBy' => CompanyRestRepository::ORDER_BY_DELTA_IN_INDEX,
+            'orderBy' => CompanyRestRepository::ORDER_BY_POSITION,
             'auth' => Auth::isAuthedStatic()
         ]);
         $reviews = $reviewsRepo->getIndex([

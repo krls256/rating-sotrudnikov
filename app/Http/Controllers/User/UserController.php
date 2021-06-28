@@ -29,7 +29,7 @@ abstract class UserController extends CoreController
         $companiesRestRepo = new CompanyRestRepository();
         return $companiesRestRepo->getIndex([
             'limit' => 5,
-            'orderBy' => CompanyRestRepository::ORDER_BY_DELTA_IN_INDEX,
+            'orderBy' => CompanyRestRepository::ORDER_BY_POSITION,
             'auth' => Auth::isAuthedStatic()
         ]);
     }

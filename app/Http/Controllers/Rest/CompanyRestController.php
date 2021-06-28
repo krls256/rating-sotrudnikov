@@ -23,7 +23,6 @@ class CompanyRestController extends RestController
 
     public function update(Request $request) {
         $req = $request->all();
-
         $this->validate(CompanyUpdateRestRequest::class, $req);
         $id = $req['id'];
         $file = $request->get('file');

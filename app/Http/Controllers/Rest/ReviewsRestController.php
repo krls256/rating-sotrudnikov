@@ -93,6 +93,6 @@ class ReviewsRestController extends RestController
 
     public function normalize() {
         $publishingModule = new PublishingModule();
-        $publishingModule->normalize(PublishingConstants::DELTA_ORIENTED_INDEX);
+        $publishingModule->normalize(PublishingConstants::JSON_SCHEMA_ORIENTED_INDEX);
     }
 }

@@ -9,7 +9,8 @@ class Company extends CoreModel
     public $timestamps = false;
     protected $table = 'company';
     protected $fillable = [
-        'id', 'name', 'phone', 'city', 'address', 'sity', 'description', 'logo', 'map', 'email','data', 'fb', 'vk', 'tw', 'wa', 'vb', 'ok', 'tg', 'ins', 'inn', 'yb', 'url', 'imgMini', 'dev', 'rating_hr', 'email_hr', 'company_neorabote_link', 'company_otrude_link', 'company_antijob_link', 'company_otzyvy_rabota_link', 'company_rework_search_word'
+        'id', 'name', 'phone', 'city', 'position','address', 'sity', 'description', 'logo', 'map', 'email','data', 'fb',
+        'vk', 'tw', 'wa', 'vb', 'ok', 'tg', 'ins', 'inn', 'yb', 'url', 'imgMini', 'dev', 'rating_hr', 'email_hr', 'company_neorabote_link', 'company_otrude_link', 'company_antijob_link', 'company_otzyvy_rabota_link', 'company_rework_search_word'
     ];
 
 

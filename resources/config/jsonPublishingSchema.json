@@ -1,0 +1,52 @@
+[
+  {
+    "companyName": "Студия Ремонтов",
+    "maxPositive": 100,
+    "maxNegative": 5
+  },
+  {
+    "companyName": "СК БлагоДать",
+    "maxPositive": 57,
+    "maxNegative": 4
+  },
+  {
+    "companyName": "Фундамент",
+    "maxPositive": 20,
+    "maxNegative": 2
+  },
+  {
+    "companyName": "Вира-АртСтрой",
+    "maxPositive": 15,
+    "maxNegative": 5
+  },
+  {
+    "companyName": "Первая отделочная компания",
+    "maxPositive": 14,
+    "maxNegative": 10
+  },
+  {
+    "companyName": "СМ-Ремонт",
+    "maxPositive": 6,
+    "maxNegative": 3
+  },
+  {
+    "companyName": "Мастера Ремонта",
+    "maxPositive": 17,
+    "maxNegative": 16
+  },
+  {
+    "companyName": "Ремонт Экспресс",
+    "maxPositive": 16,
+    "maxNegative": 15
+  },
+  {
+    "companyName": "DOMEO",
+    "maxPositive": 2,
+    "maxNegative": 1
+  },
+  {
+    "companyName": "Добрый Дом",
+    "maxPositive": 4,
+    "maxNegative": 4
+  }
+]

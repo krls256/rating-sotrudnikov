@@ -39,6 +39,9 @@ class ReviewObserver extends CoreObserver
     {
         $rankingModule = new ReviewRankingModule();
         $rankingModule->reviseRanking();
+
+        $publishingModule = new PublishingModule();
+        $publishingModule->normalize(PublishingConstants::JSON_SCHEMA_ORIENTED_INDEX);
         return true;
     }
 
@@ -49,7 +52,7 @@ class ReviewObserver extends CoreObserver
         if ($this->needToPublish)
         {
             $publishingModule = new PublishingModule();
-            $publishingModule->normalize(PublishingConstants::DELTA_ORIENTED_INDEX);
+            $publishingModule->normalize(PublishingConstants::JSON_SCHEMA_ORIENTED_INDEX);
         }
         return true;
     }

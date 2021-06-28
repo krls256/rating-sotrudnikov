@@ -17,6 +17,7 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
     use OptionsTrait;
 
     public const ORDER_BY_DELTA_IN_INDEX = 'delta';
+    public const ORDER_BY_POSITION = 'position';
 
     protected function getModelClass()
     {
@@ -55,6 +56,12 @@ class CompanyRestRepository extends CoreRepository implements IRestRepository
                         return $difference + $sum * 0.0001;
                     })
                 ->values();
+        } else if($orderBy === self::ORDER_BY_POSITION) {
+            $companies = $companies->sortBy(function ($company) {
+                if($company->position)
+                    return $company->position;
+                return 666;
+            })->values();
         }
         if ($limit !== null)
         {
