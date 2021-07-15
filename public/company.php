@@ -112,7 +112,7 @@ $page = $pagination->currentPage();
                         <div>
                             <span>Сайт: </span>
                             <span><a href="<?= $row['sity'] ?>" class="company__sity"
-                                     target="_blank"><?= $row['sity'] ?></a></span>
+                                     target="_blank"><?= $row->ProtocolAndSiteDomain ?></a></span>
                         </div>
                         <div>
                             <span>Адрес: </span>

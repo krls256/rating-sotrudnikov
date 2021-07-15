@@ -48,4 +48,18 @@ class Company extends CoreModel
     public function comments() {
         return $this->hasManyThrough(Comment::class, Review::class);
     }
+
+    /** Accessors */
+
+    public function getProtocolAndSiteDomainAttribute() {
+        if($this->sity) {
+            $url = parse_url(trim($this->sity));
+            if(isset($url['scheme']) && isset($url['host'])) {
+                return $url['scheme'] . '://' . $url['host'];
+            } else {
+                return $this->sity;
+            }
+        }
+        return '';
+    }
 }
