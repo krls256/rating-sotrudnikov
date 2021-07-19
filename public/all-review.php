@@ -220,5 +220,6 @@ if ($page + 1 != 1)
     <?php include 'modules/modal.php'; ?>
 </div>
 <?php include 'modules/scripts.php'; ?>
+<?php include_view('/user_includes/yandex_metrika.php'); ?>
 </body>
 </html>

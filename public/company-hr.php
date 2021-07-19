@@ -273,6 +273,7 @@
       <? include 'modules/footer.php'; ?>
     </div>
     <script>function MapInit(){var e=new ymaps.Map("c_map",{center:[<?=$row['map']?>],zoom:17,controls:["routeButtonControl","typeSelector","fullscreenControl","zoomControl"]});e.behaviors.disable("scrollZoom");var o=new ymaps.GeoObject({geometry:{type:"Point",coordinates:[<?=$row['map']?>]}});e.geoObjects.add(o)}window.onload=function(){e=document.createElement("script"),e.src="https://api-maps.yandex.ru/2.1/?apikey=a6da9518-c21f-41f1-80f6-8fb6ae90ea25&lang=ru_RU&onload=MapInit",document.getElementsByTagName("body")[0].appendChild(e)};</script>
-    <? include 'modules/scripts.php';?>
+    <?php include 'modules/scripts.php';?>
+    <?php include_view('/user_includes/yandex_metrika.php'); ?>
   </body>
 </html>

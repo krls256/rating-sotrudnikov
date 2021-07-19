@@ -100,8 +100,9 @@
             ?></div>
         <?}?></div><? include 'modules/right.php'; ?>
       </div>
-      <? include 'modules/footer.php'; ?>
+      <?php include 'modules/footer.php'; ?>
     </div>
-    <? include 'modules/scripts.php'; ?>
+    <?php include 'modules/scripts.php'; ?>
+    <?php include_view('/user_includes/yandex_metrika.php'); ?>
   </body>
 </html>

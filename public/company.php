@@ -281,5 +281,6 @@ $page = $pagination->currentPage();
         e = document.createElement("script"), e.src = "https://api-maps.yandex.ru/2.1/?apikey=a6da9518-c21f-41f1-80f6-8fb6ae90ea25&lang=ru_RU&onload=MapInit", document.getElementsByTagName("body")[0].appendChild(e)
     };</script>
 <?php include 'modules/scripts.php'; ?>
+<?php include_view('/user_includes/yandex_metrika.php'); ?>
 </body>
 </html>

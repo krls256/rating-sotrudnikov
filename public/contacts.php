@@ -65,5 +65,6 @@ $reviews = $controllerData['reviews'];
     <?php include 'modules/footer.php'; ?>
 </div>
 <?php include 'modules/scripts.php'; ?>
+<?php include_view('/user_includes/yandex_metrika.php'); ?>
 </body>
 </html>
